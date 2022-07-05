@@ -1,4 +1,4 @@
-import { makeObservable, observable } from 'mobx';
+import { makeObservable, observable, computed, action } from 'mobx';
 
 interface ICarIten {
     carId: string;
@@ -27,6 +27,11 @@ export class Car implements ICarIten {
 
     public constructor(data: ICarIten) {
         makeObservable(this);
+        this.initFromData(data);
+    }
+
+    @action
+    public initFromData(data: ICarIten) {
         this.carId = data.carId;
         this.make = data.make;
         this.model = data.model;
@@ -38,4 +43,26 @@ export class Car implements ICarIten {
         this.color = data.color;
         this.doors = data.doors;
     }
+
+    @computed get regDateText(): string {
+        let date = this.registrationDate.getDate() + '-' +
+            this.registrationDate.getMonth() + '-' +
+            this.registrationDate.getFullYear();
+        return date;
+    }
+
+    // @computed public get fullInfo(): string {
+    //     let result = "";
+    //     result += "id: " + this.carId + "; ";
+    //     result += "make: " + this.make + "; ";
+    //     result += "model: " + this.model + "; ";
+    //     result += "registration date: " + this.registrationDate.toISOString().slice(0, 10) + "; ";
+    //     result += "registration place: " + this.registrationPlace + "; ";
+    //     result += "fuel type: " + this.fuelType + "; ";
+    //     result += "engine power: " + this.enginePower + "; ";
+    //     result += "engine torque: " + this.engineTorque + "; ";
+    //     result += "color: " + this.color + "; ";
+    //     result += "doors: " + this.doors + "; ";
+    //     return result;
+    // }
 }
