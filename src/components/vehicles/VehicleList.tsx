@@ -11,6 +11,7 @@ export interface ICarListProps {
 @observer
 export class VehicleList extends React.Component<ICarListProps> {
     private columns: IColumn[];
+    private selection: Selection;
 
     public constructor(props: ICarListProps) {
         super(props);

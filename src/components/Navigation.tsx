@@ -7,9 +7,9 @@ const navLinkGroups: INavLinkGroup[] = [
   {
     links: [
       {
-        key: 'Cars',
-        name: 'Cars',
-        url: '#/Cars',
+        key: 'Vehicles',
+        name: 'Vehicles',
+        url: '#/Vehicles',
       },
       {
         key: 'Permits',

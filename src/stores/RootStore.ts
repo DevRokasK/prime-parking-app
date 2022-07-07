@@ -6,7 +6,7 @@ import { MockService } from '../services/MockService';
 
 export class RootStore {
     public Service: IPrimeParkingService;
-    @observable public CarStore: VehicleStore;
+    @observable public VehiclesStore: VehicleStore;
     @observable public PermitStore: PermitStore;
     //private rootStore: RootStore;
     //Cars store
@@ -15,7 +15,7 @@ export class RootStore {
     public constructor() {
         //this.rootStore = rootStore;
         this.Service = new MockService();
-        this.CarStore = new VehicleStore(this);
+        this.VehiclesStore = new VehicleStore(this);
         this.PermitStore = new PermitStore(this);
     }
 }

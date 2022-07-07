@@ -5,7 +5,7 @@ export const Home = () => {
     return (
         <div>
             <ul>
-                <li >
+                <li>
                     <Link to="/Cars">Cars</Link>
                 </li>
                 <li>

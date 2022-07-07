@@ -38,7 +38,7 @@ export class App extends React.Component {
                                 <main className="main">
                                         <Routes>
                                                 <Route path='/' element={<Home/>}/>
-                                                <Route path='/Cars' element={<VehicleList store={store.CarStore} />}/>
+                                                <Route path='/Vehicles' element={<VehicleList store={store.VehiclesStore} />}/>
                                                 <Route path='/Permits' element={<PermitList store={store.PermitStore} />}/>
                                         </Routes>
                                 </main>
