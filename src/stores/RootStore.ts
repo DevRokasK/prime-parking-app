@@ -1,17 +1,21 @@
-import { CarStore } from './CarStore';
-import { Permitstore } from './PermitStore';
+import { VehicleStore } from './VehicleStore';
+import { PermitStore } from './PermitStore';
 import {observable} from 'mobx';
+import { IPrimeParkingService } from '../services/IPrimeParkingService';
+import { MockService } from '../services/MockService';
 
 export class RootStore {
-    @observable public CarStore: CarStore;
-    @observable public PemitStore: Permitstore;
+    public Service: IPrimeParkingService;
+    @observable public CarStore: VehicleStore;
+    @observable public PermitStore: PermitStore;
     //private rootStore: RootStore;
     //Cars store
     //Atvykimu isvykimu storeas
 
     public constructor() {
         //this.rootStore = rootStore;
-        this.CarStore = new CarStore();
-        this.PemitStore = new Permitstore();
+        this.Service = new MockService();
+        this.CarStore = new VehicleStore(this);
+        this.PermitStore = new PermitStore(this);
     }
 }

@@ -1,14 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
-import { DetailsList, DetailsListLayoutMode, SelectionMode, IColumn } from '@fluentui/react';
-import { CarStore } from '../../stores/CarStore';
-import { CarCommandBar } from './CarCommandBar';
+import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel } from '@fluentui/react';
+import { VehicleStore } from '../../stores/VehicleStore';
+import { VehicleCommandBar } from './VehicleCommandBar';
 
 export interface ICarListProps {
-    store: CarStore;
+    store: VehicleStore;
 }
+
 @observer
-export class CarList extends React.Component<ICarListProps> {
+export class VehicleList extends React.Component<ICarListProps> {
     private columns: IColumn[];
 
     public constructor(props: ICarListProps) {
@@ -17,18 +18,14 @@ export class CarList extends React.Component<ICarListProps> {
         this.columns = [
             {
                 key: 'column1',
-                name: 'Car ID',
-                fieldName: 'carId',
+                name: 'Vehicle ID',
+                fieldName: 'vehicleId',
                 minWidth: 70,
                 maxWidth: 90,
                 isRowHeader: true,
                 isResizable: true,
-                isSorted: true,
-                isSortedDescending: false,
-                sortAscendingAriaLabel: 'Sorted A to Z',
-                sortDescendingAriaLabel: 'Sorted Z to A',
                 data: 'string',
-                isPadded: true
+                isPadded: true,
             },
             {
                 key: 'column2',
@@ -123,22 +120,29 @@ export class CarList extends React.Component<ICarListProps> {
                 data: 'number'
             },
         ];
+    }
 
+    public componentDidMount() {
+        this.props.store.Init().then();
     }
 
     public render() {
         const columns = this.columns;
-        const items = this.props.store.Cars.slice();
+        const store = this.props.store;
+        const items = store.Vehicles.slice();
+
         return (
             <div>
-                <CarCommandBar/>
-                <DetailsList
+                <VehicleCommandBar />
+                <ShimmeredDetailsList
+                    enableShimmer={store.loading}
                     items={items}
                     columns={columns}
                     selectionMode={SelectionMode.single}
                     layoutMode={DetailsListLayoutMode.justified}
                     isHeaderVisible={true}
                 />
+                <Panel isOpen={store.isVehicleSelected} />
             </div>
         );
     }

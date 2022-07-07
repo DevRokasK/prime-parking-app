@@ -6,7 +6,7 @@ initializeIcons();
 
 const overflowButtonProps: IButtonProps = { ariaLabel: 'More commands' };
 
-export const CarCommandBar: React.FunctionComponent = () => {
+export const VehicleCommandBar: React.FunctionComponent = () => {
   const items: ICommandBarItemProps[] = [
     {
       key: 'add',

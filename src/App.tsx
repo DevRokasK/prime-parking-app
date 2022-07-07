@@ -1,10 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { Route, Routes, Link } from 'react-router-dom';
 import './styles/App.css';
 
 import { RootStore } from './stores/RootStore';
 import { Navigation } from './components/Navigation'
-import { CarList } from './components/cars/CarList';
+import { Home } from './components/Home'
+import { VehicleList } from './components/vehicles/VehicleList';
+import { PermitList } from './components/permits/PermitList';
 
 @observer
 export class App extends React.Component {
@@ -15,17 +18,15 @@ export class App extends React.Component {
                 this.store = new RootStore();
         }
 
-        public componentDidMount() {
-                this.store.CarStore.Init();
-        }
+        
 
         public render(): JSX.Element {
                 const store = this.store;
                 return <div className="App">
-                        <div className='grid-container'>
+                        <div className="grid-container">
                                 <header className="header">
                                         <div className="header-name">
-                                                Prime Parking
+                                                <Link to="/">Prime Parking</Link>
                                         </div>
                                         <div className="header-logo">
                                                 <img src="https://icon-library.com/images/icon-car/icon-car-1.jpg" alt="Car go brrr" className="invert"/>
@@ -35,7 +36,11 @@ export class App extends React.Component {
                                         <Navigation />
                                 </aside>
                                 <main className="main">
-                                        <CarList store={store.CarStore} />
+                                        <Routes>
+                                                <Route path='/' element={<Home/>}/>
+                                                <Route path='/Cars' element={<VehicleList store={store.CarStore} />}/>
+                                                <Route path='/Permits' element={<PermitList store={store.PermitStore} />}/>
+                                        </Routes>
                                 </main>
                         </div>
                 </div>

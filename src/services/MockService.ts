@@ -1,12 +1,17 @@
-import { Car } from "../model/Car";
+import { Vehicle } from "../model/Vehicle";
+import { Permit } from "../model/Permit";
+import { IPrimeParkingService } from "./IPrimeParkingService";
 
 
-export class MockService {
-    public static GetCars(): Car[] {
-        const result: Car[] = [];
+export class MockService implements IPrimeParkingService {
+    public async GetVehicles(): Promise<Vehicle[]> {       
+        
+        const result: Vehicle[] = [];
 
-        result.push(new Car({
-            carId: 'AAA 111',
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        result.push(new Vehicle({
+            vehicleId: 'AAA 111',
             make: 'VW',
             model: 'Golf',
             registrationDate: new Date(2020, 4, 15),
@@ -18,8 +23,8 @@ export class MockService {
             doors: 5
         }));
 
-        result.push(new Car({
-            carId: 'BBB 111',
+        result.push(new Vehicle({
+            vehicleId: 'BBB 111',
             make: 'BMW',
             model: 'X5',
             registrationDate: new Date(2010, 9, 5),
@@ -29,10 +34,10 @@ export class MockService {
             engineTorque: 800,
             color: 'Black',
             doors: 5
-        }))
+        }));
 
-        result.push(new Car({
-            carId: 'CCC 111',
+        result.push(new Vehicle({
+            vehicleId: 'CCC 111',
             make: 'Ford',
             model: 'Focus',
             registrationDate: new Date(2019, 9, 29),
@@ -42,10 +47,10 @@ export class MockService {
             engineTorque: 350,
             color: 'Blue',
             doors: 5
-        }))
+        }));
 
-        result.push(new Car({
-            carId: 'CCC 111',
+        result.push(new Vehicle({
+            vehicleId: 'CCC 111',
             make: 'VW',
             model: 'Passat',
             registrationDate: new Date(2022, 7, 15),
@@ -55,10 +60,10 @@ export class MockService {
             engineTorque: 400,
             color: 'Silver',
             doors: 5
-        }))
+        }));
 
-        result.push(new Car({
-            carId: 'DDD 111',
+        result.push(new Vehicle({
+            vehicleId: 'DDD 111',
             make: 'Ford',
             model: 'Fiesta',
             registrationDate: new Date(2018, 1, 1),
@@ -68,10 +73,10 @@ export class MockService {
             engineTorque: 200,
             color: 'White',
             doors: 3
-        }))
+        }));
 
-        result.push(new Car({
-            carId: 'EEE 111',
+        result.push(new Vehicle({
+            vehicleId: 'EEE 111',
             make: 'VW',
             model: 'Golf',
             registrationDate: new Date(2021, 8, 5),
@@ -81,10 +86,10 @@ export class MockService {
             engineTorque: 300,
             color: 'Blue',
             doors: 3
-        }))
+        }));
 
-        result.push(new Car({
-            carId: 'FFF 111',
+        result.push(new Vehicle({
+            vehicleId: 'FFF 111',
             make: 'Kia',
             model: "c'eed",
             registrationDate: new Date(2020, 4, 15),
@@ -94,7 +99,42 @@ export class MockService {
             engineTorque: 100,
             color: 'Silver',
             doors: 5
-        }))
+        }));
+
+        return result;
+    }
+
+    public async GetPermits(): Promise<Permit[]> {
+        const result: Permit[] = [];
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        result.push(new Permit({
+            carId: 'AAA 111',
+            stayFrom: new Date(2020, 4, 15),
+            stayUntil: new Date(2020, 4, 18),
+            entered: new Date(2020, 4, 15),
+            left: new Date(2020, 10, 15),
+            state: 'Active'
+        }));
+
+        result.push(new Permit({
+            carId: 'BBB 111',
+            stayFrom: new Date(2020, 4, 15),
+            stayUntil: new Date(2020, 4, 16),
+            entered: new Date(2020, 4, 15),
+            left: new Date(2020, 4, 17),
+            state: 'Completed'
+        }));
+
+        result.push(new Permit({
+            carId: 'CCC 111',
+            stayFrom: new Date(2020, 9, 15),
+            stayUntil: new Date(2020, 11, 15),
+            entered: new Date(2020, 10, 15),
+            left: new Date(2020, 10, 15),
+            state: 'Active'
+        }));
 
         return result;
     }

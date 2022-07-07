@@ -2,8 +2,8 @@ import { makeObservable, observable, computed, action } from 'mobx';
 
 interface IPermitItem {
     carId: string;
-    from: Date;
-    to: Date;
+    stayFrom: Date;
+    stayUntil: Date;
     entered: Date;
     left: Date;
     state: string;
@@ -11,8 +11,8 @@ interface IPermitItem {
 
 export class Permit implements IPermitItem {
     @observable public carId: string;
-    @observable public from: Date;
-    @observable public to: Date;
+    @observable public stayFrom: Date;
+    @observable public stayUntil: Date;
     @observable public entered: Date;
     @observable public left: Date;
     @observable public state: string;
@@ -25,24 +25,24 @@ export class Permit implements IPermitItem {
     @action
     public initFromData(data: IPermitItem) {
         this.carId = data.carId;
-        this.from = data.from;
-        this.to = data.to;
+        this.stayFrom = data.stayFrom;
+        this.stayUntil = data.stayUntil;
         this.entered = data.entered;
         this.left = data.left;
         this.state = data.state;
     }
 
     @computed get regFromText(): string {
-        let date = this.from.getDate() + '-' +
-            this.from.getMonth() + '-' +
-            this.from.getFullYear();
+        let date = this.stayFrom.getDate() + '-' +
+            this.stayFrom.getMonth() + '-' +
+            this.stayFrom.getFullYear();
         return date;
     }
 
     @computed get regToText(): string {
-        let date = this.to.getDate() + '-' +
-            this.to.getMonth() + '-' +
-            this.to.getFullYear();
+        let date = this.stayUntil.getDate() + '-' +
+            this.stayUntil.getMonth() + '-' +
+            this.stayUntil.getFullYear();
         return date;
     }
 
