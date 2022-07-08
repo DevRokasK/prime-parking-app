@@ -50,7 +50,7 @@ export class MockService implements IPrimeParkingService {
         }));
 
         result.push(new Vehicle({
-            vehicleId: 'CCC 111',
+            vehicleId: 'CCC 101',
             make: 'VW',
             model: 'Passat',
             registrationDate: new Date(2022, 7, 15),

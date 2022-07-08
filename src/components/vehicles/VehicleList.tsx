@@ -1,8 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel } from '@fluentui/react';
+import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel, Selection, PanelType } from '@fluentui/react';
 import { VehicleStore } from '../../stores/VehicleStore';
 import { VehicleCommandBar } from './VehicleCommandBar';
+import { Vehicle } from '../../model/Vehicle';
+import { PanelInfo } from '../PanelInfo';
 
 export interface ICarListProps {
     store: VehicleStore;
@@ -121,6 +123,10 @@ export class VehicleList extends React.Component<ICarListProps> {
                 data: 'number'
             },
         ];
+
+        this.selection = new Selection({
+            onSelectionChanged: this.onSelectionChanged
+        });
     }
 
     public componentDidMount() {
@@ -138,13 +144,34 @@ export class VehicleList extends React.Component<ICarListProps> {
                 <ShimmeredDetailsList
                     enableShimmer={store.loading}
                     items={items}
+                    selection={this.selection}
                     columns={columns}
                     selectionMode={SelectionMode.single}
                     layoutMode={DetailsListLayoutMode.justified}
                     isHeaderVisible={true}
+
                 />
-                <Panel isOpen={store.isVehicleSelected} />
+                <Panel type={PanelType.medium} 
+                    isOpen={store.isVehicleSelected}
+                    onDismiss={this.onPanelDismis}
+                    headerText={"Vehicle information"}        
+                >
+                    <PanelInfo vehicle={store.SelectedVehicle} ></PanelInfo>
+                </Panel>
             </div>
         );
     }
+
+    private onPanelDismis = () => {
+        this.props.store.DeselectVehicle();
+    }
+
+    private onSelectionChanged = () => {
+        const selectedItems = this.selection.getSelection();
+        if (selectedItems.length > 0) {
+            const selectedItem = selectedItems[0];
+            this.props.store.SelectVehicle(selectedItem as Vehicle);
+        }
+    }
+
 }

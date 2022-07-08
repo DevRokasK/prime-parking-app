@@ -1,6 +1,6 @@
 import { makeObservable, observable, computed, action } from 'mobx';
 
-interface IVehicleIten {
+export interface IVehicleIten {
     vehicleId: string;
     make: string;
     model: string;
@@ -45,9 +45,12 @@ export class Vehicle implements IVehicleIten {
     }
 
     @computed get regDateText(): string {
-        let date = this.registrationDate.getDate() + '-' +
-            this.registrationDate.getMonth() + '-' +
-            this.registrationDate.getFullYear();
-        return date;
+        let result = "";
+        if (this.registrationDate) {
+            result = this.registrationDate.getDate() + '-' +
+                this.registrationDate.getMonth() + '-' +
+                this.registrationDate.getFullYear();
+        }
+        return result;
     }
 }

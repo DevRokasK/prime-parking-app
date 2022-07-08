@@ -19,6 +19,11 @@ export class VehicleStore extends BaseStore {
     }
 
     @action
+    public SelectVehicle(data: Vehicle): void {
+        this.SelectedVehicle = data;
+    }
+
+    @action
     public DeselectVehicle() {
         this.SelectedVehicle = null;
     }
