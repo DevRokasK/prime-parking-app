@@ -1,9 +1,9 @@
 import { makeObservable, observable, computed, action } from 'mobx';
 
-interface IPermitItem {
+export interface IPermitItem {
     carId: string;
-    stayFrom: Date;
-    stayUntil: Date;
+    from: Date;
+    to: Date;
     entered: Date;
     left: Date;
     state: string;
@@ -11,8 +11,8 @@ interface IPermitItem {
 
 export class Permit implements IPermitItem {
     @observable public carId: string;
-    @observable public stayFrom: Date;
-    @observable public stayUntil: Date;
+    @observable public from: Date;
+    @observable public to: Date;
     @observable public entered: Date;
     @observable public left: Date;
     @observable public state: string;
@@ -25,38 +25,64 @@ export class Permit implements IPermitItem {
     @action
     public initFromData(data: IPermitItem) {
         this.carId = data.carId;
-        this.stayFrom = data.stayFrom;
-        this.stayUntil = data.stayUntil;
-        this.entered = data.entered;
-        this.left = data.left;
+        this.from = new Date(data.from);
+        this.to = new Date(data.to);
+        this.entered = new Date(data.entered);
+        this.left = new Date(data.left);
         this.state = data.state;
     }
 
     @computed get regFromText(): string {
-        let date = this.stayFrom.getDate() + '-' +
-            this.stayFrom.getMonth() + '-' +
-            this.stayFrom.getFullYear();
+        let date = "";
+        if (this.from) {
+            date = this.from.getDate() + '-' +
+                this.from.getMonth() + '-' +
+                this.from.getFullYear();
+        }
         return date;
     }
 
     @computed get regToText(): string {
-        let date = this.stayUntil.getDate() + '-' +
-            this.stayUntil.getMonth() + '-' +
-            this.stayUntil.getFullYear();
+        let date = "";
+        if (this.to) {
+            date = this.to.getDate() + '-' +
+                this.to.getMonth() + '-' +
+                this.to.getFullYear();
+        }
         return date;
     }
 
     @computed get regEnteredText(): string {
-        let date = this.entered.getDate() + '-' +
-            this.entered.getMonth() + '-' +
-            this.entered.getFullYear();
+        let date = "";
+        if (this.entered) {
+            date = this.entered.getDate() + '-' +
+                this.entered.getMonth() + '-' +
+                this.entered.getFullYear();
+        }
         return date;
     }
 
     @computed get regLeftText(): string {
-        let date = this.left.getDate() + '-' +
-            this.left.getMonth() + '-' +
-            this.left.getFullYear();
+        let date = "";
+        if (this.left) {
+            date = this.left.getDate() + '-' +
+                this.left.getMonth() + '-' +
+                this.left.getFullYear();
+        }
         return date;
+    }
+
+    @computed get regStatus(): string {
+        let status = "";
+        if (this.state == "0") {
+            status = "Planned";
+        }
+        else if (this.state == "1") {
+            status = "In Territory";
+        }
+        else {
+            status = "Completed";
+        }
+        return status;
     }
 }

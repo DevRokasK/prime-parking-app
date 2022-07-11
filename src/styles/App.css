@@ -93,19 +93,39 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  box-sizing: border-box;
+}
 
+.flex-name {
+  width: 100%;
+  margin: 12px;
+  border-style: solid none none none;
+  border-color: #F3F2F1;
+  border-width: 1px;
 }
 
 .flex-item {
-  width: 200px;
-  line-height: 18px;
-  padding: 12px;
+  width: 286px;
+  line-height: 24px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .flex-item-name {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
+}
+
+.flex-item-gap {
+  width: 24px;
+}
+
+.flex-item-content{
+  background-color: #F3F2F1;
+  border-style: solid;
+  border-color: #979797;
+  border-radius: 2px;
+  border-width: 1px;
+  padding: 3px 8px 3px 8px;
 }
 
 @media screen and (max-width: 600px) {

@@ -1,8 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel } from '@fluentui/react';
+import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel, Selection, PanelType } from '@fluentui/react';
 import { PermitStore } from '../../stores/PermitStore';
 import { PermitCommandBar } from './PermitCommandBar';
+import { Permit } from '../../model/Permit';
+import { PanelInfo } from './PermitPanelInfo';
 
 export interface IPermitListProps {
     store: PermitStore;
@@ -11,6 +13,7 @@ export interface IPermitListProps {
 @observer
 export class PermitList extends React.Component<IPermitListProps> {
     private columns: IColumn[];
+    private selection: Selection;
 
     public constructor(props: IPermitListProps) {
         super(props);
@@ -72,7 +75,7 @@ export class PermitList extends React.Component<IPermitListProps> {
             {
                 key: 'column6',
                 name: 'State',
-                fieldName: 'state',
+                fieldName: 'regStatus',
                 minWidth: 50,
                 maxWidth: 70,
                 isResizable: true,
@@ -80,16 +83,21 @@ export class PermitList extends React.Component<IPermitListProps> {
                 data: 'string'
             },
         ];
+
+        this.selection = new Selection({
+            onSelectionChanged: this.onSelectionChanged
+        });
     }
 
     public componentDidMount() {
-        this.props.store.Init();
+        this.props.store.Init().then();
     }
 
     public render() {
         const columns = this.columns;
         const store = this.props.store;
         const items = store.Permits.slice();
+
         return (
             <div>
                 <PermitCommandBar />
@@ -101,8 +109,26 @@ export class PermitList extends React.Component<IPermitListProps> {
                     layoutMode={DetailsListLayoutMode.justified}
                     isHeaderVisible={true}
                 />
-                <Panel isOpen={store.IsPermitSelected}/>
+                <Panel type={PanelType.medium}
+                    isLightDismiss
+                    isOpen={store.IsPermitSelected}
+                    onDismiss={this.onPanelDismis}
+                >
+                    <PanelInfo permit={store.SelectedPermit}></PanelInfo>
+                </Panel>
             </div>
         );
+    }
+
+    private onPanelDismis = () => {
+        this.props.store.DeselectPermit();
+    }
+
+    private onSelectionChanged = () => {
+        const selectedItems = this.selection.getSelection();
+        if (selectedItems.length > 0) {
+            const selectedItem = selectedItems[0];
+            this.props.store.SelectPermit(selectedItem as Permit);
+        }
     }
 }
