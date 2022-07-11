@@ -11,10 +11,10 @@ export class MockService implements IPrimeParkingService {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
         result.push(new Vehicle({
-            vehicleId: 'AAA 111',
+            carNumber: 'AAA 111',
             make: 'VW',
             model: 'Golf',
-            registrationDate: new Date(2020, 4, 15),
+            registrationYear: new Date(2020, 4, 15),
             registrationPlace: 'Vilnius',
             fuelType: 'Petrol',
             enginePower: 125,
@@ -24,10 +24,10 @@ export class MockService implements IPrimeParkingService {
         }));
 
         result.push(new Vehicle({
-            vehicleId: 'BBB 111',
+            carNumber: 'BBB 111',
             make: 'BMW',
             model: 'X5',
-            registrationDate: new Date(2010, 9, 5),
+            registrationYear: new Date(2010, 9, 5),
             registrationPlace: 'Kaunas',
             fuelType: 'Diesel',
             enginePower: 250,
@@ -37,10 +37,10 @@ export class MockService implements IPrimeParkingService {
         }));
 
         result.push(new Vehicle({
-            vehicleId: 'CCC 111',
+            carNumber: 'CCC 111',
             make: 'Ford',
             model: 'Focus',
-            registrationDate: new Date(2019, 9, 29),
+            registrationYear: new Date(2019, 9, 29),
             registrationPlace: 'Vilnius',
             fuelType: 'Petrol',
             enginePower: 85,
@@ -50,10 +50,10 @@ export class MockService implements IPrimeParkingService {
         }));
 
         result.push(new Vehicle({
-            vehicleId: 'CCC 101',
+            carNumber: 'CCC 101',
             make: 'VW',
             model: 'Passat',
-            registrationDate: new Date(2022, 7, 15),
+            registrationYear: new Date(2022, 7, 15),
             registrationPlace: 'Vilnius',
             fuelType: 'Diesel',
             enginePower: 150,
@@ -63,10 +63,10 @@ export class MockService implements IPrimeParkingService {
         }));
 
         result.push(new Vehicle({
-            vehicleId: 'DDD 111',
+            carNumber: 'DDD 111',
             make: 'Ford',
             model: 'Fiesta',
-            registrationDate: new Date(2018, 1, 1),
+            registrationYear: new Date(2018, 1, 1),
             registrationPlace: 'Kaunas',
             fuelType: 'Diesel',
             enginePower: 60,
@@ -76,10 +76,10 @@ export class MockService implements IPrimeParkingService {
         }));
 
         result.push(new Vehicle({
-            vehicleId: 'EEE 111',
+            carNumber: 'EEE 111',
             make: 'VW',
             model: 'Golf',
-            registrationDate: new Date(2021, 8, 5),
+            registrationYear: new Date(2021, 8, 5),
             registrationPlace: 'Vilnius',
             fuelType: 'Diesel',
             enginePower: 75,
@@ -89,10 +89,10 @@ export class MockService implements IPrimeParkingService {
         }));
 
         result.push(new Vehicle({
-            vehicleId: 'FFF 111',
+            carNumber: 'FFF 111',
             make: 'Kia',
             model: "c'eed",
-            registrationDate: new Date(2020, 4, 15),
+            registrationYear: new Date(2020, 4, 15),
             registrationPlace: 'Kaunas',
             fuelType: 'Petrol',
             enginePower: 50,

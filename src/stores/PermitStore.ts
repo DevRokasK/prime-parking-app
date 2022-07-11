@@ -19,6 +19,16 @@ export class PermitStore extends BaseStore {
     }
 
     @action
+    public SelectPermit(data: Permit): void {
+        this.SelectedPermit = data;
+    }
+
+    @action
+    public DeselectPermit() {
+        this.SelectedPermit = null;
+    }
+
+    @action
     public async Init() {
         this.startLoading();
         this.Permits = [];
