@@ -4,7 +4,7 @@ import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Pa
 import { VehicleStore } from '../../stores/VehicleStore';
 import { VehicleCommandBar } from './VehicleCommandBar';
 import { Vehicle } from '../../model/Vehicle';
-import { PanelInfo } from '../PanelInfo';
+import { PanelInfo } from './VehiclePanelInfo';
 
 export interface ICarListProps {
     store: VehicleStore;
@@ -21,8 +21,8 @@ export class VehicleList extends React.Component<ICarListProps> {
         this.columns = [
             {
                 key: 'column1',
-                name: 'Vehicle ID',
-                fieldName: 'vehicleId',
+                name: 'Vehicle Id',
+                fieldName: 'carNumber',
                 minWidth: 70,
                 maxWidth: 90,
                 isRowHeader: true,
@@ -149,12 +149,11 @@ export class VehicleList extends React.Component<ICarListProps> {
                     selectionMode={SelectionMode.single}
                     layoutMode={DetailsListLayoutMode.justified}
                     isHeaderVisible={true}
-
                 />
-                <Panel type={PanelType.medium} 
+                <Panel type={PanelType.medium}
+                    isLightDismiss
                     isOpen={store.isVehicleSelected}
                     onDismiss={this.onPanelDismis}
-                    headerText={"Vehicle information"}        
                 >
                     <PanelInfo vehicle={store.SelectedVehicle} ></PanelInfo>
                 </Panel>
@@ -173,5 +172,4 @@ export class VehicleList extends React.Component<ICarListProps> {
             this.props.store.SelectVehicle(selectedItem as Vehicle);
         }
     }
-
 }
