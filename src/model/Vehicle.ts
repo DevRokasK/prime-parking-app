@@ -1,10 +1,10 @@
 import { makeObservable, observable, computed, action } from 'mobx';
 
 export interface IVehicleIten {
-    vehicleId: string;
+    carNumber: string;
     make: string;
     model: string;
-    registrationDate: Date;
+    registrationYear: Date;
     registrationPlace: string;
     fuelType: string;
     enginePower: number;
@@ -14,10 +14,10 @@ export interface IVehicleIten {
 }
 
 export class Vehicle implements IVehicleIten {
-    @observable public vehicleId: string;
+    @observable public carNumber: string;
     @observable public make: string;
     @observable public model: string;
-    @observable public registrationDate: Date;
+    @observable public registrationYear: Date;
     @observable public registrationPlace: string;
     @observable public fuelType: string;
     @observable public enginePower: number;
@@ -32,10 +32,10 @@ export class Vehicle implements IVehicleIten {
 
     @action
     public initFromData(data: IVehicleIten) {
-        this.vehicleId = data.vehicleId;
+        this.carNumber = data.carNumber;
         this.make = data.make;
         this.model = data.model;
-        this.registrationDate = data.registrationDate;
+        this.registrationYear = new Date(data.registrationYear);
         this.registrationPlace = data.registrationPlace;
         this.fuelType = data.fuelType;
         this.enginePower = data.enginePower;
@@ -46,10 +46,10 @@ export class Vehicle implements IVehicleIten {
 
     @computed get regDateText(): string {
         let result = "";
-        if (this.registrationDate) {
-            result = this.registrationDate.getDate() + '-' +
-                this.registrationDate.getMonth() + '-' +
-                this.registrationDate.getFullYear();
+        if (this.registrationYear) {
+            result = this.registrationYear.getDate() + '-' +
+                this.registrationYear.getMonth() + '-' +
+                this.registrationYear.getFullYear();
         }
         return result;
     }
