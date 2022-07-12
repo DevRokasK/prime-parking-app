@@ -15,7 +15,7 @@ export class RestService extends MockService implements IPrimeParkingService {
         const response = await fetch(request);
         const vehiclesData: IVehicleIten[] = await response.json();
         if (vehiclesData) {
-            vehiclesData.map(value => {
+            vehiclesData.forEach(value => {
                 const vehicle = new Vehicle(value);
                 result.push(vehicle);
             });
@@ -29,7 +29,7 @@ export class RestService extends MockService implements IPrimeParkingService {
         const response = await fetch(request);
         const permitsData: IPermitItem[] = await response.json();
         if(permitsData) {
-            permitsData.map(value => {
+            permitsData.forEach(value => {
                 const permit = new Permit(value);
                 result.push(permit);
             });
