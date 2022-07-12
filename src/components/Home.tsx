@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const Home = () => {
     return (
         <div>
-            <ul>
+            <ul className='ul'>
                 <li>
                     <Link to="/Vehicles">Cars</Link>
                 </li>
