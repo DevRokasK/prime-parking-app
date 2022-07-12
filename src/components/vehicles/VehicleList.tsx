@@ -5,6 +5,7 @@ import { VehicleStore } from '../../stores/VehicleStore';
 import { VehicleCommandBar } from './VehicleCommandBar';
 import { Vehicle } from '../../model/Vehicle';
 import { PanelInfo } from './VehiclePanelInfo';
+import { VehiclePanelHeader, VehiclePanelFooter } from './VehiclePanel';
 
 export interface ICarListProps {
     store: VehicleStore;
@@ -154,6 +155,11 @@ export class VehicleList extends React.Component<ICarListProps> {
                     isLightDismiss
                     isOpen={store.isVehicleSelected}
                     onDismiss={this.onPanelDismis}
+                    closeButtonAriaLabel="Close"
+                    onRenderHeader={VehiclePanelHeader}
+                    onRenderFooterContent={VehiclePanelFooter}
+                    isFooterAtBottom={true}
+                    
                 >
                     <PanelInfo vehicle={store.SelectedVehicle} ></PanelInfo>
                 </Panel>

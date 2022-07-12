@@ -5,6 +5,7 @@ import { Vehicle } from '../../model/Vehicle';
 export const PanelInfo = (props: { vehicle: Vehicle }) => {
 
     const vehicle = props.vehicle;
+
     return (
         <>{vehicle &&
             <div className="flex-container">
