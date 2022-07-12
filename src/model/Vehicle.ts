@@ -1,6 +1,7 @@
 import { makeObservable, observable, computed, action } from 'mobx';
 
 export interface IVehicleIten {
+    id: string;
     carNumber: string;
     make: string;
     model: string;
@@ -14,6 +15,7 @@ export interface IVehicleIten {
 }
 
 export class Vehicle implements IVehicleIten {
+    @observable public id: string;
     @observable public carNumber: string;
     @observable public make: string;
     @observable public model: string;
@@ -32,6 +34,7 @@ export class Vehicle implements IVehicleIten {
 
     @action
     public initFromData(data: IVehicleIten) {
+        this.id = data.id;
         this.carNumber = data.carNumber;
         this.make = data.make;
         this.model = data.model;

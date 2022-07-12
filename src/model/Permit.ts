@@ -1,21 +1,23 @@
 import { makeObservable, observable, computed, action } from 'mobx';
 
 export interface IPermitItem {
+    id: string;
     carId: string;
     from: Date;
     to: Date;
     entered: Date;
     left: Date;
-    state: string;
+    state: number;
 }
 
 export class Permit implements IPermitItem {
+    @observable public id: string;
     @observable public carId: string;
     @observable public from: Date;
     @observable public to: Date;
     @observable public entered: Date;
     @observable public left: Date;
-    @observable public state: string;
+    @observable public state: number;
 
     public constructor(data: IPermitItem) {
         makeObservable(this);
@@ -24,6 +26,7 @@ export class Permit implements IPermitItem {
 
     @action
     public initFromData(data: IPermitItem) {
+        this.id = data.id;
         this.carId = data.carId;
         this.from = new Date(data.from);
         this.to = new Date(data.to);
@@ -74,10 +77,10 @@ export class Permit implements IPermitItem {
 
     @computed get regStatus(): string {
         let status = "";
-        if (this.state == "0") {
+        if (this.state === Number("3")) {
             status = "Planned";
         }
-        else if (this.state == "1") {
+        else if (this.state === Number("1")) {
             status = "In Territory";
         }
         else {
