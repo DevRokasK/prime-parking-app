@@ -6,7 +6,7 @@ export const Home = () => {
         <div>
             <ul>
                 <li>
-                    <Link to="/Cars">Cars</Link>
+                    <Link to="/Vehicles">Cars</Link>
                 </li>
                 <li>
                     <Link to="/Permits">Permits</Link>
