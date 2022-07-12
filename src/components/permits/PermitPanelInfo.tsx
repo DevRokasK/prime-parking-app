@@ -17,26 +17,26 @@ export const PanelInfo = (props: { permit: Permit }) => {
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
-                    <div className="flex-item-name">Stay From:</div>
-                    <div className='flex-item-content'>{permit.from}</div>
+                    <div className="flex-item-name">State:</div>
+                    <div className='flex-item-content'>{permit.regStatus}</div>
                 </div>
+                <div className="flex-item">
+                    <div className="flex-item-name">Stay From:</div>
+                    <div className='flex-item-content'>{permit.regFromText}</div>
+                </div>
+                <div className='flex-item-gap'></div>
                 <div className="flex-item">
                     <div className="flex-item-name">Stay Until:</div>
-                    <div className='flex-item-content'>{permit.to}</div>
+                    <div className='flex-item-content'>{permit.regToText}</div>
                 </div>
-                <div className='flex-item-gap'></div>
                 <div className="flex-item">
                     <div className="flex-item-name">Entered:</div>
-                    <div className='flex-item-content'>{permit.entered}</div>
-                </div>
-                <div className="flex-item">
-                    <div className="flex-item-name">Left:</div>
-                    <div className='flex-item-content'>{permit.left}</div>
+                    <div className='flex-item-content'>{permit.regEnteredText}</div>
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
-                    <div className="flex-item-name">State:</div>
-                    <div className='flex-item-content'>{permit.state}</div>
+                    <div className="flex-item-name">Left:</div>
+                    <div className='flex-item-content'>{permit.regLeftText}</div>
                 </div>
             </div>
         }

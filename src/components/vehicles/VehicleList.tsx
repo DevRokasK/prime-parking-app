@@ -159,7 +159,6 @@ export class VehicleList extends React.Component<ICarListProps> {
                     onRenderHeader={VehiclePanelHeader}
                     onRenderFooterContent={VehiclePanelFooter}
                     isFooterAtBottom={true}
-                    
                 >
                     <PanelInfo vehicle={store.SelectedVehicle} ></PanelInfo>
                 </Panel>

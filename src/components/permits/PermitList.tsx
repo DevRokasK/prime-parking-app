@@ -104,6 +104,7 @@ export class PermitList extends React.Component<IPermitListProps> {
                 <ShimmeredDetailsList
                     enableShimmer={store.loading}
                     items={items}
+                    selection={this.selection}
                     columns={columns}
                     selectionMode={SelectionMode.single}
                     layoutMode={DetailsListLayoutMode.justified}
@@ -113,6 +114,8 @@ export class PermitList extends React.Component<IPermitListProps> {
                     isLightDismiss
                     isOpen={store.IsPermitSelected}
                     onDismiss={this.onPanelDismis}
+                    closeButtonAriaLabel="Close"
+                    isFooterAtBottom={true}
                 >
                     <PanelInfo permit={store.SelectedPermit}></PanelInfo>
                 </Panel>
