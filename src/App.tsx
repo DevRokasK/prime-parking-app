@@ -9,6 +9,9 @@ import { Home } from './components/Home'
 import { VehicleList } from './components/vehicles/VehicleList';
 import { PermitList } from './components/permits/PermitList';
 
+import { initializeIcons } from '@fluentui/font-icons-mdl2';
+initializeIcons();
+
 @observer
 export class App extends React.Component {
         private store: RootStore;

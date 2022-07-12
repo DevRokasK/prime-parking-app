@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
 import { IButtonProps } from '@fluentui/react/lib/Button';
-import { initializeIcons } from '@fluentui/font-icons-mdl2';
-initializeIcons();
 
 const overflowButtonProps: IButtonProps = { ariaLabel: 'More commands' };
 
