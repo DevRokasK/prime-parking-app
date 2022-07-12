@@ -5,7 +5,8 @@ import { PermitStore } from '../../stores/PermitStore';
 import { PermitCommandBar } from './PermitCommandBar';
 import { Permit } from '../../model/Permit';
 import { PanelInfo } from './PermitPanelInfo';
-import { PermitPanelHeader, PermitPanelFooter } from './PermitPanel';
+import { PermitPanelFooter } from './PermitPanelFooter';
+import { PermitPanelHeader } from './PermitPanelHeader';
 
 export interface IPermitListProps {
     store: PermitStore;
