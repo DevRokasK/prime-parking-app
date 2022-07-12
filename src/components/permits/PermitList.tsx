@@ -5,6 +5,7 @@ import { PermitStore } from '../../stores/PermitStore';
 import { PermitCommandBar } from './PermitCommandBar';
 import { Permit } from '../../model/Permit';
 import { PanelInfo } from './PermitPanelInfo';
+import { PermitPanelHeader, PermitPanelFooter } from './PermitPanel';
 
 export interface IPermitListProps {
     store: PermitStore;
@@ -115,6 +116,8 @@ export class PermitList extends React.Component<IPermitListProps> {
                     isOpen={store.IsPermitSelected}
                     onDismiss={this.onPanelDismis}
                     closeButtonAriaLabel="Close"
+                    onRenderHeader={PermitPanelHeader}
+                    onRenderFooterContent={PermitPanelFooter}
                     isFooterAtBottom={true}
                 >
                     <PanelInfo permit={store.SelectedPermit}></PanelInfo>
