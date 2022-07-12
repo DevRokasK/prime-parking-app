@@ -156,6 +156,7 @@ export class VehicleList extends React.Component<ICarListProps> {
                     isOpen={store.isVehicleSelected}
                     onDismiss={this.onPanelDismis}
                     closeButtonAriaLabel="Close"
+                    //onRenderNavigationContent={VehiclePanelHeader}
                     onRenderHeader={VehiclePanelHeader}
                     onRenderFooterContent={VehiclePanelFooter}
                     isFooterAtBottom={true}
