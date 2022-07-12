@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@fluentui/font-icons-mdl2': ^8.4.2
   '@fluentui/react': ^8.77.0
+  '@fluentui/react-hooks': ^8.6.1
   '@fluentui/react-icons': ^2.0.175
   '@testing-library/dom': 7.21.4
   '@testing-library/jest-dom': ^5.16.4
@@ -24,6 +25,7 @@ specifiers:
 dependencies:
   '@fluentui/font-icons-mdl2': 8.4.2_udcsdvdzjr5ns727jqoeu7kyda
   '@fluentui/react': 8.77.0_azrnvug6rftvaipgfriurbm66i
+  '@fluentui/react-hooks': 8.6.1_udcsdvdzjr5ns727jqoeu7kyda
   '@fluentui/react-icons': 2.0.175_react@17.0.2
   '@testing-library/dom': 7.21.4
   '@testing-library/jest-dom': 5.16.4
@@ -1649,15 +1651,15 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@fluentui/react-hooks/8.6.0_udcsdvdzjr5ns727jqoeu7kyda:
-    resolution: {integrity: sha512-mo5dqMDcXoY+Utnq65WzDKdHT8zgLxR4ZEwen884dyisN7g/+wjfy4JZmhi8Cm9gnD7anNJvSKP9pPJGwCt26Q==}
+  /@fluentui/react-hooks/8.6.1_udcsdvdzjr5ns727jqoeu7kyda:
+    resolution: {integrity: sha512-t9l+O+ZjTiGSuKQ9SxqRRo50C1h69jZFzb+s/vc0vBtvsIoYfR+Jj8qH3hxtkhv/iC+SCj1dgDCEJwGyH7pf3Q==}
     peerDependencies:
       '@types/react': '>=16.8.0 <18.0.0'
       react: '>=16.8.0 <18.0.0'
     dependencies:
       '@fluentui/react-window-provider': 2.2.1_udcsdvdzjr5ns727jqoeu7kyda
       '@fluentui/set-version': 8.2.1
-      '@fluentui/utilities': 8.8.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/utilities': 8.9.0_udcsdvdzjr5ns727jqoeu7kyda
       '@types/react': 17.0.39
       react: 17.0.2
       tslib: 2.4.0
@@ -1709,7 +1711,7 @@ packages:
       '@fluentui/foundation-legacy': 8.2.8_udcsdvdzjr5ns727jqoeu7kyda
       '@fluentui/merge-styles': 8.5.2
       '@fluentui/react-focus': 8.7.0_udcsdvdzjr5ns727jqoeu7kyda
-      '@fluentui/react-hooks': 8.6.0_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/react-hooks': 8.6.1_udcsdvdzjr5ns727jqoeu7kyda
       '@fluentui/react-portal-compat-context': 9.0.0-rc.2_udcsdvdzjr5ns727jqoeu7kyda
       '@fluentui/react-window-provider': 2.2.1_udcsdvdzjr5ns727jqoeu7kyda
       '@fluentui/set-version': 8.2.1
@@ -1774,6 +1776,20 @@ packages:
 
   /@fluentui/utilities/8.8.3_udcsdvdzjr5ns727jqoeu7kyda:
     resolution: {integrity: sha512-ZehG5uy/9v5h/Q4CC9yJ5xEC0jqUJlDYen8Op7ki2vunvE+GTdNP9lkTUk2H7/cVKmSgEHsaMr37ZYc2V1N5vw==}
+    peerDependencies:
+      '@types/react': '>=16.8.0 <18.0.0'
+      react: '>=16.8.0 <18.0.0'
+    dependencies:
+      '@fluentui/dom-utilities': 2.2.1
+      '@fluentui/merge-styles': 8.5.2
+      '@fluentui/set-version': 8.2.1
+      '@types/react': 17.0.39
+      react: 17.0.2
+      tslib: 2.4.0
+    dev: false
+
+  /@fluentui/utilities/8.9.0_udcsdvdzjr5ns727jqoeu7kyda:
+    resolution: {integrity: sha512-fK3GjWygRhKDuVxIAMqcfP0UZGhnifygzhrZDIanKc4/+9CoIY/BVtHryRF+zF0sGEXF5kDarsMsLAeCnB2YhA==}
     peerDependencies:
       '@types/react': '>=16.8.0 <18.0.0'
       react: '>=16.8.0 <18.0.0'
