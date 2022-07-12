@@ -116,7 +116,7 @@ export class PermitList extends React.Component<IPermitListProps> {
                     isOpen={store.IsPermitSelected}
                     onDismiss={this.onPanelDismis}
                     closeButtonAriaLabel="Close"
-                    onRenderHeader={PermitPanelHeader}
+                    onRenderNavigationContent={PermitPanelHeader}
                     onRenderFooterContent={PermitPanelFooter}
                     isFooterAtBottom={true}
                 >
