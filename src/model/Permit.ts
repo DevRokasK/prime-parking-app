@@ -77,14 +77,16 @@ export class Permit implements IPermitItem {
 
     @computed get regStatus(): string {
         let status = "";
-        if (this.state === Number("3")) {
-            status = "Planned";
-        }
-        else if (this.state === Number("1")) {
-            status = "In Territory";
-        }
-        else {
-            status = "Completed";
+        if (this.state) {
+            if (this.state === Number("3")) {
+                status = "Planned";
+            }
+            else if (this.state === Number("1")) {
+                status = "In Territory";
+            }
+            else {
+                status = "Completed";
+            }
         }
         return status;
     }
