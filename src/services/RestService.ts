@@ -1,6 +1,6 @@
 import { Permit, IPermitItem } from "../model/Permit";
 import { Vehicle, IVehicleItem } from "../model/Vehicle";
-import { ClassError, IErrorItem } from "../model/Error";
+import { ClassError, IClassErrorItem } from "../model/Error";
 import { IPrimeParkingService } from "./IPrimeParkingService";
 import { MockService } from "./MockService";
 
@@ -22,6 +22,7 @@ export class RestService extends MockService implements IPrimeParkingService {
                 result.push(vehicle);
             });
         }
+        //this.DeleteVehicle("soihfguwhgfouiwhf");
         return result;
     }
 
@@ -33,7 +34,7 @@ export class RestService extends MockService implements IPrimeParkingService {
             return;
         }
         else {
-            const iError: IErrorItem = await response.json();
+            const iError: IClassErrorItem = await response.json();
             const error: Error = new ClassError(iError);
             return error;
         }
@@ -47,7 +48,7 @@ export class RestService extends MockService implements IPrimeParkingService {
             return;
         }
         else {
-            const iError: IErrorItem = await response.json();
+            const iError: IClassErrorItem = await response.json();
             const error: Error = new ClassError(iError);
             return error;
         }
@@ -61,11 +62,11 @@ export class RestService extends MockService implements IPrimeParkingService {
             return;
         }
 
-        //throw new ClassError({error: result.error, message: result.message});
+        throw new ClassError({error: result.error, message: result.message});
 
         // else {
         //     const iError: IErrorItem = await response.json();
-        //     const error: Error = new ClassError(iError);
+        //     const error: Error = new ClassError(iClassError);
         //     return console.log(error);
         // }
     }
