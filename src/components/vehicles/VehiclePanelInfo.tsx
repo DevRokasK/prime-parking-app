@@ -17,7 +17,7 @@ export const PanelInfo = (props: { vehicle: Vehicle }) => {
                     <div className='flex-item-content'>{vehicle.carNumber}</div>
                 </div>
                 <div className='flex-item-gap'></div>
-                <div className='flex-item-gap'></div>
+                <div className='flex-item'></div>
                 <div className="flex-item">
                     <div className="flex-item-name">Registration date:</div>
                     <div className='flex-item-content'>{vehicle.regDateText}</div>
