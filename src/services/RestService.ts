@@ -1,5 +1,5 @@
 import { Permit, IPermitItem } from "../model/Permit";
-import { Vehicle, IVehicleIten } from "../model/Vehicle";
+import { Vehicle, IVehicleItem } from "../model/Vehicle";
 import { IPrimeParkingService } from "./IPrimeParkingService";
 import { MockService } from "./MockService";
 
@@ -13,7 +13,7 @@ export class RestService extends MockService implements IPrimeParkingService {
         let result: Vehicle[] = [];
         const request: Request = new Request(this.getRestApiUrl("cars"));
         const response = await fetch(request);
-        const vehiclesData: IVehicleIten[] = await response.json();
+        const vehiclesData: IVehicleItem[] = await response.json();
         if (vehiclesData) {
             vehiclesData.forEach(value => {
                 const vehicle = new Vehicle(value);
