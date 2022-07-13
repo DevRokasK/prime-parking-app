@@ -5,11 +5,12 @@ export interface IErrorItem {
     message: string;
 }
 
-export class Error implements IErrorItem {
+export class ClassError extends Error implements IErrorItem {
     @observable public error: number;
     @observable public message: string;
 
     public constructor(data: IErrorItem) {
+        super();
         makeObservable(this);
         this.initFromData(data);
     }
