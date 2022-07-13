@@ -42,7 +42,7 @@ export class RestService extends MockService implements IPrimeParkingService {
 
     public async PutVehicle(data: Vehicle) {
         let postVehicle = this.getDataJSON(data);
-        const request: Request = new Request(this.getRestApiUrl("cars?id=" + data.id));
+        const request: Request = new Request(this.getRestApiUrl(`cars?id=${data.id}`));
         const response = await fetch(request, { method: 'PUT', body: postVehicle })
         if (response.status === 204) {
             return;
@@ -55,18 +55,15 @@ export class RestService extends MockService implements IPrimeParkingService {
     }
 
     public async DeleteVehicle(id: string) {
-        const request: Request = new Request(this.getRestApiUrl("cars?id=" + id));
-        const response = await fetch(request, { method: 'DETELE' })
+        const request: Request = new Request(this.getRestApiUrl(`cars?id=${id}`));
+        const response = await fetch(request, { method: 'DETELE', headers: { 'Content-Type': 'application/json' } })
         const result = await response.json();
-        if (response.status === 204) {
-            return;
-        }
+        if (!response.ok)
+            throw new ClassError({ error: result.error, message: result.message });
 
-        throw new ClassError({error: result.error, message: result.message});
-
-        // else {
+        // if (!response.ok) {
         //     const iError: IErrorItem = await response.json();
-        //     const error: Error = new ClassError(iClassError);
+        //     const error: Error = new ClassError(iError);
         //     return console.log(error);
         // }
     }
