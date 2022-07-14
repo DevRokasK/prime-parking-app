@@ -22,16 +22,29 @@ export class RestService extends MockService implements IPrimeParkingService {
                 result.push(vehicle);
             });
         }
-        //this.DeleteVehicle("soihfguwhgfouiwhf");
+        // const veh = new Vehicle({
+        //     id: 'fiuoyewghfkuewsghluiyew',
+        //     carNumber: 'NNN 999',
+        //     make: 'Toyota',
+        //     model: 'Supra',
+        //     registrationYear: new Date(2020, 4, 15),
+        //     registrationPlace: 'Vilnius',
+        //     fuelType: 'Petrol',
+        //     enginePower: 200,
+        //     engineTorque: 500,
+        //     color: 'White',
+        //     doors: 3
+        // });
+        // this.PostVehicle(veh);
         return result;
     }
 
     public async PostVehicle(data: Vehicle) {
         let postVehicle = this.getDataJSON(data);
         const request: Request = new Request(this.getRestApiUrl("cars"));
-        const response = await fetch(request, { method: 'POST', body: postVehicle })
+        const response = await fetch(request, { method: 'POST', body: postVehicle, headers: { 'Content-Type': 'application/json' } })
         if (response.status === 200) {
-            return;
+            return ; // Return success message
         }
         else {
             const iError: IClassErrorItem = await response.json();
@@ -43,7 +56,7 @@ export class RestService extends MockService implements IPrimeParkingService {
     public async PutVehicle(data: Vehicle) {
         let postVehicle = this.getDataJSON(data);
         const request: Request = new Request(this.getRestApiUrl(`cars?id=${data.id}`));
-        const response = await fetch(request, { method: 'PUT', body: postVehicle })
+        const response = await fetch(request, { method: 'PUT', body: postVehicle, headers: { 'Content-Type': 'application/json' } })
         if (response.status === 204) {
             return;
         }
@@ -56,11 +69,19 @@ export class RestService extends MockService implements IPrimeParkingService {
 
     public async DeleteVehicle(id: string) {
         const request: Request = new Request(this.getRestApiUrl(`cars?id=${id}`));
-        const response = await fetch(request, { method: 'DETELE', headers: { 'Content-Type': 'application/json' } })
-        const result = await response.json();
-        if (!response.ok)
-            throw new ClassError({ error: result.error, message: result.message });
-
+        try {
+            const response = await fetch(request, { method: 'DETELE' })
+            //const result = await response.json();
+            if (!response.ok) {
+                const iError: IClassErrorItem = await response.json();
+                const error: Error = new ClassError(iError);
+                throw error;
+            }
+        }
+        catch (err) {
+            //throw new ClassError({ error: result.error, message: result.message });
+            console.error('!!Error: ' + err);
+        }
         // if (!response.ok) {
         //     const iError: IErrorItem = await response.json();
         //     const error: Error = new ClassError(iError);
