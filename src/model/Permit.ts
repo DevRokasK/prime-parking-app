@@ -10,6 +10,13 @@ export interface IPermitItem {
     state: number;
 }
 
+export enum PermitState {
+    None = 0,
+    Planned = 3,
+    InTerritory = 1,
+    Completed = 2
+}
+
 export class Permit implements IPermitItem {
     @observable public id: string;
     @observable public carId: string;
@@ -17,7 +24,7 @@ export class Permit implements IPermitItem {
     @observable public to: Date;
     @observable public entered: Date;
     @observable public left: Date;
-    @observable public state: number;
+    @observable public state: PermitState;
 
     public constructor(data: IPermitItem) {
         makeObservable(this);
@@ -77,16 +84,19 @@ export class Permit implements IPermitItem {
 
     @computed get regStatus(): string {
         let status = "";
-        if (this.state) {
-            if (this.state === Number("3")) {
+        switch (this.state) {
+            case PermitState.Planned:
                 status = "Planned";
-            }
-            else if (this.state === Number("1")) {
+                break;
+            case PermitState.InTerritory:
                 status = "In Territory";
-            }
-            else {
+                break;
+            case PermitState.Completed:
                 status = "Completed";
-            }
+                break;
+            default:
+                status = "None";
+                break;
         }
         return status;
     }

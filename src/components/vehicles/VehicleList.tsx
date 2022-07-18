@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel, Selection, PanelType } from '@fluentui/react';
+import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel, Selection, PanelType, Link } from '@fluentui/react';
 import { VehicleStore } from '../../stores/VehicleStore';
 import { VehicleCommandBar } from './VehicleCommandBar';
 import { Vehicle } from '../../model/Vehicle';
-import { PanelInfo } from './VehiclePanelInfo';
+import { PanelInfo } from './VehiclePanel';
 import { VehiclePanelFooter } from './VehiclePanelFooter';
 import { VehiclePanelHeader } from './VehiclePanelHeader';
 
@@ -31,6 +31,9 @@ export class VehicleList extends React.Component<ICarListProps> {
                 isResizable: true,
                 data: 'string',
                 isPadded: true,
+                onRender: (item: Vehicle) => {
+                    return <Link onClick={() => { this.selectVehicle(item) }}>{item.carNumber}</Link>
+                }
             },
             {
                 key: 'column2',
@@ -142,28 +145,36 @@ export class VehicleList extends React.Component<ICarListProps> {
 
         return (
             <div>
-                <VehicleCommandBar />
+                <VehicleCommandBar store={store} />
                 <ShimmeredDetailsList
                     enableShimmer={store.loading}
                     items={items}
                     selection={this.selection}
                     columns={columns}
-                    selectionMode={SelectionMode.single}
+                    selectionMode={SelectionMode.multiple}
                     layoutMode={DetailsListLayoutMode.justified}
                     isHeaderVisible={true}
                 />
                 <Panel type={PanelType.medium}
-                    isLightDismiss
+                    isLightDismiss               
                     isOpen={store.isVehicleSelected}
                     onDismiss={this.onPanelDismis}
-                    onRenderNavigationContent={VehiclePanelHeader}
-                    onRenderFooterContent={VehiclePanelFooter}
+                    onRenderNavigation={this.onRenderNavigation}
+                    onRenderFooter={this.onRenderFooter}
                     isFooterAtBottom={true}
                 >
-                    <PanelInfo vehicle={store.SelectedVehicle} ></PanelInfo>
+                    <PanelInfo vehicle={store.CurrentVehicle} ></PanelInfo>
                 </Panel>
             </div>
         );
+    }
+
+    private onRenderNavigation = () => {
+        return (<VehiclePanelHeader store={this.props.store} />);
+    }
+
+    private onRenderFooter = () => {
+        return (<VehiclePanelFooter store={this.props.store} />);
     }
 
     private onPanelDismis = () => {
@@ -172,9 +183,10 @@ export class VehicleList extends React.Component<ICarListProps> {
 
     private onSelectionChanged = () => {
         const selectedItems = this.selection.getSelection();
-        if (selectedItems.length > 0) {
-            const selectedItem = selectedItems[0];
-            this.props.store.SelectVehicle(selectedItem as Vehicle);
-        }
+        this.props.store.SetSelectedVehicles(selectedItems as Vehicle[]);
+    }
+
+    private selectVehicle = (vehicle: Vehicle) => {
+        this.props.store.SetCurrentVehicle(vehicle);
     }
 }

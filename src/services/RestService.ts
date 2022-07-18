@@ -39,17 +39,17 @@ export class RestService extends MockService implements IPrimeParkingService {
         return result;
     }
 
-    public async PostVehicle(data: Vehicle) {
+    public async PostVehicle(data: Vehicle): Promise<boolean> {
         let postVehicle = this.getDataJSON(data);
         const request: Request = new Request(this.getRestApiUrl("cars"));
         const response = await fetch(request, { method: 'POST', body: postVehicle, headers: { 'Content-Type': 'application/json' } })
         if (response.status === 200) {
-            return ; // Return success message
+            return true; // Return success message
         }
-        else {
+        else {            
             const iError: IClassErrorItem = await response.json();
             const error: Error = new ClassError(iError);
-            return error;
+            throw new Error(error.message);
         }
     }
 
@@ -120,7 +120,7 @@ export class RestService extends MockService implements IPrimeParkingService {
         return `${this.baseURL}/api/${path}?code=${this.key}`;
     }
 
-    public getDataJSON(data: Vehicle): string {
+    public getDataJSON(data: IVehicleItem): string {
         return JSON.stringify({
             id: data.id,
             carNumber: data.carNumber,

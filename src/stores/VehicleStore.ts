@@ -1,12 +1,13 @@
-import { Vehicle } from "../model/Vehicle";
-import { observable, action, makeObservable, computed } from 'mobx';
+import { Vehicle, IVehicleItem, PanelState } from "../model/Vehicle";
+import { observable, action, makeObservable, computed, runInAction } from 'mobx';
 import { RootStore } from "./RootStore";
 import { BaseStore } from "./BaseStore";
 
 export class VehicleStore extends BaseStore {
     private RootStore: RootStore;
     @observable public Vehicles: Vehicle[] = [];
-    @observable public SelectedVehicle: Vehicle = null;
+    @observable public SelectedVehicles: Vehicle[] = [];
+    @observable public CurrentVehicle: Vehicle = null;
 
     public constructor(rootStore: RootStore) {
         super();
@@ -15,24 +16,77 @@ export class VehicleStore extends BaseStore {
     }
 
     @computed get isVehicleSelected(): boolean {
-        return this.SelectedVehicle != null;
+        return this.CurrentVehicle != null;
     }
 
     @action
-    public SelectVehicle(data: Vehicle): void {
-        this.SelectedVehicle = data;
+    public SetSelectedVehicles(data: Vehicle[]) {
+        this.SelectedVehicles = data;
     }
 
     @action
-    public DeselectVehicle() {
-        this.SelectedVehicle = null;
+    public SetCurrentVehicle(data: Vehicle): void {
+        this.CurrentVehicle = data;
+    }
+
+    @action
+    public DeselectVehicle(cancelEdit?: boolean) {        
+        this.CurrentVehicle = null;
     }
 
     @action
     public async Init() {
         this.startLoading();
         this.Vehicles = [];
-        this.Vehicles = await this.RootStore.Service.GetVehicles();
+        const vehicles = await this.RootStore.Service.GetVehicles();
+        runInAction(() => {
+            this.Vehicles = vehicles;
+        });
         this.endLoading();
+    }
+
+    @action
+    public AddVehicle() {
+        const newItem: IVehicleItem = {
+            id: '',
+            carNumber: '',
+            make: '',
+            model: '',
+            registrationYear: null,
+            registrationPlace: '',
+            fuelType: '',
+            enginePower: 0,
+            engineTorque: 0,
+            color: '',
+            doors: 0
+        };
+        let newVehicle: Vehicle = new Vehicle(newItem);
+        newVehicle.panelState = PanelState.Edit;
+        this.SetCurrentVehicle(newVehicle);
+    }
+
+    @action
+    public EditVehicle() {
+        if (this.SelectedVehicles !== null && this.SelectedVehicles.length === 1)
+            this.SelectedVehicles[0].panelState = PanelState.Edit;
+        this.SetCurrentVehicle(this.SelectedVehicles[0]);
+    }
+
+    @action
+    public SaveEdit() {
+        if (this.CurrentVehicle)
+            this.CurrentVehicle.saveEdit();
+    }
+
+    @action
+    public SwitchToEdit() {
+        if (this.CurrentVehicle)
+            this.CurrentVehicle.panelState = PanelState.Edit;
+    }
+
+    @action
+    public SwitchToDisplay() {
+        if (this.CurrentVehicle)
+            this.CurrentVehicle.cancelEdit();
     }
 }
