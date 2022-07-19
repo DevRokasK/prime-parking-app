@@ -1,5 +1,6 @@
 import React from 'react';
 import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
+import { MessageBar, MessageBarType } from '@fluentui/react';
 import { VehicleStore } from '../../stores/VehicleStore';
 import { observer } from 'mobx-react';
 
@@ -16,8 +17,8 @@ export const VehicleCommandBar = observer(({ store }: IVehicleCommandBarProps) =
     store.EditVehicle();
   }
 
-  const deleted = () => {
-    alert(store.SelectedVehicles.length + " items have been deleted!");
+  const deleteVehicle = () => {
+    store.DeleteVehicle();
   }
 
   const items: ICommandBarItemProps[] = [{
@@ -43,15 +44,24 @@ export const VehicleCommandBar = observer(({ store }: IVehicleCommandBarProps) =
     iconProps: { iconName: 'Delete' },
     ariaLabel: 'Delete',
     disabled: store.SelectedVehicles.length === 0,
-    onClick: deleted
+    onClick: deleteVehicle
   },
   ];
 
   return (
-    <div className="command-bar">
-      <CommandBar
-        items={items}
-      />
+    <div>
+      <div className="command-bar">
+        <CommandBar
+          items={items}
+        />
+      </div>
+      {/* {store.hasError && 
+        <MessageBar
+          messageBarType={MessageBarType.error}
+          onDismiss={store.clearError}
+        >
+          {store.errorMessage}
+        </MessageBar>} */}
     </div>
   );
 });

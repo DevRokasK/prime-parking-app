@@ -1,10 +1,17 @@
+
 export class Utils {
-   public static formatDate(value: Date): string {
+    public static formatDate(value: Date): string {
         let result = "";
         if (value) {
-            result = value.getFullYear() + '-' +
-                (value.getMonth() + 1) + '-' +
-                value.getDate();
+            let month = "" + (value.getMonth() + 1);
+            let day = "" + value.getDate();
+
+            if (month.length < 2)
+                month = "0" + month;
+            if (day.length < 2)
+                day = "0" + day;
+
+            result = value.getFullYear() + '-' + month + '-' + day;
         }
         return result;
     }

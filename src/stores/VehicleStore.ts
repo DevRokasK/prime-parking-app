@@ -81,5 +81,10 @@ export class VehicleStore extends BaseStore {
         this.SetCurrentVehicle(this.SelectedVehicles[0]);
     }
 
-
+    @action 
+    public async DeleteVehicle() {
+        if(this.SelectedVehicles !== null) {
+            this.SelectedVehicles.forEach(data => data.DeleteVehicle());
+        }
+    }
 }

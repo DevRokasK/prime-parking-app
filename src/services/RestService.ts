@@ -1,6 +1,6 @@
 import { Permit, IPermitItem } from "../model/Permit";
 import { Vehicle, IVehicleItem } from "../model/Vehicle";
-import { ErrorModel, IClassErrorItem } from "../model/Error";
+import { ErrorModel, IErrorModelItem } from "../model/Error";
 import { IPrimeParkingService } from "./IPrimeParkingService";
 
 export class RestService implements IPrimeParkingService {
@@ -21,7 +21,7 @@ export class RestService implements IPrimeParkingService {
 
     public async PostVehicle(data: Vehicle): Promise<IVehicleItem | ErrorModel> {
         let result: IVehicleItem | ErrorModel;
-        let postVehicle = data.toJson();        
+        let postVehicle = data.toJson();
         const request: Request = new Request(this.getRestApiUrl("cars"));
         const response = await fetch(request, { method: 'POST', body: postVehicle, headers: { 'Content-Type': 'application/json' } })
         if (response.status === 200) {
@@ -30,7 +30,7 @@ export class RestService implements IPrimeParkingService {
         }
         else {
             try {
-                const iError: IClassErrorItem = await response.json();
+                const iError: IErrorModelItem = await response.json();
                 const error: ErrorModel = new ErrorModel(iError);
                 result = error;
             } catch {
@@ -41,42 +41,46 @@ export class RestService implements IPrimeParkingService {
         return result;
     }
 
-    public async PutVehicle(data: Vehicle) {
+    public async PutVehicle(data: Vehicle): Promise<ErrorModel> {
+        let result: ErrorModel;
         let postVehicle = data.toJson();
         const request: Request = new Request(this.getRestApiUrl(`cars?id=${data.id}`));
         const response = await fetch(request, { method: 'PUT', body: postVehicle, headers: { 'Content-Type': 'application/json' } })
         if (response.status === 204) {
-            return;
-        }
-        else {
-            const iError: IClassErrorItem = await response.json();
-            const error: ErrorModel = new ErrorModel(iError);
-            return error;
-        }
-    }
-
-    public async DeleteVehicle(id: string) {
-        const request: Request = new Request(this.getRestApiUrl(`cars?id=${id}`));
-        try {
-            const response = await fetch(request, { method: 'DETELE' })
-            //const result = await response.json();
-            if (!response.ok) {
-                const iError: IClassErrorItem = await response.json();
+            result = null;
+        } else {
+            try {
+                const iError: IErrorModelItem = await response.json();
                 const error: ErrorModel = new ErrorModel(iError);
-                throw error;
+                result = error;
+            } catch {
+                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
+                result = error;
             }
         }
-        catch (err) {
-            //throw new ClassError({ error: result.error, message: result.message });
-            console.error('!!Error: ' + err);
-        }
-        // if (!response.ok) {
-        //     const iError: IErrorItem = await response.json();
-        //     const error: Error = new ClassError(iError);
-        //     return console.log(error);
-        // }
+        return result;
     }
 
+    public async DeleteVehicle(id: string): Promise<ErrorModel> {
+        let result: ErrorModel;
+        const request: Request = new Request(this.getRestApiUrl(`cars?id=${id}`));
+        const response = await fetch(request, { method: 'DETELE' })
+        if (response.status === 204) {
+            result = null;
+        } else {
+            try {
+                const iError: IErrorModelItem = await response.json();
+                const error: ErrorModel = new ErrorModel(iError);
+                result = error;
+            } catch {
+                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
+                result = error;
+            }
+        }
+        return result;
+    }
+
+    
     // Permit REST api calls
     public async GetPermits(): Promise<Permit[]> {
         let result: Permit[] = [];

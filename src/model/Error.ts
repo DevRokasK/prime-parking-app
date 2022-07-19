@@ -1,22 +1,21 @@
 import { makeObservable, observable, action } from 'mobx';
 
-export interface IClassErrorItem {
+export interface IErrorModelItem {
     error: number;
     message: string;
 }
 
-export class ErrorModel implements IClassErrorItem {
+export class ErrorModel implements IErrorModelItem {
     @observable public error: number;
     @observable public message: string;
 
-    public constructor(data: IClassErrorItem) {   
-       
+    public constructor(data: IErrorModelItem) {   
         makeObservable(this);
         this.initFromData(data);
     }
 
     @action
-    public initFromData(data: IClassErrorItem) {
+    public initFromData(data: IErrorModelItem) {
         this.error = data.error;
         this.message = data.message;
     }

@@ -24,6 +24,10 @@ export const VehiclePanelHeader = observer(({ vehicle }: IVehiclePanelHeaderProp
         vehicle.SaveEdit().then();
     }
 
+    const deleteVehicle = () => {
+        vehicle.DeleteVehicle().then();
+    }
+
     let items: ICommandBarItemProps[] = [];
     let farItems: ICommandBarItemProps[] = [];
 
@@ -43,6 +47,7 @@ export const VehiclePanelHeader = observer(({ vehicle }: IVehiclePanelHeaderProp
                 iconProps: { iconName: 'Delete' },
                 split: true,
                 ariaLabel: 'Delete',
+                onClick: deleteVehicle
             },
         ];
         farItems = [

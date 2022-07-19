@@ -211,8 +211,10 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                 this.panelState = PanelState.Display;
             }
         } else {
-            this.update();
-            this.panelState = PanelState.Display;
+            result = await this.update();
+            if (result) {
+                this.panelState = PanelState.Display;
+            }
         }
         return result;
     }
@@ -230,6 +232,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                     } else {
                         this.initFromData(postResult as IVehicleItem);
                         this.store.AddToStore(this);
+                        this.store.CurrentVehicle = this;
                         result = true;
                     }
                 }
@@ -237,16 +240,76 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                     this.showError(error);
                 }
             } else {
-                this.showError(new ErrorModel({ error: 1, message: "Fill in all the tabs" }));
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tabs"}));
             }
         } else {
-            this.showError(new ErrorModel({ error: 1, message: "System error" }));
+            this.showError(new ErrorModel({ error: 400, message: "System error" }));
         }
         return result;
     }
 
-    private update() {
+    private async update(): Promise<boolean> {
+        let result = false;
+        this.clearError();
+        if (this.store && this.store.RootStore.Service) {
+            if (this.isValid()) {
+                const service = this.store.RootStore.Service;
+                try {
+                    const putResult = await service.PutVehicle(this);
+                    if ((putResult as ErrorModel).error) {
+                        this.showError(putResult as ErrorModel);
+                    } else {
+                        result = true;
+                    }
+                }
+                catch (error) {
+                    this.showError(error);
+                }
+            } else {
+                this.showError(new ErrorModel({error: 400, message: "Fill in all the tans"}));
+            }
+        } else {
+            this.showError(new ErrorModel({ error: 400, message: "System error" }));
+        }
+        return result;
+    }
 
+    public async DeleteVehicle(): Promise<boolean> {
+        let result = false;
+        result = await this.delete();
+        if(result) {
+            const index = this.store.SelectedVehicles.indexOf(this);
+            if(index > -1) {
+                this.store.SelectedVehicles.splice(index, 1);
+            }
+        }
+        return result;
+    } 
+
+    private async delete(): Promise<boolean> {
+        let result = false;
+        this.clearError();
+        if (this.store && this.store.RootStore.Service) {
+            if (this.isValid()) {
+                const service = this.store.RootStore.Service;
+                try {
+                    const deleteResult = await service.DeleteVehicle(this.id);
+                    if ((deleteResult as ErrorModel).error) {
+                        this.showError(deleteResult as ErrorModel);
+                    } else {
+                        result = true;
+                    }
+                }
+                catch (error) {
+                    this.showError(error);
+                }
+            } else {
+                this.showError(new ErrorModel({error: 400, message: "Fill in all the tans"}));
+            }
+        } else {
+            this.showError(new ErrorModel({ error: 400, message: "System error" }));
+        }
+        return result;
     }
 
     @action
