@@ -1,33 +1,33 @@
 import React from 'react';
 import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
-import { VehicleStore } from '../../stores/VehicleStore';
 import { observer } from 'mobx-react';
+import { Vehicle } from '../../model/Vehicle';
 
 export interface IVehiclePanelHeaderProps {
-    store: VehicleStore;
+    vehicle: Vehicle;
 }
 
-export const VehiclePanelHeader = observer(({ store }: IVehiclePanelHeaderProps) => {
+export const VehiclePanelHeader = observer(({ vehicle }: IVehiclePanelHeaderProps) => {
     const deselect = () => {
-        store.DeselectVehicle();
+        vehicle.store.DeselectVehicle();
     }
 
     const switchToEdit = () => {
-        store.SwitchToEdit();
+        vehicle.SwitchToEdit();
     }
 
     const switchToDisplay = () => {
-        store.SwitchToDisplay();
+        vehicle.SwitchToDisplay();
     }
 
     const saveEdit = () => {
-        store.SaveEdit();
+        vehicle.SaveEdit().then();
     }
 
     let items: ICommandBarItemProps[] = [];
     let farItems: ICommandBarItemProps[] = [];
 
-    if (store?.CurrentVehicle?.readOnly) {
+    if (vehicle?.readOnly) {
         items = [
             {
                 key: 'edit',

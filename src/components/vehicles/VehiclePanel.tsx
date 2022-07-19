@@ -1,4 +1,5 @@
 import React from 'react';
+import { MessageBar, MessageBarType } from '@fluentui/react';
 import { Label } from '@fluentui/react/lib/Label';
 import { TextField } from '@fluentui/react/lib/TextField';
 import { DatePicker } from '@fluentui/react';
@@ -15,6 +16,13 @@ export const PanelInfo = observer((props: { vehicle: Vehicle }) => {
     return (
         <>{vehicle &&
             <div className="flex-container">
+                {vehicle.hasError &&
+                    <MessageBar
+                        messageBarType={MessageBarType.error}
+                        onDismiss={vehicle.clearError}
+                        >
+                        {vehicle.errorMessage}
+                    </MessageBar>}
                 <div className='flex-name'>
                     <h2>Registration Information</h2>
                 </div>

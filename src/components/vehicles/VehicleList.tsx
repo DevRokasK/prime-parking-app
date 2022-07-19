@@ -170,11 +170,11 @@ export class VehicleList extends React.Component<ICarListProps> {
     }
 
     private onRenderNavigation = () => {
-        return (<VehiclePanelHeader store={this.props.store} />);
+        return (<VehiclePanelHeader vehicle={this.props.store.CurrentVehicle} />);
     }
 
     private onRenderFooter = () => {
-        return (<VehiclePanelFooter store={this.props.store} />);
+        return (<VehiclePanelFooter vehicle={this.props.store.CurrentVehicle} />);
     }
 
     private onPanelDismis = () => {

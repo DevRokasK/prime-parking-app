@@ -4,7 +4,7 @@ import { RootStore } from "./RootStore";
 import { BaseStore } from "./BaseStore";
 
 export class VehicleStore extends BaseStore {
-    private RootStore: RootStore;
+    public RootStore: RootStore;
     @observable public Vehicles: Vehicle[] = [];
     @observable public SelectedVehicles: Vehicle[] = [];
     @observable public CurrentVehicle: Vehicle = null;
@@ -30,7 +30,7 @@ export class VehicleStore extends BaseStore {
     }
 
     @action
-    public DeselectVehicle(cancelEdit?: boolean) {        
+    public DeselectVehicle(cancelEdit?: boolean) {
         this.CurrentVehicle = null;
     }
 
@@ -40,9 +40,18 @@ export class VehicleStore extends BaseStore {
         this.Vehicles = [];
         const vehicles = await this.RootStore.Service.GetVehicles();
         runInAction(() => {
-            this.Vehicles = vehicles;
+            this.Vehicles = vehicles.map(value => {
+                const vehicle = new Vehicle(value, this);
+                return vehicle;
+                //result.push(vehicle);
+            });
         });
         this.endLoading();
+    }
+
+    @action
+    public AddToStore(data: Vehicle) {
+        this.Vehicles.push(data);
     }
 
     @action
@@ -60,7 +69,7 @@ export class VehicleStore extends BaseStore {
             color: '',
             doors: 0
         };
-        let newVehicle: Vehicle = new Vehicle(newItem);
+        let newVehicle: Vehicle = new Vehicle(newItem, this);
         newVehicle.panelState = PanelState.Edit;
         this.SetCurrentVehicle(newVehicle);
     }
@@ -72,21 +81,5 @@ export class VehicleStore extends BaseStore {
         this.SetCurrentVehicle(this.SelectedVehicles[0]);
     }
 
-    @action
-    public SaveEdit() {
-        if (this.CurrentVehicle)
-            this.CurrentVehicle.saveEdit();
-    }
 
-    @action
-    public SwitchToEdit() {
-        if (this.CurrentVehicle)
-            this.CurrentVehicle.panelState = PanelState.Edit;
-    }
-
-    @action
-    public SwitchToDisplay() {
-        if (this.CurrentVehicle)
-            this.CurrentVehicle.cancelEdit();
-    }
 }

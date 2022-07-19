@@ -1,22 +1,22 @@
 import React from 'react';
 import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
-import { VehicleStore } from '../../stores/VehicleStore';
 import { observer } from 'mobx-react';
+import { Vehicle } from '../../model/Vehicle';
 
 export interface IVehiclePanelFooterProps {
-    store: VehicleStore;
+    vehicle: Vehicle;
 }
 
-export const VehiclePanelFooter = observer(({ store }: IVehiclePanelFooterProps) => {
+export const VehiclePanelFooter = observer(({ vehicle }: IVehiclePanelFooterProps) => {
     const switchToDisplay = () => {
-        store.SwitchToDisplay();
+        vehicle.SwitchToDisplay();
     }
 
     const saveEdit = () => {
-        store.SaveEdit();
+        vehicle.SaveEdit().then();
     }
 
-    if (store?.CurrentVehicle?.readOnly) {
+    if (vehicle?.readOnly) {
         return (
             <></>
         )

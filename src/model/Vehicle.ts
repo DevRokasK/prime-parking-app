@@ -1,5 +1,8 @@
 import { makeObservable, observable, computed, action } from 'mobx';
 import { Utils } from './Utils';
+import { BaseStore } from '../stores/BaseStore';
+import { ErrorModel } from './Error';
+import { VehicleStore } from '../stores/VehicleStore';
 
 export interface IVehicleItem {
     id: string;
@@ -19,7 +22,8 @@ export enum PanelState {
     Edit
 }
 
-export class Vehicle implements IVehicleItem {
+export class Vehicle extends BaseStore implements IVehicleItem {
+    public store: VehicleStore = null;
     @observable public isDirty: boolean = false;
     @observable public data: IVehicleItem;
     @observable public id: string;
@@ -67,9 +71,13 @@ export class Vehicle implements IVehicleItem {
         return this.panelState === PanelState.Display ? true : false;
     }
 
-    public constructor(data: IVehicleItem) {
+    public constructor(data: IVehicleItem, store: VehicleStore) {
+        super();
         makeObservable(this);
         this.initFromData(data);
+        if (store) {
+            this.store = store;
+        }
     }
 
     @action
@@ -91,8 +99,26 @@ export class Vehicle implements IVehicleItem {
         this.panelState = PanelState.Display;
     }
 
-    public toJson(): IVehicleItem {
-        return {
+    public isValid(): boolean {
+        if (this.carNumber === "" ||
+            this.make === "" ||
+            this.model === "" ||
+            this.registrationYear === null ||
+            this.registrationPlace === "" ||
+            this.fuelType === "" ||
+            this.enginePower === 0 ||
+            this.engineTorque === 0 ||
+            this.color === "" ||
+            this.doors === 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public toJson(): string {
+        return JSON.stringify({
             id: this.id,
             carNumber: this.carNumber,
             make: this.make,
@@ -104,27 +130,14 @@ export class Vehicle implements IVehicleItem {
             engineTorque: this.engineTorque,
             color: this.color,
             doors: this.doors
-        }
-    } 
-    
-    @action
-    public cancelEdit() : void {
-        if (this.isDirty) {
-            this.initFromData(this.data);
-            this.isDirty = false;
-        }
-        this.panelState = PanelState.Display;
+        });
     }
 
     @action
-    public saveEdit() : void {
-        if(this.isDirty) {
-            if (this.id == null) {
-                //create
-            } else {
-                //update
-            }
-        
+    public cancelEdit(): void {
+        if (this.isDirty) {
+            this.initFromData(this.data);
+            this.isDirty = false;
         }
         this.panelState = PanelState.Display;
     }
@@ -187,5 +200,62 @@ export class Vehicle implements IVehicleItem {
     public setDoors(value: string): void {
         this.doors = Number(value);
         this.isDirty = true;
+    }
+
+    @action
+    public async SaveEdit(): Promise<boolean> {
+        let result = false;
+        if (this.id === "") {
+            result = await this.create();
+            if (result) {
+                this.panelState = PanelState.Display;
+            }
+        } else {
+            this.update();
+            this.panelState = PanelState.Display;
+        }
+        return result;
+    }
+
+    private async create(): Promise<boolean> {
+        let result = false;
+        this.clearError();
+        if (this.store && this.store.RootStore.Service) {
+            if (this.isValid()) {
+                const service = this.store.RootStore.Service;
+                try {
+                    const postResult = await service.PostVehicle(this);
+                    if ((postResult as ErrorModel).error) {
+                        this.showError(postResult as ErrorModel);
+                    } else {
+                        this.initFromData(postResult as IVehicleItem);
+                        this.store.AddToStore(this);
+                        result = true;
+                    }
+                }
+                catch (error) {
+                    this.showError(error);
+                }
+            } else {
+                this.showError(new ErrorModel({ error: 1, message: "Fill in all the tabs" }));
+            }
+        } else {
+            this.showError(new ErrorModel({ error: 1, message: "System error" }));
+        }
+        return result;
+    }
+
+    private update() {
+
+    }
+
+    @action
+    public SwitchToEdit() {
+        this.panelState = PanelState.Edit;
+    }
+
+    @action
+    public SwitchToDisplay() {
+        this.cancelEdit();
     }
 }

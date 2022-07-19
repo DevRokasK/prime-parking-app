@@ -4,8 +4,8 @@ import { Route, Routes, Link } from 'react-router-dom';
 import './styles/App.css';
 
 import { RootStore } from './stores/RootStore';
-import { Navigation } from './components/Navigation'
-import { Home } from './components/Home'
+import { Navigation } from './components/page-content/Navigation'
+import { Home } from './components/page-content/Home'
 import { VehicleList } from './components/vehicles/VehicleList';
 import { PermitList } from './components/permits/PermitList';
 
