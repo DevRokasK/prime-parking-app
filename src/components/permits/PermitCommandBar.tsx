@@ -1,40 +1,82 @@
-import * as React from 'react';
+import React from 'react';
 import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
-import { IButtonProps } from '@fluentui/react/lib/Button';
+import { MessageBar, MessageBarType } from '@fluentui/react';
+import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
+import { PermitStore } from '../../stores/PermitStore';
+import { observer } from 'mobx-react';
 
-const overflowButtonProps: IButtonProps = { ariaLabel: 'More commands' };
+export interface IPermitCommandBarProps {
+  store: PermitStore;
+}
 
-export const PermitCommandBar: React.FunctionComponent = () => {
-  const items: ICommandBarItemProps[] = [
-    {
-      key: 'add',
-      text: 'Add',
-      iconProps: { iconName: 'Add' },
-      split: true,
-      ariaLabel: 'Add',
-    },
-    {
-      key: 'edit',
-      text: 'Edit',
-      iconProps: { iconName: 'Edit' },
-      split: true,
-      ariaLabel: 'Edit',
-    },
-    {
-      key: 'delete',
-      text: 'Delete',
-      iconProps: { iconName: 'Delete' },
-      ariaLabel: 'Delete',
-    },
+export const PermitCommandBar = observer(({ store }: IPermitCommandBarProps) => {
+  const addPermit = () => {
+    store.AddPermit();
+  }
+
+  const editPermit = () => {
+    store.EditPermit();
+  }
+
+  const deletePermit = () => {
+    store.DeletePermit().then();
+  }
+
+  const items: ICommandBarItemProps[] = [{
+    key: 'add',
+    text: 'Add',
+    iconProps: { iconName: 'Add' },
+    split: true,
+    ariaLabel: 'Add',
+    onClick: addPermit
+  },
+  {
+    key: 'edit',
+    text: 'Edit',
+    iconProps: { iconName: 'Edit' },
+    split: true,
+    ariaLabel: 'Edit',
+    disabled: store.SelectedPermits.length !== 1,
+    onClick: editPermit
+  },
+  {
+    key: 'delete',
+    text: 'Delete',
+    iconProps: { iconName: 'Delete' },
+    ariaLabel: 'Delete',
+    disabled: store.SelectedPermits.length === 0,
+    onClick: deletePermit
+  },
   ];
 
+  const farItems: ICommandBarItemProps[] = [];
+
+  if (store.running) {
+    farItems.push(
+      {
+        key: ' running',
+        text: '',
+        onRender: () => {
+          return <Spinner size={SpinnerSize.medium} />
+        }
+      }
+    );
+  }
+
   return (
-    <div className="command-bar">
-      <CommandBar
-        items={items}
-        overflowButtonProps={overflowButtonProps}
-        ariaLabel="Use left and right arrow keys to navigate between commands"
-      />
+    <div>
+      <div className="command-bar">
+        <CommandBar
+          items={items} farItems={farItems}
+        />
+      </div>
+      {store.hasError &&
+        <MessageBar
+          messageBarType={MessageBarType.error}
+          onDismiss={store.clearError}
+        >
+          {store.errorMessage}
+        </MessageBar>}
     </div>
   );
-};
+});

@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel, Selection, PanelType } from '@fluentui/react';
+import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel, Selection, PanelType, Link } from '@fluentui/react';
 import { PermitStore } from '../../stores/PermitStore';
 import { PermitCommandBar } from './PermitCommandBar';
 import { Permit } from '../../model/Permit';
-import { PanelInfo } from './PermitPanelInfo';
+import { PanelInfo } from './PermitPanel';
 import { PermitPanelFooter } from './PermitPanelFooter';
 import { PermitPanelHeader } from './PermitPanelHeader';
 
@@ -30,7 +30,10 @@ export class PermitList extends React.Component<IPermitListProps> {
                 isRowHeader: true,
                 isResizable: true,
                 data: 'string',
-                isPadded: true
+                isPadded: true,
+                onRender: (item: Permit) => {
+                    return <Link onClick={() => { this.selectPermit(item) }}>{item.carId}</Link>
+                }
             },
             {
                 key: 'column2',
@@ -102,13 +105,13 @@ export class PermitList extends React.Component<IPermitListProps> {
 
         return (
             <div>
-                <PermitCommandBar />
+                <PermitCommandBar store={store} />
                 <ShimmeredDetailsList
                     enableShimmer={store.loading}
                     items={items}
                     selection={this.selection}
                     columns={columns}
-                    selectionMode={SelectionMode.single}
+                    selectionMode={SelectionMode.multiple}
                     layoutMode={DetailsListLayoutMode.justified}
                     isHeaderVisible={true}
                 />
@@ -116,15 +119,22 @@ export class PermitList extends React.Component<IPermitListProps> {
                     isLightDismiss
                     isOpen={store.IsPermitSelected}
                     onDismiss={this.onPanelDismis}
-                    closeButtonAriaLabel="Close"
-                    onRenderNavigationContent={PermitPanelHeader}
-                    onRenderFooterContent={PermitPanelFooter}
+                    onRenderNavigation={this.onRenderNavigation}
+                    onRenderFooter={this.onRenderFooter}
                     isFooterAtBottom={true}
                 >
-                    <PanelInfo permit={store.SelectedPermit}></PanelInfo>
+                    <PanelInfo permit={store.CurrentPermit}></PanelInfo>
                 </Panel>
             </div>
         );
+    }
+
+    private onRenderNavigation = () => {
+        return (<PermitPanelHeader permit={this.props.store.CurrentPermit} />);
+    }
+
+    private onRenderFooter = () => {
+        return (<PermitPanelFooter permit={this.props.store.CurrentPermit} />);
     }
 
     private onPanelDismis = () => {
@@ -133,9 +143,10 @@ export class PermitList extends React.Component<IPermitListProps> {
 
     private onSelectionChanged = () => {
         const selectedItems = this.selection.getSelection();
-        if (selectedItems.length > 0) {
-            const selectedItem = selectedItems[0];
-            this.props.store.SelectPermit(selectedItem as Permit);
-        }
+        this.props.store.SetSelectedPermits(selectedItems as Permit[]);
+    }
+
+    private selectPermit = (permit: Permit) => {
+        this.props.store.SetCurrentPermit(permit);
     }
 }

@@ -1,4 +1,8 @@
 import { makeObservable, observable, computed, action } from 'mobx';
+import { Utils } from './Utils';
+import { BaseStore } from '../stores/BaseStore';
+import { ErrorModel } from './Error';
+import { PermitStore } from '../stores/PermitStore';
 
 export interface IPermitItem {
     id: string;
@@ -17,7 +21,15 @@ export enum PermitState {
     Completed = 2
 }
 
-export class Permit implements IPermitItem {
+export enum PanelState {
+    Display,
+    Edit
+}
+
+export class Permit extends BaseStore implements IPermitItem {
+    public store: PermitStore = null;
+    @observable public isDirty: boolean = false;
+    @observable public data: IPermitItem;
     @observable public id: string;
     @observable public carId: string;
     @observable public from: Date;
@@ -25,61 +37,22 @@ export class Permit implements IPermitItem {
     @observable public entered: Date;
     @observable public left: Date;
     @observable public state: PermitState;
-
-    public constructor(data: IPermitItem) {
-        makeObservable(this);
-        this.initFromData(data);
-    }
-
-    @action
-    public initFromData(data: IPermitItem) {
-        this.id = data.id;
-        this.carId = data.carId;
-        this.from = new Date(data.from);
-        this.to = new Date(data.to);
-        this.entered = new Date(data.entered);
-        this.left = new Date(data.left);
-        this.state = data.state;
-    }
+    @observable public panelState: PanelState;
 
     @computed get regFromText(): string {
-        let date = "";
-        if (this.from) {
-            date = this.from.getDate() + '-' +
-                this.from.getMonth() + '-' +
-                this.from.getFullYear();
-        }
-        return date;
+        return Utils.formatDate(this.from);
     }
 
     @computed get regToText(): string {
-        let date = "";
-        if (this.to) {
-            date = this.to.getDate() + '-' +
-                this.to.getMonth() + '-' +
-                this.to.getFullYear();
-        }
-        return date;
+        return Utils.formatDate(this.to);
     }
 
     @computed get regEnteredText(): string {
-        let date = "";
-        if (this.entered) {
-            date = this.entered.getDate() + '-' +
-                this.entered.getMonth() + '-' +
-                this.entered.getFullYear();
-        }
-        return date;
+        return Utils.formatDate(this.entered);
     }
 
     @computed get regLeftText(): string {
-        let date = "";
-        if (this.left) {
-            date = this.left.getDate() + '-' +
-                this.left.getMonth() + '-' +
-                this.left.getFullYear();
-        }
-        return date;
+        return Utils.formatDate(this.left);
     }
 
     @computed get regStatus(): string {
@@ -99,5 +72,227 @@ export class Permit implements IPermitItem {
                 break;
         }
         return status;
+    }
+
+    @computed get readOnly(): boolean {
+        return this.panelState === PanelState.Display ? true : false;
+    }
+
+    public constructor(data: IPermitItem, store: PermitStore) {
+        super()
+        makeObservable(this);
+        this.initFromData(data);
+        if (store) {
+            this.store = store;
+        }
+    }
+
+    @action
+    public initFromData(data: IPermitItem) {
+        this.data = data;
+        this.id = data.id;
+        this.carId = data.carId;
+        if (data.from) {
+            this.from = new Date(data.from);
+        }
+        if (data.to) {
+            this.to = new Date(data.to);
+        }
+        if (data.entered) {
+            this.entered = new Date(data.entered);
+        }
+        if (data.left) {
+            this.left = new Date(data.left);
+        }
+        this.state = data.state;
+        this.panelState = PanelState.Display;
+    }
+
+    public isValid(): boolean {
+        if (this.carId === "" ||
+            this.from === null ||
+            this.to === null ||
+            this.entered === null ||
+            this.left === null ||
+            this.state === null
+        ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public toJson(): string {
+        return JSON.stringify({
+            id: this.id,
+            carId: this.carId,
+            from: this.from,
+            to: this.to,
+            entered: this.entered,
+            left: this.left,
+            state: this.state
+        });
+    }
+
+    @action
+    public cancelEdit(): void {
+        if (this.isDirty) {
+            this.initFromData(this.data);
+            this.isDirty = false;
+        }
+        this.panelState = PanelState.Display;
+    }
+
+    @action
+    public setCarId(value: string): void {
+        this.carId = value;
+        this.isDirty = true;
+    }
+
+    @action
+    public setFrom(value: Date): void {
+        this.from = value;
+        this.isDirty = true;
+    }
+
+    @action
+    public setTo(value: Date): void {
+        this.to = value;
+        this.isDirty = true;
+    }
+
+    @action
+    public setEntered(value: Date): void {
+        this.entered = value;
+        this.isDirty = true;
+    }
+
+    @action
+    public setLeft(value: Date): void {
+        this.left = value;
+        this.isDirty = true;
+    }
+
+    @action
+    public setState(value: number): void {
+        this.state = value;
+        this.isDirty = true;
+    }
+
+    @action
+    public async SaveEdit(): Promise<boolean> {
+        let result = false;
+        if (this.id === "") {
+            result = await this.create();
+            if (result) {
+                this.panelState = PanelState.Display;
+            }
+        } else {
+            result = await this.update();
+            if (result) {
+                this.panelState = PanelState.Display;
+            }
+        }
+        return result;
+    }
+
+    private async create(): Promise<boolean> {
+        let result = false;
+        this.clearError();
+        if (this.store && this.store.RootStore.Service) {
+            if (this.isValid()) {
+                const service = this.store.RootStore.Service;
+                try {
+                    const postResult = await service.PostPermit(this);
+                    if ((postResult as ErrorModel).error) {
+                        this.showError(postResult as ErrorModel);
+                    } else {
+                        this.initFromData(postResult as IPermitItem);
+                        this.store.AddToStore(this);
+                        this.store.CurrentPermit = this;
+                        result = true;
+                    }
+                } catch (error) {
+                    this.showError(error);
+                }
+            } else {
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tabs" }));
+            }
+        } else {
+            this.showError(new ErrorModel({ error: 400, message: "System error" }));
+        }
+        return result;
+    }
+
+    private async update(): Promise<boolean> {
+        let result = false;
+        this.clearError();
+        if (this.store && this.store.RootStore.Service) {
+            if (this.isValid()) {
+                const service = this.store.RootStore.Service;
+                try {
+                    const putResult = await service.PutPermit(this);
+                    if ((putResult as ErrorModel).error) {
+                        this.showError(putResult as ErrorModel);
+                    } else {
+                        result = true;
+                    }
+                } catch (error) {
+                    this.showError(error);
+                }
+            } else {
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tans" }));
+            }
+        } else {
+            this.showError(new ErrorModel({ error: 400, message: "System error" }));
+        }
+        return result;
+    }
+
+    public async DeletePermit(): Promise<boolean> {
+        let result = false;
+        result = await this.delete();
+        if(result) {
+            const index = this.store.Permits.indexOf(this);
+            if(index > -1) {
+                this.store.Permits.splice(index, 1);
+            }
+        }
+        return result;
+    }
+
+    private async delete(): Promise<boolean> {
+        let result = false;
+        this.clearError();
+        if (this.store && this.store.RootStore.Service) {
+            if (this.isValid()) {
+                const service = this.store.RootStore.Service;
+                try {
+                    const deleteResult = await service.DeletePermit(this.id);
+                    if ((deleteResult as ErrorModel).error) {
+                        this.showError(deleteResult as ErrorModel);
+                    } else {
+                        result = true;
+                    }
+                } catch (error) {
+                    this.showError(error);
+                }
+            } else {
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tans" }));
+            }
+        } else {
+            this.showError(new ErrorModel({ error: 400, message: "System error" }));
+        }
+        return result;
+    }
+
+    @action
+    public SwitchToEdit() {
+        this.panelState = PanelState.Edit;
+    }
+
+    @action
+    public SwitchToDisplay() {
+        this.cancelEdit();
     }
 }

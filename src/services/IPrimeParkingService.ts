@@ -1,5 +1,5 @@
 import { Vehicle, IVehicleItem } from "../model/Vehicle";
-import { Permit } from "../model/Permit";
+import { Permit, IPermitItem } from "../model/Permit";
 import { ErrorModel } from "../model/Error";
 
 
@@ -9,5 +9,8 @@ export interface IPrimeParkingService {
     PutVehicle(data: Vehicle): Promise<ErrorModel>;
     DeleteVehicle(id: string): Promise<ErrorModel>;
 
-    GetPermits(): Promise<Permit[]>;
+    GetPermits(): Promise<IPermitItem[]>;
+    PostPermit(data: Permit): Promise<IPermitItem | ErrorModel>;
+    PutPermit(data: Permit): Promise<ErrorModel>;
+    DeletePermit(id: string): Promise<ErrorModel>;
 }

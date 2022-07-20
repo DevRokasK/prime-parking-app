@@ -64,7 +64,7 @@ export class RestService implements IPrimeParkingService {
     public async DeleteVehicle(id: string): Promise<ErrorModel> {
         let result: ErrorModel;
         const request: Request = new Request(this.getRestApiUrl(`cars?id=${id}`));
-        const response = await fetch(request, { method: 'DETELE' })
+        const response = await fetch(request, { method: 'DELETE' })
         if (response.status === 204) {
             result = null;
         } else {
@@ -80,32 +80,77 @@ export class RestService implements IPrimeParkingService {
         return result;
     }
 
-    
     // Permit REST api calls
-    public async GetPermits(): Promise<Permit[]> {
-        let result: Permit[] = [];
+    public async GetPermits(): Promise<IPermitItem[]> {
+        let result: IPermitItem[] = [];
         const request: Request = new Request(this.getRestApiUrl("permits"));
         const response = await fetch(request, { method: 'GET' });
         const permitsData: IPermitItem[] = await response.json();
-        if (permitsData) {
-            permitsData.forEach(value => {
-                const permit = new Permit(value);
-                result.push(permit);
-            });
+        if (permitsData && permitsData.length > 0) {
+            result = permitsData
         }
         return result;
     }
 
-    public async PostPermit() {
-
+    public async PostPermit(data: Permit): Promise<IPermitItem | ErrorModel> {
+        let result: IPermitItem | ErrorModel;
+        let postPermit = data.toJson();
+        const request: Request = new Request(this.getRestApiUrl("permits"));
+        const response = await fetch(request, { method: 'POST', body: postPermit, headers: { 'Content-Type': 'application/json' } })
+        if (response.status === 200) {
+            const permit: IPermitItem = await response.json();
+            result = permit;
+        }
+        else {
+            try {
+                const iError: IErrorModelItem = await response.json();
+                const error: ErrorModel = new ErrorModel(iError);
+                result = error;
+            } catch {
+                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
+                result = error;
+            }
+        }
+        return result;
     }
 
-    public async PutPermit() {
-
+    public async PutPermit(data: Permit): Promise<ErrorModel> {
+        let result: ErrorModel;
+        let postPermit = data.toJson();
+        const request: Request = new Request(this.getRestApiUrl(`permits/${data.id}`));
+        const response = await fetch(request, { method: 'PUT', body: postPermit, headers: { 'Content-Type': 'application/json' } })
+        if (response.status === 200) {
+            result = null;
+        } else {
+            try {
+                const iError: IErrorModelItem = await response.json();
+                const error: ErrorModel = new ErrorModel(iError);
+                result = error;
+            } catch {
+                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
+                result = error;
+            }
+        }
+        return result;
     }
 
-    public async DeletePermit() {
-
+    public async DeletePermit(id: string): Promise<ErrorModel> {
+        let result: ErrorModel;
+        const request: Request = new Request(this.getRestApiUrl(`permits/${id}`));
+        const response = await fetch(request, { method: 'DELETE' })
+        if (response.status === 200) {
+            result = null;
+        } else {
+            try {
+                const iError: IErrorModelItem = await response.json();
+                const error: ErrorModel = new ErrorModel(iError);
+                result = error;
+            } catch {
+                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
+                result = error;
+            }
+        }
+        return result;
     }
 
     public getRestApiUrl(path: string): string {
