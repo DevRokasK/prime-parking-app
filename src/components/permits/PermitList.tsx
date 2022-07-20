@@ -23,7 +23,7 @@ export class PermitList extends React.Component<IPermitListProps> {
         this.columns = [
             {
                 key: 'column1',
-                name: 'Car ID',
+                name: 'Vehicle Id',
                 fieldName: 'carId',
                 minWidth: 70,
                 maxWidth: 90,
@@ -81,8 +81,8 @@ export class PermitList extends React.Component<IPermitListProps> {
                 key: 'column6',
                 name: 'State',
                 fieldName: 'regStatus',
-                minWidth: 50,
-                maxWidth: 70,
+                minWidth: 70,
+                maxWidth: 90,
                 isResizable: true,
                 isCollapsible: true,
                 data: 'string'

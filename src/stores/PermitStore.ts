@@ -42,7 +42,7 @@ export class PermitStore extends BaseStore {
         this.Permits = [];
         const permits = await this.RootStore.Service.GetPermits();
         runInAction(() => {
-            this.Permits = permits.map(value => {
+            this.Permits = permits.permitList.map(value => {
                 const permit = new Permit(value, this);
                 return permit;
             });
@@ -84,11 +84,12 @@ export class PermitStore extends BaseStore {
         this.startRunning();
         try {
             if (this.SelectedPermits !== null) {
-                for (let i = 0; i < this.SelectedPermits.length; i++) {
+                const selectedPermits = this.SelectedPermits.slice();
+                for (let i = 0; i < selectedPermits.length; i++) {
                     let result = false;
-                    result = await this.Delete(this.SelectedPermits[i].id);
+                    result = await this.Delete(selectedPermits[i].id);
                     if (result) {
-                        const index = this.Permits.indexOf(this.SelectedPermits[i]);
+                        const index = this.Permits.indexOf(selectedPermits[i]);
                         if (index > -1) {
                             this.Permits.splice(index, 1);
                         }
@@ -108,7 +109,7 @@ export class PermitStore extends BaseStore {
             const service = this.RootStore.Service;
             try {
                 const deleteResult = await service.DeletePermit(id);
-                if ((deleteResult as ErrorModel).error) {
+                if (deleteResult && (deleteResult as ErrorModel).error) {
                     this.showError(deleteResult as ErrorModel);
                 } else {
                     result = true;

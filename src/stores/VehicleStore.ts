@@ -42,7 +42,7 @@ export class VehicleStore extends BaseStore {
         this.Vehicles = [];
         const vehicles = await this.RootStore.Service.GetVehicles();
         runInAction(() => {
-            this.Vehicles = vehicles.map(value => {
+            this.Vehicles = vehicles.carList.map(value => {
                 const vehicle = new Vehicle(value, this);
                 return vehicle;
             });
@@ -88,11 +88,12 @@ export class VehicleStore extends BaseStore {
         this.startRunning();
         try {
             if (this.SelectedVehicles !== null) {
-                for (let i = 0; i < this.SelectedVehicles.length; i++) {
+                const selectedVehilces = this.SelectedVehicles.slice();
+                for (let i = 0; i < selectedVehilces.length; i++) {
                     let result = false;
-                    result = await this.Delete(this.SelectedVehicles[i].id);
+                    result = await this.Delete(selectedVehilces[i].id);
                     if (result) {
-                        const index = this.Vehicles.indexOf(this.SelectedVehicles[i]);
+                        const index = this.Vehicles.indexOf(selectedVehilces[i]);
                         if (index > -1) {
                             this.Vehicles.splice(index, 1);
                         }
@@ -112,7 +113,7 @@ export class VehicleStore extends BaseStore {
             const service = this.RootStore.Service;
             try {
                 const deleteResult = await service.DeleteVehicle(id);
-                if ((deleteResult as ErrorModel).error) {
+                if (deleteResult && (deleteResult as ErrorModel).error) {
                     this.showError(deleteResult as ErrorModel);
                 } else {
                     result = true;

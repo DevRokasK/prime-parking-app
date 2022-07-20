@@ -254,7 +254,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                 const service = this.store.RootStore.Service;
                 try {
                     const putResult = await service.PutVehicle(this);
-                    if ((putResult as ErrorModel).error) {
+                    if (putResult && (putResult as ErrorModel).error) {
                         this.showError(putResult as ErrorModel);
                     } else {
                         result = true;
@@ -278,6 +278,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
             const index = this.store.Vehicles.indexOf(this);
             if (index > -1) {
                 this.store.Vehicles.splice(index, 1);
+                this.store.DeselectVehicle();
             }
         }
         return result;
@@ -291,7 +292,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                 const service = this.store.RootStore.Service;
                 try {
                     const deleteResult = await service.DeleteVehicle(this.id);
-                    if ((deleteResult as ErrorModel).error) {
+                    if (deleteResult && (deleteResult as ErrorModel).error) {
                         this.showError(deleteResult as ErrorModel);
                     } else {
                         result = true;

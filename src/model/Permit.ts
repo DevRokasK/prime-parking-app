@@ -232,7 +232,7 @@ export class Permit extends BaseStore implements IPermitItem {
                 const service = this.store.RootStore.Service;
                 try {
                     const putResult = await service.PutPermit(this);
-                    if ((putResult as ErrorModel).error) {
+                    if (putResult && (putResult as ErrorModel).error) {
                         this.showError(putResult as ErrorModel);
                     } else {
                         result = true;
@@ -256,6 +256,7 @@ export class Permit extends BaseStore implements IPermitItem {
             const index = this.store.Permits.indexOf(this);
             if(index > -1) {
                 this.store.Permits.splice(index, 1);
+                this.store.DeletePermit();
             }
         }
         return result;
@@ -269,7 +270,7 @@ export class Permit extends BaseStore implements IPermitItem {
                 const service = this.store.RootStore.Service;
                 try {
                     const deleteResult = await service.DeletePermit(this.id);
-                    if ((deleteResult as ErrorModel).error) {
+                    if (deleteResult && (deleteResult as ErrorModel).error) {
                         this.showError(deleteResult as ErrorModel);
                     } else {
                         result = true;

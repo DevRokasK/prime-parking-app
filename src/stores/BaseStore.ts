@@ -13,18 +13,18 @@ export class BaseStore {
     @computed get errorMessage(): string {
         let result = "";
         if (this.error) {
-            result = this.error.message;
+            result = this.error.error + ": " + this.error.message;
         }
         return result;
     }
 
     @action
-    public showError (error: ErrorModel) {
+    public showError(error: ErrorModel) {
         this.error = error;
     }
 
     @action
-    public clearError = () =>{
+    public clearError = () => {
         this.error = null;
     }
 
@@ -43,7 +43,7 @@ export class BaseStore {
         this.running = true;
     }
 
-    @action 
+    @action
     public endRunning(): void {
         this.running = false;
     }
