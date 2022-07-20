@@ -3,6 +3,7 @@ import { ErrorModel } from '../model/Error';
 
 export class BaseStore {
     @observable public loading: boolean = false;
+    @observable public running: boolean = false;
     @observable public error: ErrorModel = null;
 
     @computed get hasError(): boolean {
@@ -35,5 +36,15 @@ export class BaseStore {
     @action
     public endLoading(): void {
         this.loading = false;
+    }
+
+    @action
+    public startRunning(): void {
+        this.running = true;
+    }
+
+    @action 
+    public endRunning(): void {
+        this.running = false;
     }
 }

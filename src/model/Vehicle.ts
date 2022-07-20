@@ -111,8 +111,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
             this.color === "" ||
             this.doors === 0) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -235,12 +234,11 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                         this.store.CurrentVehicle = this;
                         result = true;
                     }
-                }
-                catch (error) {
+                } catch (error) {
                     this.showError(error);
                 }
             } else {
-                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tabs"}));
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tabs" }));
             }
         } else {
             this.showError(new ErrorModel({ error: 400, message: "System error" }));
@@ -261,12 +259,11 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                     } else {
                         result = true;
                     }
-                }
-                catch (error) {
+                } catch (error) {
                     this.showError(error);
                 }
             } else {
-                this.showError(new ErrorModel({error: 400, message: "Fill in all the tans"}));
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tans" }));
             }
         } else {
             this.showError(new ErrorModel({ error: 400, message: "System error" }));
@@ -277,14 +274,14 @@ export class Vehicle extends BaseStore implements IVehicleItem {
     public async DeleteVehicle(): Promise<boolean> {
         let result = false;
         result = await this.delete();
-        if(result) {
-            const index = this.store.SelectedVehicles.indexOf(this);
-            if(index > -1) {
-                this.store.SelectedVehicles.splice(index, 1);
+        if (result) {
+            const index = this.store.Vehicles.indexOf(this);
+            if (index > -1) {
+                this.store.Vehicles.splice(index, 1);
             }
         }
         return result;
-    } 
+    }
 
     private async delete(): Promise<boolean> {
         let result = false;
@@ -299,12 +296,11 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                     } else {
                         result = true;
                     }
-                }
-                catch (error) {
+                } catch (error) {
                     this.showError(error);
                 }
             } else {
-                this.showError(new ErrorModel({error: 400, message: "Fill in all the tans"}));
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tans" }));
             }
         } else {
             this.showError(new ErrorModel({ error: 400, message: "System error" }));

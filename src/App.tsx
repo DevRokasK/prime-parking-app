@@ -21,8 +21,6 @@ export class App extends React.Component {
                 this.store = new RootStore();
         }
 
-        
-
         public render(): JSX.Element {
                 const store = this.store;
                 return <div className="App">

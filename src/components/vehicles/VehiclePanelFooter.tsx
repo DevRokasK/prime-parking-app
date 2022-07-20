@@ -20,16 +20,15 @@ export const VehiclePanelFooter = observer(({ vehicle }: IVehiclePanelFooterProp
         return (
             <></>
         )
-    }
-    else {
+    } else {
         return (
             <div className='footer-buttons'>
                 <PrimaryButton className='button-style' onClick={saveEdit}>
                     Save
-                    </PrimaryButton>
+                </PrimaryButton>
                 <DefaultButton onClick={switchToDisplay}>
                     Cancel
-                    </DefaultButton>
+                </DefaultButton>
             </div>
         )
     }

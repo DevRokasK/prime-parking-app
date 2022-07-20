@@ -1,6 +1,7 @@
 import React from 'react';
 import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
 import { MessageBar, MessageBarType } from '@fluentui/react';
+import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
 import { VehicleStore } from '../../stores/VehicleStore';
 import { observer } from 'mobx-react';
 
@@ -18,7 +19,7 @@ export const VehicleCommandBar = observer(({ store }: IVehicleCommandBarProps) =
   }
 
   const deleteVehicle = () => {
-    store.DeleteVehicle();
+    store.DeleteVehicle().then();
   }
 
   const items: ICommandBarItemProps[] = [{
@@ -48,20 +49,34 @@ export const VehicleCommandBar = observer(({ store }: IVehicleCommandBarProps) =
   },
   ];
 
+  const farItems: ICommandBarItemProps[] = [];
+
+  if (store.running) {
+    farItems.push(
+      {
+        key: 'running',
+        text: '',
+        onRender: () => {
+          return <Spinner size={SpinnerSize.medium} />
+        }
+      }
+    );
+  }
+
   return (
     <div>
       <div className="command-bar">
         <CommandBar
-          items={items}
+          items={items} farItems={farItems}
         />
       </div>
-      {/* {store.hasError && 
+      {store.hasError &&
         <MessageBar
           messageBarType={MessageBarType.error}
           onDismiss={store.clearError}
         >
           {store.errorMessage}
-        </MessageBar>} */}
+        </MessageBar>}
     </div>
   );
 });

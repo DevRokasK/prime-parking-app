@@ -59,10 +59,8 @@ export const VehiclePanelHeader = observer(({ vehicle }: IVehiclePanelHeaderProp
                 ariaLabel: 'Cancel',
                 onClick: deselect
             }
-        ]
-
-    }
-    else {
+        ];
+    } else {
         items = [
             {
                 key: 'save',

@@ -2,6 +2,7 @@ import { Vehicle, IVehicleItem, PanelState } from "../model/Vehicle";
 import { observable, action, makeObservable, computed, runInAction } from 'mobx';
 import { RootStore } from "./RootStore";
 import { BaseStore } from "./BaseStore";
+import { ErrorModel } from "../model/Error";
 
 export class VehicleStore extends BaseStore {
     public RootStore: RootStore;
@@ -37,15 +38,16 @@ export class VehicleStore extends BaseStore {
     @action
     public async Init() {
         this.startLoading();
+        this.startRunning();
         this.Vehicles = [];
         const vehicles = await this.RootStore.Service.GetVehicles();
         runInAction(() => {
             this.Vehicles = vehicles.map(value => {
                 const vehicle = new Vehicle(value, this);
                 return vehicle;
-                //result.push(vehicle);
             });
         });
+        this.endRunning();
         this.endLoading();
     }
 
@@ -81,10 +83,46 @@ export class VehicleStore extends BaseStore {
         this.SetCurrentVehicle(this.SelectedVehicles[0]);
     }
 
-    @action 
+    @action
     public async DeleteVehicle() {
-        if(this.SelectedVehicles !== null) {
-            this.SelectedVehicles.forEach(data => data.DeleteVehicle());
+        this.startRunning();
+        try {
+            if (this.SelectedVehicles !== null) {
+                for (let i = 0; i < this.SelectedVehicles.length; i++) {
+                    let result = false;
+                    result = await this.Delete(this.SelectedVehicles[i].id);
+                    if (result) {
+                        const index = this.Vehicles.indexOf(this.SelectedVehicles[i]);
+                        if (index > -1) {
+                            this.Vehicles.splice(index, 1);
+                        }
+                    }
+                }
+            }
+        } catch {
+            this.showError(this.error);
         }
+        this.endRunning();
+    }
+
+    private async Delete(id: string): Promise<boolean> {
+        let result = false;
+        this.clearError();
+        if (this && this.RootStore.Service) {
+            const service = this.RootStore.Service;
+            try {
+                const deleteResult = await service.DeleteVehicle(id);
+                if ((deleteResult as ErrorModel).error) {
+                    this.showError(deleteResult as ErrorModel);
+                } else {
+                    result = true;
+                }
+            } catch (error) {
+                this.showError(error);
+            }
+        } else {
+            this.showError(new ErrorModel({ error: 400, message: "System error" }));
+        }
+        return result;
     }
 }
