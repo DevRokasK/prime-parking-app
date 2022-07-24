@@ -15,10 +15,11 @@ export interface IPermitItem {
 }
 
 export enum PermitState {
-    None = 0,
-    Planned = 3,
-    InTerritory = 1,
-    Completed = 2
+    planned = 0,
+    inTerritory = 1,
+    completed = 2,
+    missed = 3
+
 }
 
 export enum PanelState {
@@ -58,17 +59,17 @@ export class Permit extends BaseStore implements IPermitItem {
     @computed get regStatus(): string {
         let status = "";
         switch (this.state) {
-            case PermitState.Planned:
+            case PermitState.planned:
                 status = "Planned";
                 break;
-            case PermitState.InTerritory:
+            case PermitState.inTerritory:
                 status = "In Territory";
                 break;
-            case PermitState.Completed:
+            case PermitState.completed:
                 status = "Completed";
                 break;
             default:
-                status = "None";
+                status = "Missed";
                 break;
         }
         return status;

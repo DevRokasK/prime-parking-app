@@ -15,9 +15,34 @@ const navLinkGroups: INavLinkGroup[] = [
         key: 'Permits',
         name: 'Permits',
         url: '#/Permits',
-      }
+      },
     ]
-  }
+  },
+  {
+    name: 'Permits',
+    links: [
+      {
+        key: 'plannedPermits',
+        name: 'Planned',
+        url: '#/Permits',
+      },
+      {
+        key: 'inTerritoryPermits',
+        name: 'In Territory',
+        url: '#/Permits',
+      },
+      {
+        key: 'completedPermits',
+        name: 'Completed',
+        url: '#/Permits',
+      },
+      {
+        key: 'missedPermits',
+        name: 'Missed',
+        url: '#/Permits',
+      },
+    ],
+  },
 ];
 
 export const Navigation: React.FunctionComponent = () => {
