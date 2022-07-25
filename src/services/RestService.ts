@@ -83,9 +83,14 @@ export class RestService implements IPrimeParkingService {
     }
 
     // Permit REST api calls
-    public async GetPermits(): Promise<IGetPermitResult> {
+    public async GetPermits(permitState?: string): Promise<IGetPermitResult> {
         let result: IGetPermitResult = null;
-        const request: Request = new Request(this.getRestApiUrl("permits", "permits=100"));
+        let request: Request;
+        if (permitState === null) {
+             request = new Request(this.getRestApiUrl("permits", `count=100`));
+        } else {
+             request = new Request(this.getRestApiUrl("permits", `state=${permitState}&count=100`));
+        }
         const response = await fetch(request, { method: 'GET' });
         const permitsData: IGetPermitResult = await response.json();
         if (permitsData && permitsData.permitList.length > 0) {
@@ -119,7 +124,7 @@ export class RestService implements IPrimeParkingService {
     public async PutPermit(data: Permit): Promise<ErrorModel> {
         let result: ErrorModel;
         let postPermit = data.toJson();
-        const request: Request = new Request(this.getRestApiUrl(`permits/${data.id}`));
+        const request: Request = new Request(this.getRestApiUrl("permits", `${data.id}`));
         const response = await fetch(request, { method: 'PUT', body: postPermit, headers: { 'Content-Type': 'application/json' } })
         if (response.status === 204) {
             result = null;
@@ -158,4 +163,9 @@ export class RestService implements IPrimeParkingService {
     public getRestApiUrl(path: string, query?: string): string {
         return `${this.baseURL}/api/${path}?${query}&code=${this.key}`;
     }
+
+    // Gate REST api calls
+    // public async PostGate(vehicleId: string, direction: string): Promise<ErrorModel> {
+
+    // }
 }

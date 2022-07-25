@@ -4,12 +4,13 @@ import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Pa
 import { PermitStore } from '../../stores/PermitStore';
 import { PermitCommandBar } from './PermitCommandBar';
 import { Permit } from '../../model/Permit';
-import { PanelInfo } from './PermitPanel';
+import { PermitPanel } from './PermitPanel';
 import { PermitPanelFooter } from './PermitPanelFooter';
 import { PermitPanelHeader } from './PermitPanelHeader';
 
 export interface IPermitListProps {
     store: PermitStore;
+    permitState: string;
 }
 
 @observer
@@ -95,7 +96,13 @@ export class PermitList extends React.Component<IPermitListProps> {
     }
 
     public componentDidMount() {
-        this.props.store.Init().then();
+        this.props.store.Init(this.props.permitState).then();
+    }
+
+    public componentDidUpdate(prevProps: IPermitListProps) {
+        if (prevProps.permitState !== this.props.permitState) {
+            this.props.store.Init(this.props.permitState).then();
+        }
     }
 
     public render() {
@@ -123,7 +130,7 @@ export class PermitList extends React.Component<IPermitListProps> {
                     onRenderFooter={this.onRenderFooter}
                     isFooterAtBottom={true}
                 >
-                    <PanelInfo permit={store.CurrentPermit}></PanelInfo>
+                    <PermitPanel permit={store.CurrentPermit}></PermitPanel>
                 </Panel>
             </div>
         );

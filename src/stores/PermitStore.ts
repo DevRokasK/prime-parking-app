@@ -3,6 +3,8 @@ import { observable, action, makeObservable, computed, runInAction } from 'mobx'
 import { RootStore } from './RootStore';
 import { BaseStore } from './BaseStore';
 import { ErrorModel } from "../model/Error";
+import { Vehicle } from "../model/Vehicle"
+import { IComboBoxOption } from '@fluentui/react';
 
 export class PermitStore extends BaseStore {
     public RootStore: RootStore;
@@ -36,17 +38,22 @@ export class PermitStore extends BaseStore {
     }
 
     @action
-    public async Init() {
+    public async Init(permitState?: string) {
+        this.clearError();
         this.startLoading();
         this.startRunning();
         this.Permits = [];
-        const permits = await this.RootStore.Service.GetPermits();
-        runInAction(() => {
-            this.Permits = permits.permitList.map(value => {
-                const permit = new Permit(value, this);
-                return permit;
+        const permits = await this.RootStore.Service.GetPermits(permitState);
+        if (permits !== null) {
+            runInAction(() => {
+                this.Permits = permits.permitList.map(value => {
+                    const permit = new Permit(value, this);
+                    return permit;
+                });
             });
-        });
+        } else {
+            this.showError(new ErrorModel({ error: 404, message: "No permits in given state" }));
+        }
         this.endRunning();
         this.endLoading();
     }
@@ -121,5 +128,18 @@ export class PermitStore extends BaseStore {
             this.showError(new ErrorModel({ error: 400, message: "System error" }));
         }
         return result;
+    }
+
+    public async ResolveVehicles(): Promise<IComboBoxOption[]> {
+        let Vehicles: IComboBoxOption[] = [];
+        const vehicles = await this.RootStore.Service.GetVehicles();
+        runInAction(() => {
+            Vehicles = vehicles.carList.map(value => {
+                const vehicle = new Vehicle(value, null);
+                const option = { key: vehicle.id, text: vehicle.carNumber, data: vehicle }
+                return option;
+            });
+        });
+        return Vehicles;
     }
 }

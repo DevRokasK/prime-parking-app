@@ -1,22 +1,57 @@
 import React from 'react';
-import { MessageBar, MessageBarType } from '@fluentui/react';
+import { MessageBar, MessageBarType, ComboBox, IComboBoxOption } from '@fluentui/react';
 import { Label } from '@fluentui/react/lib/Label';
-import { TextField } from '@fluentui/react/lib/TextField';
 import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { DatePicker } from '@fluentui/react';
-import { Permit } from '../../model/Permit';
+import { Permit, PermitState } from '../../model/Permit';
 import { observer } from 'mobx-react';
 import { Utils } from '../../model/Utils';
 
-export const PanelInfo = observer((props: { permit: Permit }) => {
+export interface IPanelProps {
+    permit: Permit;
+}
 
-    const permit = props.permit;
-    const options: IDropdownOption[] = [
-        { key: 0, text: 'None' },
-        { key: 3, text: 'Planned' },
-        { key: 1, text: 'In Territory' },
-        { key: 2, text: 'Completed' },
-    ];
+export const PermitPanel = observer(({ permit }: IPanelProps) => {
+
+    let optionsPermit: IDropdownOption[] = [];
+    let optionsId: IComboBoxOption[] = [];
+
+    const displayDropdown = () => {
+        let result = false;
+        if (permit.readOnly || permit.id !== '')
+            result = true;
+        return result;
+    }
+
+    const permitState = () => {
+        let result = false;
+        if (permit.state === PermitState.completed ||
+            permit.state === PermitState.missed ||
+            permit.readOnly)
+            result = true;
+        return result;
+    }
+
+    if (permit) {
+        if (permit?.id !== '') {
+            optionsPermit = [
+                { key: 0, text: 'Planned' },
+                { key: 1, text: 'In Territory' },
+                { key: 2, text: 'Completed' },
+                { key: 3, text: 'Missed' },
+            ];
+            optionsId = [
+                { key: permit.id, text: permit.carId }
+            ];
+        }
+        else {
+            optionsPermit = [
+                { key: 0, text: 'Planned' },
+            ];
+        }
+    }
+
+    const resolveVehicles = () => { return permit.store.ResolveVehicles(); }
 
     return (
         <>{permit &&
@@ -33,30 +68,30 @@ export const PanelInfo = observer((props: { permit: Permit }) => {
                 </div>
                 <div className="flex-item">
                     <Label>Vehicle Id:</Label>
-                    <TextField defaultValue={permit.carId} readOnly={permit.readOnly} onChange={(e, value) => permit.setCarId(value)} />
+                    <ComboBox onResolveOptions={resolveVehicles} options={optionsId} defaultSelectedKey={permit.id} disabled={displayDropdown()} onChange={(e, value: IDropdownOption) => permit.setCarId(value.text as string)} />
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
                     <Label>State:</Label>
-                    <Dropdown options={options} defaultSelectedKey={permit.state} disabled={permit.readOnly} onChange={(e, value: IDropdownOption) => permit.setState(value.key as number)} />
+                    <Dropdown options={optionsPermit} defaultSelectedKey={permit.state} disabled={permitState()} onChange={(e, value: IDropdownOption) => permit.setState(value.key as number)} />
                 </div>
                 <div className="flex-item">
                     <Label>Stay From:</Label>
-                    <DatePicker value={permit.from} formatDate={Utils.formatDate} disabled={permit.readOnly} onSelectDate={(value) => permit.setFrom(value)} />
+                    <DatePicker value={permit.from} formatDate={Utils.formatDate} disabled={permitState()} onSelectDate={(value) => permit.setFrom(value)} />
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
                     <Label>Stay Until:</Label>
-                    <DatePicker value={permit.to} formatDate={Utils.formatDate} disabled={permit.readOnly} onSelectDate={(value) => permit.setTo(value)} />
+                    <DatePicker value={permit.to} formatDate={Utils.formatDate} disabled={permitState()} onSelectDate={(value) => permit.setTo(value)} />
                 </div>
-                <div className="flex-item">
+                < div className="flex-item">
                     <Label>Entered:</Label>
-                    <DatePicker value={permit.entered} formatDate={Utils.formatDate} disabled={permit.readOnly} onSelectDate={(value) => permit.setEntered(value)} />
+                    <DatePicker value={permit.entered} formatDate={Utils.formatDate} disabled onSelectDate={(value) => permit.setEntered(value)} />
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
                     <Label>Left:</Label>
-                    <DatePicker value={permit.left} formatDate={Utils.formatDate} disabled={permit.readOnly} onSelectDate={(value) => permit.setLeft(value)} />
+                    <DatePicker value={permit.left} formatDate={Utils.formatDate} disabled onSelectDate={(value) => permit.setLeft(value)} />
                 </div>
             </div>
         }

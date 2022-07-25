@@ -11,7 +11,7 @@ export interface IPrimeParkingService {
     PutVehicle(data: Vehicle): Promise<ErrorModel>;
     DeleteVehicle(id: string): Promise<ErrorModel>;
 
-    GetPermits(): Promise<IGetPermitResult>;
+    GetPermits(permitState?: string): Promise<IGetPermitResult>;
     PostPermit(data: Permit): Promise<IPermitItem | ErrorModel>;
     PutPermit(data: Permit): Promise<ErrorModel>;
     DeletePermit(id: string): Promise<ErrorModel>;
