@@ -14,7 +14,7 @@ const navLinkGroups: INavLinkGroup[] = [
       {
         key: 'Permits',
         name: 'Permits',
-        url: '#/Permits',
+        url: '#/Permits/all',
       },
     ]
   },
@@ -24,22 +24,22 @@ const navLinkGroups: INavLinkGroup[] = [
       {
         key: 'plannedPermits',
         name: 'Planned',
-        url: '#/Permits',
+        url: '#/Permits/planned',
       },
       {
         key: 'inTerritoryPermits',
         name: 'In Territory',
-        url: '#/Permits',
+        url: '#/Permits/inTerritory',
       },
       {
         key: 'completedPermits',
         name: 'Completed',
-        url: '#/Permits',
+        url: '#/Permits/completed',
       },
       {
         key: 'missedPermits',
         name: 'Missed',
-        url: '#/Permits',
+        url: '#/Permits/missed',
       },
     ],
   },

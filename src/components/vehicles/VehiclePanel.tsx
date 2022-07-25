@@ -7,7 +7,7 @@ import { Vehicle } from '../../model/Vehicle';
 import { observer } from 'mobx-react';
 import { Utils } from '../../model/Utils';
 
-export const PanelInfo = observer((props: { vehicle: Vehicle }) => {
+export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
     
     const vehicle = props.vehicle;
 

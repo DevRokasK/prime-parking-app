@@ -4,7 +4,7 @@ import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Pa
 import { VehicleStore } from '../../stores/VehicleStore';
 import { VehicleCommandBar } from './VehicleCommandBar';
 import { Vehicle } from '../../model/Vehicle';
-import { PanelInfo } from './VehiclePanel';
+import { VehiclePanel } from './VehiclePanel';
 import { VehiclePanelFooter } from './VehiclePanelFooter';
 import { VehiclePanelHeader } from './VehiclePanelHeader';
 
@@ -163,7 +163,7 @@ export class VehicleList extends React.Component<ICarListProps> {
                     onRenderFooter={this.onRenderFooter}
                     isFooterAtBottom={true}
                 >
-                    <PanelInfo vehicle={store.CurrentVehicle} ></PanelInfo>
+                    <VehiclePanel vehicle={store.CurrentVehicle} ></VehiclePanel>
                 </Panel>
             </div>
         );
