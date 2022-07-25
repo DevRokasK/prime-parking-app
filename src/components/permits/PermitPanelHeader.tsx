@@ -39,7 +39,8 @@ export const PermitPanelHeader = observer(({ permit }: IPermitPanelHeaderProps) 
                 iconProps: { iconName: 'Edit' },
                 split: true,
                 ariaLabel: 'Edit',
-                onClick: switchToEdit
+                onClick: switchToEdit,
+                disabled: !permit.isEditable
             },
             {
                 key: 'delete',
@@ -47,7 +48,8 @@ export const PermitPanelHeader = observer(({ permit }: IPermitPanelHeaderProps) 
                 iconProps: { iconName: 'Delete' },
                 split: true,
                 ariaLabel: 'Delete',
-                onClick: deletePermit
+                onClick: deletePermit,
+                disabled: !permit.isEditable
             },
         ];
         farItems = [

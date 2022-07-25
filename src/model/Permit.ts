@@ -79,6 +79,10 @@ export class Permit extends BaseStore implements IPermitItem {
         return this.panelState === PanelState.Display ? true : false;
     }
 
+    @computed get isEditable(): boolean {
+        return this.state === PermitState.completed || this.state === PermitState.missed ? false : true;
+    }
+
     public constructor(data: IPermitItem, store: PermitStore) {
         super()
         makeObservable(this);
@@ -253,9 +257,9 @@ export class Permit extends BaseStore implements IPermitItem {
     public async DeletePermit(): Promise<boolean> {
         let result = false;
         result = await this.delete();
-        if(result) {
+        if (result) {
             const index = this.store.Permits.indexOf(this);
-            if(index > -1) {
+            if (index > -1) {
                 this.store.Permits.splice(index, 1);
                 this.store.DeletePermit();
             }
