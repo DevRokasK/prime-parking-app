@@ -82,14 +82,31 @@ export class RestService implements IPrimeParkingService {
         return result;
     }
 
+    // Vehicle blob REST api calls
+    public async GetVehicleBlob() {
+
+    }
+
+    public async GetVehicleBlobs() {
+        
+    }
+
+    public async PostVehicleBlobs() {
+        
+    }
+
+    public async DeleteVehicleBlobs() {
+        
+    }
+
     // Permit REST api calls
     public async GetPermits(permitState?: string): Promise<IGetPermitResult> {
         let result: IGetPermitResult = null;
         let request: Request;
         if (permitState === null) {
-             request = new Request(this.getRestApiUrl("permits", `count=100`));
+            request = new Request(this.getRestApiUrl("permits", `count=100`));
         } else {
-             request = new Request(this.getRestApiUrl("permits", `state=${permitState}&count=100`));
+            request = new Request(this.getRestApiUrl("permits", `state=${permitState}&count=100`));
         }
         const response = await fetch(request, { method: 'GET' });
         const permitsData: IGetPermitResult = await response.json();
@@ -107,8 +124,7 @@ export class RestService implements IPrimeParkingService {
         if (response.status === 200) {
             const permit: IPermitItem = await response.json();
             result = permit;
-        }
-        else {
+        } else {
             try {
                 const iError: IErrorModelItem = await response.json();
                 const error: ErrorModel = new ErrorModel(iError);
@@ -160,12 +176,27 @@ export class RestService implements IPrimeParkingService {
         return result;
     }
 
+    //Gate REST api calls
+    public async PostGate(vehicleId: string, direction: string): Promise<ErrorModel> {
+        let result: ErrorModel;
+        const request: Request = new Request(this.getRestApiUrl("gate/" + vehicleId, "direction=" + direction));
+        const response = await fetch(request, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+        if (response.status === 204) {
+            result = null;
+        } else {
+            try {
+                const iError: IErrorModelItem = await response.json();
+                const error: ErrorModel = new ErrorModel(iError);
+                result = error;
+            } catch {
+                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
+                result = error;
+            }
+        }
+        return result;
+    }
+
     public getRestApiUrl(path: string, query?: string): string {
         return `${this.baseURL}/api/${path}?${query}&code=${this.key}`;
     }
-
-    // Gate REST api calls
-    // public async PostGate(vehicleId: string, direction: string): Promise<ErrorModel> {
-
-    // }
 }

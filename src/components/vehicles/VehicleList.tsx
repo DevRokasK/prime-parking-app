@@ -7,9 +7,11 @@ import { Vehicle } from '../../model/Vehicle';
 import { VehiclePanel } from './VehiclePanel';
 import { VehiclePanelFooter } from './VehiclePanelFooter';
 import { VehiclePanelHeader } from './VehiclePanelHeader';
+import { Gate } from '../../stores/Gate';
 
 export interface ICarListProps {
     store: VehicleStore;
+    gate: Gate;
 }
 
 @observer
@@ -141,11 +143,12 @@ export class VehicleList extends React.Component<ICarListProps> {
     public render() {
         const columns = this.columns;
         const store = this.props.store;
+        const gate = this.props.gate;
         const items = store.Vehicles.slice();
 
         return (
             <div>
-                <VehicleCommandBar store={store} />
+                <VehicleCommandBar store={store} gate={gate} />
                 <ShimmeredDetailsList
                     enableShimmer={store.loading}
                     items={items}
@@ -156,7 +159,7 @@ export class VehicleList extends React.Component<ICarListProps> {
                     isHeaderVisible={true}
                 />
                 <Panel type={PanelType.medium}
-                    isLightDismiss               
+                    isLightDismiss
                     isOpen={store.isVehicleSelected}
                     onDismiss={this.onPanelDismis}
                     onRenderNavigation={this.onRenderNavigation}

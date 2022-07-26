@@ -3,6 +3,7 @@ import { observable, action, makeObservable, computed, runInAction } from 'mobx'
 import { RootStore } from "./RootStore";
 import { BaseStore } from "./BaseStore";
 import { ErrorModel } from "../model/Error";
+import { IComboBoxOption } from '@fluentui/react';
 
 export class VehicleStore extends BaseStore {
     public RootStore: RootStore;
@@ -125,5 +126,18 @@ export class VehicleStore extends BaseStore {
             this.showError(new ErrorModel({ error: 400, message: "System error" }));
         }
         return result;
+    }
+
+    public async ResolveVehicles(): Promise<IComboBoxOption[]> {
+        let Vehicles: IComboBoxOption[] = [];
+        const vehicles = await this.RootStore.Service.GetVehicles();
+        runInAction(() => {
+            Vehicles = vehicles.carList.map(value => {
+                const vehicle = new Vehicle(value, null);
+                const option = { key: vehicle.id, text: vehicle.carNumber, data: vehicle }
+                return option;
+            });
+        });
+        return Vehicles;
     }
 }

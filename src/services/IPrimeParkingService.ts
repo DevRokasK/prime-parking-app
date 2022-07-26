@@ -15,4 +15,6 @@ export interface IPrimeParkingService {
     PostPermit(data: Permit): Promise<IPermitItem | ErrorModel>;
     PutPermit(data: Permit): Promise<ErrorModel>;
     DeletePermit(id: string): Promise<ErrorModel>;
+
+    PostGate(vehicleId: string, direction: string): Promise<ErrorModel>;
 }
