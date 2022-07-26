@@ -5,22 +5,28 @@ const navStyles: Partial<INavStyles> = { root: { width: 229 } };
 
 const navLinkGroups: INavLinkGroup[] = [
   {
+    name: 'Vehicles',
     links: [
       {
-        key: 'Vehicles',
-        name: 'Vehicles',
-        url: '#/Vehicles',
+        key: 'allVehicles',
+        name: 'All',
+        url: '#/Vehicles/all',
       },
       {
-        key: 'Permits',
-        name: 'Permits',
-        url: '#/Permits/all',
+        key: 'vehicleBlobs',
+        name: 'Blobs',
+        url: '#/Vehicles/blobs',
       },
     ]
   },
   {
     name: 'Permits',
     links: [
+      {
+        key: 'allPermits',
+        name: 'All',
+        url: '#/Permits/all',
+      },
       {
         key: 'plannedPermits',
         name: 'Planned',
