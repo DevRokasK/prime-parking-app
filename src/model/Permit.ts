@@ -246,7 +246,7 @@ export class Permit extends BaseStore implements IPermitItem {
                     this.showError(error);
                 }
             } else {
-                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tans" }));
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tabs" }));
             }
         } else {
             this.showError(new ErrorModel({ error: 400, message: "System error" }));
@@ -284,7 +284,7 @@ export class Permit extends BaseStore implements IPermitItem {
                     this.showError(error);
                 }
             } else {
-                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tans" }));
+                this.showError(new ErrorModel({ error: 400, message: "Fill in all the tabs" }));
             }
         } else {
             this.showError(new ErrorModel({ error: 400, message: "System error" }));
