@@ -35,6 +35,13 @@ export const GatePanel = observer(({ store, gate }: IPanelProps) => {
                     >
                         {gate.errorMessage}
                     </MessageBar>}
+                {gate.hasSuccess &&
+                    <MessageBar
+                        messageBarType={MessageBarType.success}
+                        onDismiss={gate.clearError}
+                    >
+                        {gate.successMessage}
+                    </MessageBar>}
                 <div className='flex-name'>
                     <h2>Gate interaction</h2>
                 </div>

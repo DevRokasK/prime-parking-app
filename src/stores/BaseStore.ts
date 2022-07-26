@@ -5,9 +5,14 @@ export class BaseStore {
     @observable public loading: boolean = false;
     @observable public running: boolean = false;
     @observable public error: ErrorModel = null;
+    @observable public success: ErrorModel = null;
 
     @computed get hasError(): boolean {
         return this.error ? true : false;
+    }
+
+    @computed get hasSuccess(): boolean {
+        return this.success ? true : false;
     }
 
     @computed get errorMessage(): string {
@@ -18,14 +23,28 @@ export class BaseStore {
         return result;
     }
 
+    @computed get successMessage(): string {
+        let result = "";
+        if (this.success) {
+            result = this.success.error + ": " + this.success.message;
+        }
+        return result;
+    }
+
     @action
     public showError(error: ErrorModel) {
         this.error = error;
     }
 
     @action
+    public showSuccess(success: ErrorModel) {
+        this.success = success;
+    }
+
+    @action
     public clearError = () => {
         this.error = null;
+        this.success = null;
     }
 
     @action
