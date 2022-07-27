@@ -21,7 +21,7 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-    "strictNullChecks": false
+    "strictNullChecks": true
   },
   "include": [
     "src"
