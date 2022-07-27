@@ -47,7 +47,7 @@ export const GatePanel = observer(({ store, gate }: IPanelProps) => {
                 </div>
                 <div className="flex-item">
                     <Label>Vehicle Id:</Label>
-                    <ComboBox onResolveOptions={resolveVehicles} options={optionsVehicles} onChange={(e, value: IDropdownOption) => gate.setVehicleId(value.key as string)} />
+                    <ComboBox onResolveOptions={resolveVehicles} options={optionsVehicles} onChange={(e, value: IDropdownOption) => gate.setVehicleId(value.text as string)} />
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
