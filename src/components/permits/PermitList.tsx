@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel, Selection, PanelType, Link } from '@fluentui/react';
+import { DetailsListLayoutMode, SelectionMode, IColumn, DetailsList, Panel, Selection, PanelType, Link } from '@fluentui/react';
 import { PermitStore } from '../../stores/PermitStore';
 import { PermitCommandBar } from './PermitCommandBar';
 import { Permit } from '../../model/Permit';
@@ -113,9 +113,9 @@ export class PermitList extends React.Component<IPermitListProps> {
         return (
             <div>
                 <PermitCommandBar store={store} />
-                <ShimmeredDetailsList
-                    enableShimmer={store.loading}
+                <DetailsList
                     items={items}
+                    onRenderMissingItem={this.onRenderMissingItem}
                     selection={this.selection}
                     columns={columns}
                     selectionMode={SelectionMode.multiple}
@@ -134,6 +134,15 @@ export class PermitList extends React.Component<IPermitListProps> {
                 </Panel>
             </div>
         );
+    }
+
+    private renderedMissingIndex = 0;
+    private onRenderMissingItem = (index: number): React.ReactNode => {
+        if (index !== this.renderedMissingIndex) {
+            setTimeout(() => { this.props.store.Init(this.props.permitState); }, 0);
+        }
+        this.renderedMissingIndex = index;
+        return null;
     }
 
     private onRenderNavigation = () => {

@@ -4,12 +4,14 @@ import { RootStore } from "./RootStore";
 import { BaseStore } from "./BaseStore";
 import { ErrorModel } from "../model/Error";
 import { IComboBoxOption } from '@fluentui/react';
+import { IGetVehicleResult } from "../model/IGetVehicleResult";
 
 export class VehicleStore extends BaseStore {
     public RootStore: RootStore;
     @observable public Vehicles: Vehicle[] = [];
     @observable public SelectedVehicles: Vehicle[] = [];
     @observable public CurrentVehicle: Vehicle = null;
+    @observable public token: string = "";
 
     public constructor(rootStore: RootStore) {
         super();
@@ -37,16 +39,28 @@ export class VehicleStore extends BaseStore {
     }
 
     @action
-    public async Init() {
+    public async Init(): Promise<void> {
         this.startLoading();
         this.startRunning();
-        this.Vehicles = [];
-        const vehicles = await this.RootStore.Service.GetVehicles();
+        let vehicles: IGetVehicleResult = null;
+        if (this.token !== "") {
+            if (this.Vehicles[this.Vehicles.length - 1] === null) {
+                this.Vehicles.pop();
+            }
+            vehicles = await this.RootStore.Service.GetVehicles(30, this.token);
+        } else {
+            this.Vehicles = [];
+            vehicles = await this.RootStore.Service.GetVehicles(30);
+        }
         runInAction(() => {
-            this.Vehicles = vehicles.carList.map(value => {
+            vehicles.carList.forEach(value => {
                 const vehicle = new Vehicle(value, this);
-                return vehicle;
+                this.Vehicles.push(vehicle);
             });
+            this.token = vehicles.token;
+            if (this.token !== "") {
+                this.Vehicles.push(null);
+            }
         });
         this.endRunning();
         this.endLoading();
@@ -130,7 +144,7 @@ export class VehicleStore extends BaseStore {
 
     public async ResolveVehicles(): Promise<IComboBoxOption[]> {
         let Vehicles: IComboBoxOption[] = [];
-        const vehicles = await this.RootStore.Service.GetVehicles();
+        const vehicles = await this.RootStore.Service.GetVehicles(50);
         runInAction(() => {
             Vehicles = vehicles.carList.map(value => {
                 const vehicle = new Vehicle(value, null);

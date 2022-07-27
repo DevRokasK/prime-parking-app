@@ -74,6 +74,15 @@ export const VehicleCommandBar = observer(({ store, gate }: IVehicleCommandBarPr
 
   const farItems: ICommandBarItemProps[] = [];
 
+  if (store.SelectedVehicles.length > 0) {
+    let count: string = store.SelectedVehicles.length.toString();
+    farItems.push({
+      key: 'edit',
+      text: 'Selected: ' + count,
+      ariaLabel: 'Count',
+    })
+  }
+
   if (store.running) {
     farItems.push(
       {

@@ -1,4 +1,4 @@
-import { makeObservable, observable, computed, action } from 'mobx';
+import { makeObservable, observable, computed, action, runInAction } from 'mobx';
 import { Utils } from './Utils';
 import { BaseStore } from '../stores/BaseStore';
 import { ErrorModel } from './Error';
@@ -190,12 +190,16 @@ export class Permit extends BaseStore implements IPermitItem {
         if (this.id === "") {
             result = await this.create();
             if (result) {
-                this.panelState = PanelState.Display;
+                runInAction(() => {
+                    this.panelState = PanelState.Display;
+                });
             }
         } else {
             result = await this.update();
             if (result) {
-                this.panelState = PanelState.Display;
+                runInAction(() => {
+                    this.panelState = PanelState.Display;
+                });
             }
         }
         return result;
@@ -212,10 +216,12 @@ export class Permit extends BaseStore implements IPermitItem {
                     if ((postResult as ErrorModel).error) {
                         this.showError(postResult as ErrorModel);
                     } else {
-                        this.initFromData(postResult as IPermitItem);
-                        this.store.AddToStore(this);
-                        this.store.CurrentPermit = this;
-                        result = true;
+                        runInAction(() => {
+                            this.initFromData(postResult as IPermitItem);
+                            this.store.AddToStore(this);
+                            this.store.CurrentPermit = this;
+                            result = true;
+                        });
                     }
                 } catch (error) {
                     this.showError(error);

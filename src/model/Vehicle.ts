@@ -1,4 +1,4 @@
-import { makeObservable, observable, computed, action } from 'mobx';
+import { makeObservable, observable, computed, action, runInAction } from 'mobx';
 import { Utils } from './Utils';
 import { BaseStore } from '../stores/BaseStore';
 import { ErrorModel } from './Error';
@@ -207,12 +207,16 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         if (this.id === "") {
             result = await this.create();
             if (result) {
-                this.panelState = PanelState.Display;
+                runInAction(() => {
+                    this.panelState = PanelState.Display;
+                });
             }
         } else {
             result = await this.update();
             if (result) {
-                this.panelState = PanelState.Display;
+                runInAction(() => {
+                    this.panelState = PanelState.Display;
+                });
             }
         }
         return result;
@@ -229,10 +233,12 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                     if ((postResult as ErrorModel).error) {
                         this.showError(postResult as ErrorModel);
                     } else {
-                        this.initFromData(postResult as IVehicleItem);
-                        this.store.AddToStore(this);
-                        this.store.CurrentVehicle = this;
-                        result = true;
+                        runInAction(() => {
+                            this.initFromData(postResult as IVehicleItem);
+                            this.store.AddToStore(this);
+                            this.store.CurrentVehicle = this;
+                            result = true;
+                        });
                     }
                 } catch (error) {
                     this.showError(error);

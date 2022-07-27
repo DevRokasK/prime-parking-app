@@ -13,7 +13,9 @@ export interface IPanelProps {
 
 export const PermitPanel = observer(({ permit }: IPanelProps) => {
 
-    let optionsPermit: IDropdownOption[] = [];
+    let optionsPermit: IDropdownOption[] = [
+        { key: 0, text: 'Planned' },
+    ];
     let optionsId: IComboBoxOption[] = [];
 
     const displayDropdown = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { DetailsListLayoutMode, SelectionMode, IColumn, ShimmeredDetailsList, Panel, Selection, PanelType, Link } from '@fluentui/react';
+import { DetailsListLayoutMode, SelectionMode, IColumn, DetailsList, Panel, Selection, PanelType, Link } from '@fluentui/react';
 import { VehicleStore } from '../../stores/VehicleStore';
 import { VehicleCommandBar } from './VehicleCommandBar';
 import { Vehicle } from '../../model/Vehicle';
@@ -41,8 +41,8 @@ export class VehicleList extends React.Component<ICarListProps> {
                 key: 'column2',
                 name: 'Make',
                 fieldName: 'make',
-                minWidth: 40,
-                maxWidth: 60,
+                minWidth: 70,
+                maxWidth: 90,
                 isResizable: true,
                 data: 'string',
                 isPadded: true
@@ -51,8 +51,8 @@ export class VehicleList extends React.Component<ICarListProps> {
                 key: 'column3',
                 name: 'Model',
                 fieldName: 'model',
-                minWidth: 40,
-                maxWidth: 60,
+                minWidth: 70,
+                maxWidth: 90,
                 isResizable: true,
                 isCollapsible: true,
                 data: 'string',
@@ -83,8 +83,8 @@ export class VehicleList extends React.Component<ICarListProps> {
                 key: 'column6',
                 name: 'Fuel type',
                 fieldName: 'fuelType',
-                minWidth: 50,
-                maxWidth: 70,
+                minWidth: 70,
+                maxWidth: 90,
                 isResizable: true,
                 isCollapsible: true,
                 data: 'string'
@@ -137,7 +137,7 @@ export class VehicleList extends React.Component<ICarListProps> {
     }
 
     public componentDidMount() {
-        this.props.store.Init().then();
+        this.props.store.Init();
     }
 
     public render() {
@@ -147,17 +147,21 @@ export class VehicleList extends React.Component<ICarListProps> {
         const items = store.Vehicles.slice();
 
         return (
-            <div>
+            <div className="main-wrapper">
                 <VehicleCommandBar store={store} gate={gate} />
-                <ShimmeredDetailsList
-                    enableShimmer={store.loading}
-                    items={items}
-                    selection={this.selection}
-                    columns={columns}
-                    selectionMode={SelectionMode.multiple}
-                    layoutMode={DetailsListLayoutMode.justified}
-                    isHeaderVisible={true}
-                />
+                <div className="details-list-wrapper">
+                    <div className="details-list">
+                        <DetailsList
+                            items={items}
+                            onRenderMissingItem={this.onRenderMissingItem}
+                            selection={this.selection}
+                            columns={columns}
+                            selectionMode={SelectionMode.multiple}
+                            layoutMode={DetailsListLayoutMode.justified}
+                            isHeaderVisible={true}
+                        />
+                    </div>
+                </div>
                 <Panel type={PanelType.medium}
                     isLightDismiss
                     isOpen={store.isVehicleSelected}
@@ -170,6 +174,15 @@ export class VehicleList extends React.Component<ICarListProps> {
                 </Panel>
             </div>
         );
+    }
+
+    private renderedMissingIndex = 0;
+    private onRenderMissingItem = (index: number): React.ReactNode => {
+        if (index !== this.renderedMissingIndex) {
+            setTimeout(() => { this.props.store.Init(); }, 0);
+        }
+        this.renderedMissingIndex = index;
+        return null;
     }
 
     private onRenderNavigation = () => {

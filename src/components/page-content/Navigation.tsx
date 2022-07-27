@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Nav, INavStyles, INavLinkGroup } from '@fluentui/react/lib/Nav';
 
 const navStyles: Partial<INavStyles> = { root: { width: 229 } };

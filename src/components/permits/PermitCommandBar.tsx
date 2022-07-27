@@ -51,6 +51,15 @@ export const PermitCommandBar = observer(({ store }: IPermitCommandBarProps) => 
 
   const farItems: ICommandBarItemProps[] = [];
 
+  if (store.SelectedPermits.length > 0) {
+    let count: string = store.SelectedPermits.length.toString();
+    farItems.push({
+      key: 'edit',
+      text: 'Selected: ' + count,
+      ariaLabel: 'Count',
+    })
+  }
+
   if (store.running) {
     farItems.push(
       {

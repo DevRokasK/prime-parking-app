@@ -5,12 +5,15 @@ import { BaseStore } from './BaseStore';
 import { ErrorModel } from "../model/Error";
 import { Vehicle } from "../model/Vehicle"
 import { IComboBoxOption } from '@fluentui/react';
+import { IGetPermitResult } from '../model/IGetPermitResult';
 
 export class PermitStore extends BaseStore {
     public RootStore: RootStore;
     @observable public Permits: Permit[] = [];
     @observable public SelectedPermits: Permit[] = [];
     @observable public CurrentPermit: Permit = null;
+    @observable public token: string = "";
+    @observable public state: string = null;
 
     public constructor(rootStore: RootStore) {
         super();
@@ -42,14 +45,31 @@ export class PermitStore extends BaseStore {
         this.clearError();
         this.startLoading();
         this.startRunning();
-        this.Permits = [];
-        const permits = await this.RootStore.Service.GetPermits(permitState);
+        if(this.state !== permitState) {
+            this.Permits = [];
+            this.state = permitState;
+            this.token = "";
+        }
+        let permits: IGetPermitResult = null;
+        if (this.token !== "") {
+            if (this.Permits[this.Permits.length - 1] === null) {
+                this.Permits.pop();
+            }
+            permits = await this.RootStore.Service.GetPermits(30, permitState, this.token);
+        } else {
+            this.Permits = [];
+            permits = await this.RootStore.Service.GetPermits(30, permitState);
+        }
         if (permits !== null) {
             runInAction(() => {
-                this.Permits = permits.permitList.map(value => {
+                permits.permitList.forEach(value => {
                     const permit = new Permit(value, this);
-                    return permit;
+                    this.Permits.push(permit);
                 });
+                this.token = permits.continuationToken;
+                if (this.token !== "") {
+                    this.Permits.push(null);
+                }
             });
         } else {
             this.showError(new ErrorModel({ error: 404, message: "No permits in given state" }));
@@ -132,7 +152,7 @@ export class PermitStore extends BaseStore {
 
     public async ResolveVehicles(): Promise<IComboBoxOption[]> {
         let Vehicles: IComboBoxOption[] = [];
-        const vehicles = await this.RootStore.Service.GetVehicles();
+        const vehicles = await this.RootStore.Service.GetVehicles(50);
         runInAction(() => {
             Vehicles = vehicles.carList.map(value => {
                 const vehicle = new Vehicle(value, null);
