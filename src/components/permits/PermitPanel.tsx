@@ -75,7 +75,7 @@ export const PermitPanel = observer(({ permit }: IPanelProps) => {
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
                     <Label>State:</Label>
-                    <Dropdown options={optionsPermit} defaultSelectedKey={permit.state} disabled={permitState()} onChange={(e, value: IDropdownOption) => permit.setState(value.key as number)} />
+                    <Dropdown options={optionsPermit} defaultSelectedKey={permit.state} disabled onChange={(e, value: IDropdownOption) => permit.setState(value.key as number)} />
                 </div>
                 <div className="flex-item">
                     <Label>Stay From:</Label>
