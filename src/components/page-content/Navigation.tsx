@@ -13,9 +13,9 @@ const navLinkGroups: INavLinkGroup[] = [
         url: '#/Vehicles/all',
       },
       {
-        key: 'vehicleBlobs',
-        name: 'Blobs',
-        url: '#/Vehicles/blobs',
+        key: 'vehicleDocuments',
+        name: 'Documents',
+        url: '#/Vehicles/documents',
       },
     ]
   },

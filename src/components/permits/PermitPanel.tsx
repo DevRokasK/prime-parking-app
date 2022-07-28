@@ -34,23 +34,16 @@ export const PermitPanel = observer(({ permit }: IPanelProps) => {
         return result;
     }
 
-    if (permit) {
-        if (permit?.id !== '') {
-            optionsPermit = [
-                { key: 0, text: 'Planned' },
-                { key: 1, text: 'In Territory' },
-                { key: 2, text: 'Completed' },
-                { key: 3, text: 'Missed' },
-            ];
-            optionsId = [
-                { key: permit.id, text: permit.carId }
-            ];
-        }
-        else {
-            optionsPermit = [
-                { key: 0, text: 'Planned' },
-            ];
-        }
+    if (permit && permit?.id !== '') {
+        optionsPermit = [
+            { key: 0, text: 'Planned' },
+            { key: 1, text: 'In Territory' },
+            { key: 2, text: 'Completed' },
+            { key: 3, text: 'Missed' },
+        ];
+        optionsId = [
+            { key: permit.id, text: permit.carId }
+        ];
     }
 
     const resolveVehicles = () => { return permit.store.ResolveVehicles(); }

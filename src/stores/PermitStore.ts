@@ -45,7 +45,7 @@ export class PermitStore extends BaseStore {
         this.clearError();
         this.startLoading();
         this.startRunning();
-        if(this.state !== permitState) {
+        if (this.state !== permitState) {
             this.Permits = [];
             this.state = permitState;
             this.token = "";
@@ -60,17 +60,19 @@ export class PermitStore extends BaseStore {
             this.Permits = [];
             permits = await this.RootStore.Service.GetPermits(30, permitState);
         }
-        if (permits !== null) {
-            runInAction(() => {
-                permits.permitList.forEach(value => {
-                    const permit = new Permit(value, this);
-                    this.Permits.push(permit);
+        if (permits.permitList.length !== 0 || this.Permits.length !== 0) {
+            if (permits.permitList.length !== 0) {
+                runInAction(() => {
+                    permits.permitList.forEach(value => {
+                        const permit = new Permit(value, this);
+                        this.Permits.push(permit);
+                    });
+                    this.token = permits.continuationToken;
+                    if (this.token !== "") {
+                        this.Permits.push(null);
+                    }
                 });
-                this.token = permits.continuationToken;
-                if (this.token !== "") {
-                    this.Permits.push(null);
-                }
-            });
+            }
         } else {
             this.showError(new ErrorModel({ error: 404, message: "No permits in given state" }));
         }

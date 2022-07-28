@@ -6,10 +6,10 @@ export const Home = () => {
         <div>
             <ul className='ul'>
                 <li>
-                    <Link to="/Vehicles">Cars</Link>
+                    <Link to="/Vehicles/all">Cars</Link>
                 </li>
                 <li>
-                    <Link to="/Permits">Permits</Link>
+                    <Link to="/Permits/all">Permits</Link>
                 </li>
             </ul>
         </div>

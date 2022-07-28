@@ -102,6 +102,7 @@ export class PermitList extends React.Component<IPermitListProps> {
     public componentDidUpdate(prevProps: IPermitListProps) {
         if (prevProps.permitState !== this.props.permitState) {
             this.props.store.Init(this.props.permitState).then();
+            this.renderedMissingIndex = 0;
         }
     }
 
@@ -111,19 +112,24 @@ export class PermitList extends React.Component<IPermitListProps> {
         const items = store.Permits.slice();
 
         return (
-            <div>
+            <div className="main-wrapper">
                 <PermitCommandBar store={store} />
-                <DetailsList
-                    items={items}
-                    onRenderMissingItem={this.onRenderMissingItem}
-                    selection={this.selection}
-                    columns={columns}
-                    selectionMode={SelectionMode.multiple}
-                    layoutMode={DetailsListLayoutMode.justified}
-                    isHeaderVisible={true}
-                />
+                <div className="details-list-wrapper">
+                    <div className="details-list">
+                        <DetailsList
+                            items={items}
+                            onRenderMissingItem={this.onRenderMissingItem}
+                            selection={this.selection}
+                            columns={columns}
+                            selectionMode={SelectionMode.multiple}
+                            layoutMode={DetailsListLayoutMode.justified}
+                            isHeaderVisible={true}
+                        />
+                    </div>
+                </div>
                 <Panel type={PanelType.medium}
                     isLightDismiss
+                    onLightDismissClick={this.onPanelDismis}
                     isOpen={store.IsPermitSelected}
                     onDismiss={this.onPanelDismis}
                     onRenderNavigation={this.onRenderNavigation}
@@ -136,6 +142,7 @@ export class PermitList extends React.Component<IPermitListProps> {
         );
     }
 
+    //Renders additional items, if the last item in array is null
     private renderedMissingIndex = 0;
     private onRenderMissingItem = (index: number): React.ReactNode => {
         if (index !== this.renderedMissingIndex) {
@@ -145,23 +152,28 @@ export class PermitList extends React.Component<IPermitListProps> {
         return null;
     }
 
+    // Renders Permit Panel Header
     private onRenderNavigation = () => {
         return (<PermitPanelHeader permit={this.props.store.CurrentPermit} />);
     }
 
+    // Renders Permit Panel Footer
     private onRenderFooter = () => {
         return (<PermitPanelFooter permit={this.props.store.CurrentPermit} />);
     }
 
+    // On panel dismis, Current Permit is deselected
     private onPanelDismis = () => {
         this.props.store.DeselectPermit();
     }
 
+    // On selection/deselection update SelectedPermits array
     private onSelectionChanged = () => {
         const selectedItems = this.selection.getSelection();
         this.props.store.SetSelectedPermits(selectedItems as Permit[]);
     }
 
+    // Select a Current Permit
     private selectPermit = (permit: Permit) => {
         this.props.store.SetCurrentPermit(permit);
     }

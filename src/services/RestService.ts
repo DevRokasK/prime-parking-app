@@ -123,9 +123,7 @@ export class RestService implements IPrimeParkingService {
         }
         const response = await fetch(request, { method: 'GET' });
         const permitsData: IGetPermitResult = await response.json();
-        if (permitsData && permitsData.permitList.length > 0) {
-            result = permitsData
-        }
+        result = permitsData
         return result;
     }
 

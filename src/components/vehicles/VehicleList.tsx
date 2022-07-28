@@ -164,8 +164,9 @@ export class VehicleList extends React.Component<ICarListProps> {
                 </div>
                 <Panel type={PanelType.medium}
                     isLightDismiss
+                    onLightDismissClick={this.onPanelDismiss}
                     isOpen={store.isVehicleSelected}
-                    onDismiss={this.onPanelDismis}
+                    onDismiss={this.onPanelDismiss}
                     onRenderNavigation={this.onRenderNavigation}
                     onRenderFooter={this.onRenderFooter}
                     isFooterAtBottom={true}
@@ -193,7 +194,7 @@ export class VehicleList extends React.Component<ICarListProps> {
         return (<VehiclePanelFooter vehicle={this.props.store.CurrentVehicle} />);
     }
 
-    private onPanelDismis = () => {
+    private onPanelDismiss = () => {
         this.props.store.DeselectVehicle();
     }
 

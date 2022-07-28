@@ -18,7 +18,7 @@ export class BaseStore {
     @computed get errorMessage(): string {
         let result = "";
         if (this.error) {
-            result = this.error.error + ": " + this.error.message;
+            result = this.error.message;
         }
         return result;
     }
@@ -26,7 +26,7 @@ export class BaseStore {
     @computed get successMessage(): string {
         let result = "";
         if (this.success) {
-            result = this.success.error + ": " + this.success.message;
+            result = this.success.message;
         }
         return result;
     }

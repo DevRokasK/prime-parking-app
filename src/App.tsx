@@ -38,7 +38,7 @@ export class App extends React.Component {
                                         <Routes>
                                                 <Route path='/' element={<Home />} />
                                                 <Route path='/Vehicles/all' element={<VehicleList store={store.VehiclesStore} gate={store.Gates} />} />
-                                                <Route path='/Vehicles/blobs' element={<VehicleList store={store.VehiclesStore} gate={store.Gates} />} />
+                                                <Route path='/Vehicles/documents' element={<VehicleList store={store.VehiclesStore} gate={store.Gates} />} />
                                                 <Route path='/Permits/all' element={<PermitList store={store.PermitStore} permitState={null} />} />
                                                 <Route path='/Permits/planned' element={<PermitList store={store.PermitStore} permitState={"planned"} />} />
                                                 <Route path='/Permits/inTerritory' element={<PermitList store={store.PermitStore} permitState={"inTerritory"} />} />
