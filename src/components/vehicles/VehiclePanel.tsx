@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, IColumn, DetailsList } from '@fluentui/react';
+import { MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, IColumn, DetailsList, Icon } from '@fluentui/react';
+import { getFileTypeIconProps } from '@fluentui/react-file-type-icons';
 import { Label } from '@fluentui/react/lib/Label';
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { TextField } from '@fluentui/react/lib/TextField';
@@ -70,7 +71,7 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
                 minWidth: 16,
                 maxWidth: 16,
                 onRender: (item: DocumentBlob) => (
-                    <img src={item.icon} className={classNames.fileIconImg} alt={`${item.icon} file icon`} />
+                    <Icon {...getFileTypeIconProps({ extension: item.Icon, size: 16, imageFileType: 'png' })} />
                 ),
             },
             {
