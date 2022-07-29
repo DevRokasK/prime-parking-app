@@ -40,6 +40,7 @@ export class Permit extends BaseStore implements IPermitItem {
     @observable public state: PermitState;
     @observable public panelState: PanelState;
 
+    // Returns formated Date as string
     @computed get regFromText(): string {
         return Utils.formatDate(this.from);
     }
@@ -55,7 +56,9 @@ export class Permit extends BaseStore implements IPermitItem {
     @computed get regLeftText(): string {
         return Utils.formatDate(this.left);
     }
+    //--------------------------------
 
+    // Returns permitState as string
     @computed get regStatus(): string {
         let status = "";
         switch (this.state) {
@@ -75,10 +78,12 @@ export class Permit extends BaseStore implements IPermitItem {
         return status;
     }
 
+    // Returns true, if panelState is set to display
     @computed get readOnly(): boolean {
         return this.panelState === PanelState.Display ? true : false;
     }
 
+    // Returns true, if permitState is set to completed or missed
     @computed get isEditable(): boolean {
         return this.state === PermitState.completed || this.state === PermitState.missed ? false : true;
     }
@@ -112,7 +117,7 @@ export class Permit extends BaseStore implements IPermitItem {
         this.state = data.state;
         this.panelState = PanelState.Display;
     }
-
+    // Returns true, if all Permit characteristics are not empty
     public isValid(): boolean {
         if (this.carId === "" ||
             this.from === null ||
@@ -127,6 +132,7 @@ export class Permit extends BaseStore implements IPermitItem {
         }
     }
 
+    // Converts Permit object to JSON
     public toJson(): string {
         return JSON.stringify({
             id: this.id,
@@ -139,6 +145,7 @@ export class Permit extends BaseStore implements IPermitItem {
         });
     }
 
+    // Switches Permit panelState to display
     @action
     public cancelEdit(): void {
         if (this.isDirty) {
@@ -184,6 +191,7 @@ export class Permit extends BaseStore implements IPermitItem {
         this.isDirty = true;
     }
 
+    // Updates or Creates a Permit object
     @action
     public async SaveEdit(): Promise<boolean> {
         let result = false;
@@ -205,6 +213,7 @@ export class Permit extends BaseStore implements IPermitItem {
         return result;
     }
 
+    // POST new Permit to api
     private async create(): Promise<boolean> {
         let result = false;
         this.clearError();
@@ -235,6 +244,7 @@ export class Permit extends BaseStore implements IPermitItem {
         return result;
     }
 
+    // PUT Permit to api
     private async update(): Promise<boolean> {
         let result = false;
         this.clearError();
@@ -260,6 +270,7 @@ export class Permit extends BaseStore implements IPermitItem {
         return result;
     }
 
+    // Deletes a Permit from array
     public async DeletePermit(): Promise<boolean> {
         let result = false;
         result = await this.delete();
@@ -273,6 +284,7 @@ export class Permit extends BaseStore implements IPermitItem {
         return result;
     }
 
+    // DELETE Permit from api
     private async delete(): Promise<boolean> {
         let result = false;
         this.clearError();
@@ -298,11 +310,13 @@ export class Permit extends BaseStore implements IPermitItem {
         return result;
     }
 
+    // Switches Permit panelState to edit
     @action
     public SwitchToEdit() {
         this.panelState = PanelState.Edit;
     }
 
+    // Switches Permit panelState to display
     @action
     public SwitchToDisplay() {
         this.cancelEdit();

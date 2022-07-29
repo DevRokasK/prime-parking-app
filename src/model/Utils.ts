@@ -1,5 +1,6 @@
 
 export class Utils {
+    // Returns formated Date as string
     public static formatDate(value: Date): string {
         let result = "";
         if (value) {

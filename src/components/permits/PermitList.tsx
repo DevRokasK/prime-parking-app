@@ -129,7 +129,6 @@ export class PermitList extends React.Component<IPermitListProps> {
                 </div>
                 <Panel type={PanelType.medium}
                     isLightDismiss
-                    onLightDismissClick={this.onPanelDismis}
                     isOpen={store.IsPermitSelected}
                     onDismiss={this.onPanelDismis}
                     onRenderNavigation={this.onRenderNavigation}

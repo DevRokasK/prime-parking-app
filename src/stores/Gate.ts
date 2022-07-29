@@ -19,10 +19,12 @@ export class Gate extends BaseStore implements IGateItem {
     @observable public direction: Direction;
     @observable public isOpen: boolean;
 
+    // Returns true , if isOpen is true
     @computed get IsOpen() {
         return this.isOpen = true ? true : false
     }
 
+    // Returns direction as string
     @computed get regDirection(): string {
         let status = "";
         switch (this.direction) {
@@ -65,16 +67,19 @@ export class Gate extends BaseStore implements IGateItem {
             this.direction = Direction.out;
     }
 
+    // Set gate isOpen to true
     @action
     public gateOpen() {
         this.isOpen = true;
     }
 
+    // Set gate isOpen to false
     @action
     public gateClose() {
         this.isOpen = false;
     }
 
+    // Returns true, if all Gate characteristics are not empty
     public isValid(): boolean {
         if (this.vehicleId === "" ||
             this.direction === null
@@ -85,6 +90,7 @@ export class Gate extends BaseStore implements IGateItem {
         }
     }
 
+    // POST Gate request to api
     public async PostGate(): Promise<boolean> {
         let result = false;
         this.clearError();

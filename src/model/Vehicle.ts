@@ -39,10 +39,12 @@ export class Vehicle extends BaseStore implements IVehicleItem {
     @observable public doors: number;
     @observable public panelState: PanelState;
 
+    // Returns formated Date as string
     @computed get regDateText(): string {
         return Utils.formatDate(this.registrationYear);
     }
 
+    // Returns enginePower as string
     @computed get regEnginePower(): string {
         let result = "";
         if (this.enginePower > 0) {
@@ -51,6 +53,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         return result;
     }
 
+    // Returns engineTorque as string
     @computed get regEngineTorque(): string {
         let result = "";
         if (this.engineTorque > 0) {
@@ -59,6 +62,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         return result;
     }
 
+    // Returns doors count as string
     @computed get regDoors(): string {
         let result = "";
         if (this.doors > 0) {
@@ -67,6 +71,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         return result;
     }
 
+    // Returns true, if panelState is set to display
     @computed get readOnly(): boolean {
         return this.panelState === PanelState.Display ? true : false;
     }
@@ -99,6 +104,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         this.panelState = PanelState.Display;
     }
 
+    // Returns true, if all Vehicle Characteristics are not empty
     public isValid(): boolean {
         if (this.carNumber === "" ||
             this.make === "" ||
@@ -116,6 +122,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         }
     }
 
+    // Converts Vehicle object to JSON
     public toJson(): string {
         return JSON.stringify({
             id: this.id,
@@ -132,6 +139,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         });
     }
 
+    // Switches Vehicle panelState to display
     @action
     public cancelEdit(): void {
         if (this.isDirty) {
@@ -201,6 +209,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         this.isDirty = true;
     }
 
+    // Updates or Creates a Vehicle object
     @action
     public async SaveEdit(): Promise<boolean> {
         let result = false;
@@ -222,6 +231,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         return result;
     }
 
+    // POST new Vehicle to api
     private async create(): Promise<boolean> {
         let result = false;
         this.clearError();
@@ -252,6 +262,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         return result;
     }
 
+    // PUT Vehicle to api
     private async update(): Promise<boolean> {
         let result = false;
         this.clearError();
@@ -277,6 +288,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         return result;
     }
 
+    // Deletes a Vehicle from array
     public async DeleteVehicle(): Promise<boolean> {
         let result = false;
         result = await this.delete();
@@ -290,6 +302,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         return result;
     }
 
+    // DELETE Vehicle from api
     private async delete(): Promise<boolean> {
         let result = false;
         this.clearError();
@@ -315,11 +328,13 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         return result;
     }
 
+    // Switches Vehicle panelState to edit
     @action
     public SwitchToEdit() {
         this.panelState = PanelState.Edit;
     }
 
+    // Switches Vehicle panelState to display
     @action
     public SwitchToDisplay() {
         this.cancelEdit();

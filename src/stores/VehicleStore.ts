@@ -19,25 +19,30 @@ export class VehicleStore extends BaseStore {
         this.RootStore = rootStore;
     }
 
+    // Returns true , if CurrentVehicle is not empty
     @computed get isVehicleSelected(): boolean {
         return this.CurrentVehicle != null;
     }
 
+    // On selection/deselection update SelectedVehicles array
     @action
     public SetSelectedVehicles(data: Vehicle[]) {
         this.SelectedVehicles = data;
     }
 
+    // Select a CurrentVehicle
     @action
     public SetCurrentVehicle(data: Vehicle): void {
         this.CurrentVehicle = data;
     }
 
+    // On panel dismis, CurrentVehicle is deselected
     @action
     public DeselectVehicle(cancelEdit?: boolean) {
         this.CurrentVehicle = null;
     }
 
+    // GET Vehicles data from api
     @action
     public async Init(): Promise<void> {
         this.startLoading();
@@ -66,11 +71,13 @@ export class VehicleStore extends BaseStore {
         this.endLoading();
     }
 
+    // Adds a Vehicle to Vehicles array
     @action
     public AddToStore(data: Vehicle) {
         this.Vehicles.push(data);
     }
 
+    // Creates new Vehicle and sets it as CurrentVehicle
     @action
     public AddVehicle() {
         const newItem: IVehicleItem = {
@@ -91,6 +98,7 @@ export class VehicleStore extends BaseStore {
         this.SetCurrentVehicle(newVehicle);
     }
 
+    // Sets SelectedVehicle as CurrentVehicle
     @action
     public EditVehicle() {
         if (this.SelectedVehicles !== null && this.SelectedVehicles.length === 1)
@@ -98,6 +106,7 @@ export class VehicleStore extends BaseStore {
         this.SetCurrentVehicle(this.SelectedVehicles[0]);
     }
 
+    // Deletes SelectedVehicles from Vehicles array
     @action
     public async DeleteVehicle() {
         this.startRunning();
@@ -121,6 +130,7 @@ export class VehicleStore extends BaseStore {
         this.endRunning();
     }
 
+    // DELETE Vehicles from api
     private async Delete(id: string): Promise<boolean> {
         let result = false;
         this.clearError();
@@ -142,6 +152,7 @@ export class VehicleStore extends BaseStore {
         return result;
     }
 
+    // Get Vehicles data from api for drop down options
     public async ResolveVehicles(): Promise<IComboBoxOption[]> {
         let Vehicles: IComboBoxOption[] = [];
         const vehicles = await this.RootStore.Service.GetVehicles(50);

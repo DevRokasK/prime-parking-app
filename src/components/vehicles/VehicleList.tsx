@@ -164,7 +164,6 @@ export class VehicleList extends React.Component<ICarListProps> {
                 </div>
                 <Panel type={PanelType.medium}
                     isLightDismiss
-                    onLightDismissClick={this.onPanelDismiss}
                     isOpen={store.isVehicleSelected}
                     onDismiss={this.onPanelDismiss}
                     onRenderNavigation={this.onRenderNavigation}
@@ -177,6 +176,7 @@ export class VehicleList extends React.Component<ICarListProps> {
         );
     }
 
+    //Renders additional items, if the last item in array is null
     private renderedMissingIndex = 0;
     private onRenderMissingItem = (index: number): React.ReactNode => {
         if (index !== this.renderedMissingIndex) {
@@ -186,23 +186,28 @@ export class VehicleList extends React.Component<ICarListProps> {
         return null;
     }
 
+    // Renders Vehicle Panel Header
     private onRenderNavigation = () => {
         return (<VehiclePanelHeader vehicle={this.props.store.CurrentVehicle} />);
     }
 
+    // Renders Vehicle Panel Footer
     private onRenderFooter = () => {
         return (<VehiclePanelFooter vehicle={this.props.store.CurrentVehicle} />);
     }
 
+    // On panel dismis, Current Vehicle is deselected
     private onPanelDismiss = () => {
         this.props.store.DeselectVehicle();
     }
 
+    // On selection/deselection update SelectedVehicles array
     private onSelectionChanged = () => {
         const selectedItems = this.selection.getSelection();
         this.props.store.SetSelectedVehicles(selectedItems as Vehicle[]);
     }
 
+    // Select a Current Vehicle
     private selectVehicle = (vehicle: Vehicle) => {
         this.props.store.SetCurrentVehicle(vehicle);
     }

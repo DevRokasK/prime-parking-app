@@ -21,25 +21,30 @@ export class PermitStore extends BaseStore {
         this.RootStore = rootStore;
     }
 
+    // Returns true , if CurrentPermit is not empty
     @computed get IsPermitSelected(): boolean {
         return this.CurrentPermit != null;
     }
 
+    // On selection/deselection update SelectedPermits array
     @action
     public SetSelectedPermits(data: Permit[]) {
         this.SelectedPermits = data;
     }
 
+    // Select a CurrentPermit
     @action
     public SetCurrentPermit(data: Permit): void {
         this.CurrentPermit = data;
     }
 
+    // On panel dismis, CurrentPermit is deselected
     @action
     public DeselectPermit(cancelEdit?: boolean) {
         this.CurrentPermit = null;
     }
 
+    // GET Permits data from api
     @action
     public async Init(permitState?: string) {
         this.clearError();
@@ -80,11 +85,13 @@ export class PermitStore extends BaseStore {
         this.endLoading();
     }
 
+    // Adds a Permit to Permits array
     @action
     public AddToStore(data: Permit) {
         this.Permits.push(data);
     }
 
+    // Creates new Permit and sets it as CurrentPermit
     @action
     public AddPermit() {
         const newItem: IPermitItem = {
@@ -101,6 +108,7 @@ export class PermitStore extends BaseStore {
         this.SetCurrentPermit(newPermit);
     }
 
+    // Sets SelectedPermit as CurrentPermit
     @action
     public EditPermit() {
         if (this.SelectedPermits !== null && this.SelectedPermits.length === 1)
@@ -108,6 +116,7 @@ export class PermitStore extends BaseStore {
         this.SetCurrentPermit(this.SelectedPermits[0]);
     }
 
+    // Deletes SelectedPermits from Permits array
     @action
     public async DeletePermit() {
         this.startRunning();
@@ -131,6 +140,7 @@ export class PermitStore extends BaseStore {
         this.endRunning();
     }
 
+    // DELETE Permits from api
     private async Delete(id: string): Promise<boolean> {
         let result = false;
         this.clearError();
@@ -152,6 +162,7 @@ export class PermitStore extends BaseStore {
         return result;
     }
 
+    // Get Permits data from api for drop down options
     public async ResolveVehicles(): Promise<IComboBoxOption[]> {
         let Vehicles: IComboBoxOption[] = [];
         const vehicles = await this.RootStore.Service.GetVehicles(50);
