@@ -1,26 +1,27 @@
 import { makeObservable, observable, action, computed } from 'mobx';
 
 export interface IDocumentItem {
-    document: string;
+    fileName: string;
 }
 
 export class DocumentBlob implements IDocumentItem {
-    @observable public document: string;
+    @observable public fileName: string;
     @observable public icon: string = "";
 
-    public constructor(data: IDocumentItem) {
+    public constructor(data: string) {
         makeObservable(this);
         this.initFromData(data);
     }
 
     @computed get Icon() {
-        let parts: string[] = this.document.split('.');
+        let parts: string[] = this.fileName.split('.');
         this.icon = parts[1];
         return this.icon;
     }
 
     @action
-    public initFromData(data: IDocumentItem) {
-        this.document = data.document;
+    public initFromData(data: string) {
+        this.fileName = data;
+        //this.document = data.document;
     }
 }

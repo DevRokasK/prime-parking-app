@@ -93,34 +93,12 @@ export class RestService implements IPrimeParkingService {
 
     }
 
-    public async GetVehicleBlobs(id: string): Promise<IGetDocumentResult | ErrorModel> {
-        let result: IGetDocumentResult | ErrorModel;
+    public async GetVehicleBlobs(id: string): Promise<string[] | ErrorModel> {
+        let result: string[] | ErrorModel;
         const request: Request = new Request(this.getRestApiUrl(`blobs/${id}`));
         const response = await fetch(request, { method: 'GET' });
         if (response.status === 200) {
-            const documentsData: IGetDocumentResult = await response.json();
-            result = documentsData;
-        } else {
-            try {
-                const iError: IErrorModelItem = await response.json();
-                const error: ErrorModel = new ErrorModel(iError);
-                result = error;
-            } catch {
-                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
-                result = error;
-            }
-        }
-        return result;
-    }
-
-     public async GetVehicleBlobs2(id: string): Promise<IGetDocumentResult | ErrorModel> {
-        let result: IGetDocumentResult | ErrorModel;
-        const request: Request = new Request(this.getRestApiUrl(`blobs/${id}`));
-        const response = await fetch(request, { method: 'GET' });
-        if (response.status === 200) {
-            const parts: string[] = await response.json();
-            let documentsData: IGetDocumentResult;
-          //  documentsData.documentList = parts;
+            const documentsData: string[] = await response.json();
             result = documentsData;
         } else {
             try {

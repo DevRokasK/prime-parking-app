@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { MessageBar, MessageBarType } from '@fluentui/react';
-import { DetailsListLayoutMode, SelectionMode, IColumn, DetailsList } from '@fluentui/react';
+import { MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, IColumn, DetailsList } from '@fluentui/react';
 import { Label } from '@fluentui/react/lib/Label';
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { TextField } from '@fluentui/react/lib/TextField';
@@ -77,7 +76,7 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
             {
                 key: 'column2',
                 name: 'Name',
-                fieldName: 'document',
+                fieldName: 'fileName',
                 minWidth: 160,
                 maxWidth: 180,
                 isResizable: true,

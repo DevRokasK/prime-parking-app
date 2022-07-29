@@ -12,8 +12,7 @@ export interface IPrimeParkingService {
     PutVehicle(data: Vehicle): Promise<ErrorModel>;
     DeleteVehicle(id: string): Promise<ErrorModel>;
 
-    GetVehicleBlobs(id: string): Promise<IGetDocumentResult | ErrorModel>;
-    GetVehicleBlobs2(id: string): Promise<IGetDocumentResult | ErrorModel>;
+    GetVehicleBlobs(id: string): Promise<string[] | ErrorModel>;
 
     GetPermits(pageSize: number, permitState?: string, token?: string): Promise<IGetPermitResult>;
     PostPermit(data: Permit): Promise<IPermitItem | ErrorModel>;

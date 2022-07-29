@@ -8,7 +8,7 @@ import { Home } from './components/page-content/Home'
 import { VehicleList } from './components/vehicles/VehicleList';
 import { PermitList } from './components/permits/PermitList';
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
-initializeIcons();
+import { initializeFileTypeIcons } from '@fluentui/react-file-type-icons';
 
 @observer
 export class App extends React.Component {
@@ -17,6 +17,8 @@ export class App extends React.Component {
         public constructor(props: any) {
                 super(props);
                 this.store = new RootStore();
+                initializeFileTypeIcons();
+                initializeIcons();
         }
 
         public render(): JSX.Element {

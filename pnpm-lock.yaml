@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@fluentui/font-icons-mdl2': ^8.4.2
   '@fluentui/react': ^8.77.0
+  '@fluentui/react-file-type-icons': ^8.6.12
   '@fluentui/react-hooks': ^8.6.1
   '@fluentui/react-icons': ^2.0.175
   '@testing-library/dom': 7.21.4
@@ -25,6 +26,7 @@ specifiers:
 dependencies:
   '@fluentui/font-icons-mdl2': 8.4.2_udcsdvdzjr5ns727jqoeu7kyda
   '@fluentui/react': 8.77.0_azrnvug6rftvaipgfriurbm66i
+  '@fluentui/react-file-type-icons': 8.6.12_udcsdvdzjr5ns727jqoeu7kyda
   '@fluentui/react-hooks': 8.6.1_udcsdvdzjr5ns727jqoeu7kyda
   '@fluentui/react-icons': 2.0.175_react@17.0.2
   '@testing-library/dom': 7.21.4
@@ -1615,8 +1617,8 @@ packages:
     dependencies:
       '@fluentui/merge-styles': 8.5.2
       '@fluentui/set-version': 8.2.1
-      '@fluentui/style-utilities': 8.7.1_udcsdvdzjr5ns727jqoeu7kyda
-      '@fluentui/utilities': 8.8.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/style-utilities': 8.7.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/utilities': 8.10.0_udcsdvdzjr5ns727jqoeu7kyda
       '@types/react': 17.0.39
       react: 17.0.2
       tslib: 2.4.0
@@ -1635,6 +1637,19 @@ packages:
       tslib: 2.4.0
     dev: false
 
+  /@fluentui/react-file-type-icons/8.6.12_udcsdvdzjr5ns727jqoeu7kyda:
+    resolution: {integrity: sha512-s8Ak88sNpqbeL0bu4ZDKWhsdwGFm71aGwtPLW601d4yerCAfByeC5sUcXSkL5zm/Q2g3RXF4OrSGWZMGwLMDaA==}
+    peerDependencies:
+      '@types/react': '>=16.8.0 <18.0.0'
+      react: '>=16.8.0 <18.0.0'
+    dependencies:
+      '@fluentui/set-version': 8.2.1
+      '@fluentui/style-utilities': 8.7.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@types/react': 17.0.39
+      react: 17.0.2
+      tslib: 2.4.0
+    dev: false
+
   /@fluentui/react-focus/8.7.0_udcsdvdzjr5ns727jqoeu7kyda:
     resolution: {integrity: sha512-HuV3zcoe5FRDXCDqVzqj+6mhWzz19hQA4MgQQ42x/0bCdjWMN7fFMuU78cwhxenjG/vWlNgO2Yo+eEZ8j8/CEA==}
     peerDependencies:
@@ -1644,8 +1659,8 @@ packages:
       '@fluentui/keyboard-key': 0.4.1
       '@fluentui/merge-styles': 8.5.2
       '@fluentui/set-version': 8.2.1
-      '@fluentui/style-utilities': 8.7.1_udcsdvdzjr5ns727jqoeu7kyda
-      '@fluentui/utilities': 8.8.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/style-utilities': 8.7.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/utilities': 8.10.0_udcsdvdzjr5ns727jqoeu7kyda
       '@types/react': 17.0.39
       react: 17.0.2
       tslib: 2.4.0
@@ -1737,8 +1752,8 @@ packages:
     dependencies:
       '@fluentui/merge-styles': 8.5.2
       '@fluentui/set-version': 8.2.1
-      '@fluentui/theme': 2.6.6_udcsdvdzjr5ns727jqoeu7kyda
-      '@fluentui/utilities': 8.8.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/theme': 2.6.8_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/utilities': 8.10.0_udcsdvdzjr5ns727jqoeu7kyda
       '@microsoft/load-themed-styles': 1.10.270
       tslib: 2.4.0
     transitivePeerDependencies:
@@ -1751,8 +1766,22 @@ packages:
     dependencies:
       '@fluentui/merge-styles': 8.5.2
       '@fluentui/set-version': 8.2.1
-      '@fluentui/theme': 2.6.6_udcsdvdzjr5ns727jqoeu7kyda
-      '@fluentui/utilities': 8.8.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/theme': 2.6.8_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/utilities': 8.10.0_udcsdvdzjr5ns727jqoeu7kyda
+      '@microsoft/load-themed-styles': 1.10.270
+      tslib: 2.4.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+    dev: false
+
+  /@fluentui/style-utilities/8.7.3_udcsdvdzjr5ns727jqoeu7kyda:
+    resolution: {integrity: sha512-KxqKUQB1E/DFJnbIU4jIMpJqFltp00D7Gnyi6PKoMbHWjxkJaSgV1JBLi0w3tuiLqGMY5Zrus8vgOIjIdvFqaA==}
+    dependencies:
+      '@fluentui/merge-styles': 8.5.2
+      '@fluentui/set-version': 8.2.1
+      '@fluentui/theme': 2.6.8_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/utilities': 8.10.0_udcsdvdzjr5ns727jqoeu7kyda
       '@microsoft/load-themed-styles': 1.10.270
       tslib: 2.4.0
     transitivePeerDependencies:
@@ -1768,7 +1797,35 @@ packages:
     dependencies:
       '@fluentui/merge-styles': 8.5.2
       '@fluentui/set-version': 8.2.1
-      '@fluentui/utilities': 8.8.3_udcsdvdzjr5ns727jqoeu7kyda
+      '@fluentui/utilities': 8.10.0_udcsdvdzjr5ns727jqoeu7kyda
+      '@types/react': 17.0.39
+      react: 17.0.2
+      tslib: 2.4.0
+    dev: false
+
+  /@fluentui/theme/2.6.8_udcsdvdzjr5ns727jqoeu7kyda:
+    resolution: {integrity: sha512-yHjK/R6j4i/NeDB80rEWVWh3G78bqhP5xBDK+b0+51hMFpP4fhlSMcASmFwcShp4DgoD96TLJZIQQ95/kqp2Kg==}
+    peerDependencies:
+      '@types/react': '>=16.8.0 <18.0.0'
+      react: '>=16.8.0 <18.0.0'
+    dependencies:
+      '@fluentui/merge-styles': 8.5.2
+      '@fluentui/set-version': 8.2.1
+      '@fluentui/utilities': 8.10.0_udcsdvdzjr5ns727jqoeu7kyda
+      '@types/react': 17.0.39
+      react: 17.0.2
+      tslib: 2.4.0
+    dev: false
+
+  /@fluentui/utilities/8.10.0_udcsdvdzjr5ns727jqoeu7kyda:
+    resolution: {integrity: sha512-8TNKen+yN849iAmECaRVml5sLpGt6wNScfjdClfj7aQHDnn0LmxIX4zcd0C1vlqQRDnxSoVKvkIDQAU8/qy9HA==}
+    peerDependencies:
+      '@types/react': '>=16.8.0 <18.0.0'
+      react: '>=16.8.0 <18.0.0'
+    dependencies:
+      '@fluentui/dom-utilities': 2.2.1
+      '@fluentui/merge-styles': 8.5.2
+      '@fluentui/set-version': 8.2.1
       '@types/react': 17.0.39
       react: 17.0.2
       tslib: 2.4.0
@@ -4137,6 +4194,7 @@ packages:
   /chokidar/3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
     engines: {node: '>= 8.10.0'}
+    requiresBuild: true
     dependencies:
       anymatch: 3.1.2
       braces: 3.0.2

@@ -5,6 +5,7 @@
   "dependencies": {
     "@fluentui/font-icons-mdl2": "^8.4.2",
     "@fluentui/react": "^8.77.0",
+    "@fluentui/react-file-type-icons": "^8.6.12",
     "@fluentui/react-hooks": "^8.6.1",
     "@fluentui/react-icons": "^2.0.175",
     "@testing-library/dom": "7.21.4",

@@ -4,7 +4,6 @@ import { BaseStore } from '../stores/BaseStore';
 import { ErrorModel } from './Error';
 import { VehicleStore } from '../stores/VehicleStore';
 import { DocumentBlob } from './DocumentBlob';
-import { IGetDocumentResult } from './IGetDocumentResult';
 import { DocumentStore } from '../stores/DocumentStore';
 
 export interface IVehicleItem {
@@ -218,13 +217,11 @@ export class Vehicle extends BaseStore implements IVehicleItem {
     public async GetDocuments(): Promise<void> {
         try {
             const documents = await this.store.RootStore.Service.GetVehicleBlobs(this.id);
-            if ((documents as IGetDocumentResult)) {
+            if ((documents as string[])) {
                 runInAction(() => {
-                    this.DocumentStore.documents = (documents as IGetDocumentResult).documentList.map(value => {
+                    this.DocumentStore.documents = (documents as string[]).map(value => {
                         const document = new DocumentBlob(value);
                         return document;
-                        //(this.Documents.documents as IObservableArray).push(document);
-                        //this.Documents.documents = [...this.Documents.documents, document];
                     });
                 });
             }
