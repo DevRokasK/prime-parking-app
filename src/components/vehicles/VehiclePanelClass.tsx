@@ -49,7 +49,7 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
     });
 
     useEffect(() => {
-        if (props?.vehicle?.DocumentStore?.isNotLoaded) {
+        if (props?.vehicle?.Documents?.isNotLoaded) {
             props.vehicle.GetDocuments().then();
         }
     });
@@ -58,7 +58,7 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
     let items: DocumentBlob[] = [];
     let columns: IColumn[] = [];
     if (vehicle) {
-        items = vehicle?.DocumentStore?.documents.slice();
+        items = vehicle?.Documents?.documents.slice();
         columns = [
             {
                 key: 'column1',
@@ -78,8 +78,8 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
                 key: 'column2',
                 name: 'Name',
                 fieldName: 'document',
-                minWidth: 160,
-                maxWidth: 180,
+                minWidth: 416,
+                maxWidth: 416,
                 isResizable: true,
                 isCollapsible: true,
                 data: 'string',

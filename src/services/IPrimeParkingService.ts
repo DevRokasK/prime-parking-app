@@ -3,6 +3,7 @@ import { Permit, IPermitItem } from "../model/Permit";
 import { ErrorModel } from "../model/Error";
 import { IGetVehicleResult } from "../model/IGetVehicleResult";
 import { IGetPermitResult } from "../model/IGetPermitResult";
+import { IGetDocumentResult } from "../model/IGetDocumentResult";
 
 
 export interface IPrimeParkingService {
@@ -10,6 +11,9 @@ export interface IPrimeParkingService {
     PostVehicle(data: Vehicle): Promise<IVehicleItem | ErrorModel>;
     PutVehicle(data: Vehicle): Promise<ErrorModel>;
     DeleteVehicle(id: string): Promise<ErrorModel>;
+
+    GetVehicleBlobs(id: string): Promise<IGetDocumentResult | ErrorModel>;
+    GetVehicleBlobs2(id: string): Promise<IGetDocumentResult | ErrorModel>;
 
     GetPermits(pageSize: number, permitState?: string, token?: string): Promise<IGetPermitResult>;
     PostPermit(data: Permit): Promise<IPermitItem | ErrorModel>;

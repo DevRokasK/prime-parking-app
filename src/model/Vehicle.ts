@@ -3,6 +3,9 @@ import { Utils } from './Utils';
 import { BaseStore } from '../stores/BaseStore';
 import { ErrorModel } from './Error';
 import { VehicleStore } from '../stores/VehicleStore';
+import { DocumentBlob } from './DocumentBlob';
+import { IGetDocumentResult } from './IGetDocumentResult';
+import { DocumentStore } from '../stores/DocumentStore';
 
 export interface IVehicleItem {
     id: string;
@@ -38,6 +41,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
     @observable public color: string;
     @observable public doors: number;
     @observable public panelState: PanelState;
+    @observable public DocumentStore: DocumentStore = new DocumentStore();
 
     // Returns formated Date as string
     @computed get regDateText(): string {
@@ -207,6 +211,27 @@ export class Vehicle extends BaseStore implements IVehicleItem {
     public setDoors(value: string): void {
         this.doors = Number(value);
         this.isDirty = true;
+    }
+
+    // GET Vehicle Documents from api
+    @action
+    public async GetDocuments(): Promise<void> {
+        try {
+            const documents = await this.store.RootStore.Service.GetVehicleBlobs(this.id);
+            if ((documents as IGetDocumentResult)) {
+                runInAction(() => {
+                    this.DocumentStore.documents = (documents as IGetDocumentResult).documentList.map(value => {
+                        const document = new DocumentBlob(value);
+                        return document;
+                        //(this.Documents.documents as IObservableArray).push(document);
+                        //this.Documents.documents = [...this.Documents.documents, document];
+                    });
+                });
+            }
+        } catch (error) { }
+        runInAction(() => {
+            this.DocumentStore.isNotLoaded = false;
+        });
     }
 
     // Updates or Creates a Vehicle object
