@@ -3,8 +3,6 @@ import { Permit, IPermitItem } from "../model/Permit";
 import { ErrorModel } from "../model/Error";
 import { IGetVehicleResult } from "../model/IGetVehicleResult";
 import { IGetPermitResult } from "../model/IGetPermitResult";
-import { IGetDocumentResult } from "../model/IGetDocumentResult";
-
 
 export interface IPrimeParkingService {
     GetVehicles(pageSize: number, token?: string): Promise<IGetVehicleResult>;

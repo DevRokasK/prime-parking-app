@@ -4,7 +4,6 @@ import { ErrorModel, IErrorModelItem } from "../model/Error";
 import { IPrimeParkingService } from "./IPrimeParkingService";
 import { IGetVehicleResult } from "../model/IGetVehicleResult";
 import { IGetPermitResult } from "../model/IGetPermitResult";
-import { IGetDocumentResult } from "../model/IGetDocumentResult";
 
 export class RestService implements IPrimeParkingService {
     private key: string = "1tQXTjYCpANabg9VzwA5gGfYIfHihWrRQ5pRfyaOZZcJAzFuxgBQ7A==";
