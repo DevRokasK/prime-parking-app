@@ -103,7 +103,7 @@ export class Gate extends BaseStore implements IGateItem {
                         this.showError(postResult as ErrorModel);
                     } else {
                         result = true;
-                        const message = "Vehicle successfully went " + this.direction + " through the gate";
+                        const message = "Vehicle successfully went " + this.regDirection + " through the gate";
                         this.showSuccess(new ErrorModel({ error: 200, message: message }))
                     }
                 } catch (error) {

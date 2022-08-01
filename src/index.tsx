@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import { HashRouter } from "react-router-dom";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { initializeIcons } from '@fluentui/font-icons-mdl2';
+import { initializeFileTypeIcons } from '@fluentui/react-file-type-icons';
+initializeFileTypeIcons();
+initializeIcons();
 
 ReactDOM.render(
   <React.StrictMode>

@@ -25,7 +25,7 @@ export class PermitList extends React.Component<IPermitListProps> {
             {
                 key: 'column1',
                 name: 'Vehicle Id',
-                fieldName: 'carId',
+                fieldName: 'carNumber',
                 minWidth: 70,
                 maxWidth: 90,
                 isRowHeader: true,
@@ -33,7 +33,7 @@ export class PermitList extends React.Component<IPermitListProps> {
                 data: 'string',
                 isPadded: true,
                 onRender: (item: Permit) => {
-                    return <Link onClick={() => { this.selectPermit(item) }}>{item.carId}</Link>
+                    return <Link onClick={() => { this.selectPermit(item) }}>{item.carNumber}</Link>
                 }
             },
             {

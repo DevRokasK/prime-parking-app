@@ -87,6 +87,22 @@ export class RestService implements IPrimeParkingService {
         return result;
     }
 
+    public async GetPlate(text: string, pageSize: number, token?: string): Promise<IGetVehicleResult> {
+        let result: IGetVehicleResult = null;
+        let request: Request;
+        if (token) {
+            request = new Request(this.getRestApiUrl("plate", `ctoken=${token}&cars=${pageSize}&plate=${text}`));
+        } else {
+            request = new Request(this.getRestApiUrl("plate", `cars=${pageSize}&plate=${text}`));
+        }
+        const response = await fetch(request, { method: 'GET' });
+        const vehiclesData: IGetVehicleResult = await response.json();
+        if (vehiclesData && vehiclesData.carList.length > 0) {
+            result = vehiclesData
+        }
+        return result;
+    }
+
     // Vehicle blob REST api calls
     public async GetVehicleBlobFile() {
 
@@ -206,7 +222,7 @@ export class RestService implements IPrimeParkingService {
     //Gate REST api calls
     public async PostGate(vehicleId: string, direction: string): Promise<ErrorModel> {
         let result: ErrorModel;
-        const request: Request = new Request(this.getRestApiUrl("gate/" + vehicleId, `direction="${direction}"`));
+        const request: Request = new Request(this.getRestApiUrl("gate/" + vehicleId, `direction=${direction}`));
         const response = await fetch(request, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
         if (response.status === 204) {
             result = null;

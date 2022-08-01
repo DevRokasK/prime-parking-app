@@ -4,7 +4,7 @@ import { RootStore } from './RootStore';
 import { BaseStore } from './BaseStore';
 import { ErrorModel } from "../model/Error";
 import { Vehicle } from "../model/Vehicle"
-import { IComboBoxOption } from '@fluentui/react';
+import { ITag } from '@fluentui/react';
 import { IGetPermitResult } from '../model/IGetPermitResult';
 
 export class PermitStore extends BaseStore {
@@ -97,6 +97,7 @@ export class PermitStore extends BaseStore {
         const newItem: IPermitItem = {
             id: '',
             carId: '',
+            carNumber: '',
             from: null,
             to: null,
             entered: null,
@@ -163,15 +164,17 @@ export class PermitStore extends BaseStore {
     }
 
     // Get Permits data from api for drop down options
-    public async ResolveVehicles(): Promise<IComboBoxOption[]> {
-        let Vehicles: IComboBoxOption[] = [];
-        const vehicles = await this.RootStore.Service.GetVehicles(50);
+    public async ResolveVehicles(text: string): Promise<ITag[]> {
+        let Vehicles: ITag[] = [];
+        const service = await this.RootStore.Service.GetPlate(text, 100);
         runInAction(() => {
-            Vehicles = vehicles.carList.map(value => {
-                const vehicle = new Vehicle(value, null);
-                const option = { key: vehicle.id, text: vehicle.carNumber, data: vehicle }
-                return option;
-            });
+            if (service !== null) {
+                Vehicles = service.carList.map(value => {
+                    const vehicle = new Vehicle(value, null);
+                    const option = { key: vehicle.id, name: vehicle.carNumber, data: vehicle }
+                    return option;
+                });
+            };
         });
         return Vehicles;
     }

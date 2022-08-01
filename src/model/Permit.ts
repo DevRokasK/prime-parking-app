@@ -7,6 +7,7 @@ import { PermitStore } from '../stores/PermitStore';
 export interface IPermitItem {
     id: string;
     carId: string;
+    carNumber: string;
     from: Date;
     to: Date;
     entered: Date;
@@ -33,6 +34,7 @@ export class Permit extends BaseStore implements IPermitItem {
     @observable public data: IPermitItem;
     @observable public id: string;
     @observable public carId: string;
+    @observable public carNumber: string;
     @observable public from: Date;
     @observable public to: Date;
     @observable public entered: Date;
@@ -102,6 +104,7 @@ export class Permit extends BaseStore implements IPermitItem {
         this.data = data;
         this.id = data.id;
         this.carId = data.carId;
+        this.carNumber = data.carNumber;
         if (data.from) {
             this.from = new Date(data.from);
         }
@@ -120,6 +123,7 @@ export class Permit extends BaseStore implements IPermitItem {
     // Returns true, if all Permit characteristics are not empty
     public isValid(): boolean {
         if (this.carId === "" ||
+            this.carNumber === "" ||
             this.from === null ||
             this.to === null ||
             this.entered === null ||
@@ -137,6 +141,7 @@ export class Permit extends BaseStore implements IPermitItem {
         return JSON.stringify({
             id: this.id,
             carId: this.carId,
+            carNumber: this.carNumber,
             from: this.from,
             to: this.to,
             entered: this.entered,
@@ -158,6 +163,12 @@ export class Permit extends BaseStore implements IPermitItem {
     @action
     public setCarId(value: string): void {
         this.carId = value;
+        this.isDirty = true;
+    }
+
+    @action
+    public setCarNumber(value: string): void {
+        this.carNumber = value;
         this.isDirty = true;
     }
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { MessageBar, MessageBarType, ComboBox, IComboBoxOption } from '@fluentui/react';
+import { MessageBar, MessageBarType } from '@fluentui/react';
+import { TagPicker, ITag, IBasePickerSuggestionsProps } from '@fluentui/react/lib/Pickers';
 import { Label } from '@fluentui/react/lib/Label';
 import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { DatePicker } from '@fluentui/react';
@@ -16,7 +17,6 @@ export const PermitPanel = observer(({ permit }: IPanelProps) => {
     let optionsPermit: IDropdownOption[] = [
         { key: 0, text: 'Planned' },
     ];
-    let optionsId: IComboBoxOption[] = [];
 
     const displayDropdown = () => {
         let result = false;
@@ -41,12 +41,25 @@ export const PermitPanel = observer(({ permit }: IPanelProps) => {
             { key: 2, text: 'Completed' },
             { key: 3, text: 'Missed' },
         ];
-        optionsId = [
-            { key: permit.id, text: permit.carId }
-        ];
     }
 
-    const resolveVehicles = () => { return permit.store.ResolveVehicles(); }
+    const pickerSuggestionsProps: IBasePickerSuggestionsProps = {
+        suggestionsHeaderText: 'Suggested vehicles',
+        noResultsFoundText: 'No vehicles found',
+    };
+
+    const filterSelectedTags = (filterText: string, tagList: ITag[]): Promise<ITag[]> => {
+        return permit.store.ResolveVehicles(filterText);
+    };
+
+    const defaultValue = () => {
+        if (permit?.id) {
+            const value: ITag[] = [{ key: permit?.carId, name: permit?.carNumber }];
+            return value;
+        } else {
+            return;
+        }
+    };
 
     return (
         <>{permit &&
@@ -63,7 +76,19 @@ export const PermitPanel = observer(({ permit }: IPanelProps) => {
                 </div>
                 <div className="flex-item">
                     <Label>Vehicle Id:</Label>
-                    <ComboBox onResolveOptions={resolveVehicles} options={optionsId} defaultSelectedKey={permit.id} disabled={displayDropdown()} onChange={(e, value: IDropdownOption) => permit.setCarId(value.text as string)} />
+                    <TagPicker
+                        onResolveSuggestions={filterSelectedTags}
+                        itemLimit={1}
+                        defaultSelectedItems={defaultValue()}
+                        disabled={displayDropdown()}
+                        pickerSuggestionsProps={pickerSuggestionsProps}
+                        onChange={(value?: ITag[]) => {
+                            if (value.length > 0) {
+                                permit.setCarId(value[0].key as string); permit.setCarNumber(value[0].name as string)
+                            } else {
+                                permit.setCarId(""); permit.setCarNumber("");
+                            }
+                        }} />
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
