@@ -169,6 +169,7 @@ export class VehicleList extends React.Component<ICarListProps> {
                     onRenderNavigation={this.onRenderNavigation}
                     onRenderFooter={this.onRenderFooter}
                     isFooterAtBottom={true}
+                    layerProps={{ eventBubblingEnabled: true }}
                 >
                     <VehiclePanel vehicle={store.CurrentVehicle} ></VehiclePanel>
                 </Panel>

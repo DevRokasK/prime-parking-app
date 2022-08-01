@@ -121,10 +121,6 @@ export class RestService implements IPrimeParkingService {
     }
 
     // Vehicle blob REST api calls
-    public async GetVehicleBlobFile() {
-
-    }
-
     public async GetVehicleBlobs(id: string): Promise<string[] | ErrorModel> {
         const requestURl = new URL(this.baseURL + `/api/blobs/${id}`);
         requestURl.searchParams.append("code", this.key);
@@ -147,12 +143,38 @@ export class RestService implements IPrimeParkingService {
         return result;
     }
 
-    public async PostVehicleBlobs() {
-
+    public async GetVehicleBlobFile(data: Vehicle): Promise<ErrorModel> {
+        const requestURl = new URL(this.baseURL + `/api/blobs/${data.id}/${data.DocumentStore.documents}`);
+        requestURl.searchParams.append("code", this.key);
+        let result: ErrorModel;
+        return result;
     }
 
-    public async DeleteVehicleBlobs() {
+    public async PostVehicleBlob(id: string, fileName: string, content: any): Promise<ErrorModel> {
+        const requestURl = new URL(this.baseURL + `/api/blobs/${id}/${fileName}`);
+        requestURl.searchParams.append("code", this.key);
+        let result: ErrorModel;
+        const response = await fetch(requestURl.toString(), { method: 'POST', body: content })
+        if (response.status === 204) {
+            result = null;
+        } else {
+            try {
+                const iError: IErrorModelItem = await response.json();
+                const error: ErrorModel = new ErrorModel(iError);
+                result = error;
+            } catch {
+                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
+                result = error;
+            }
+        }
+        return result;
+    }
 
+    public async DeleteVehicleBlob(data: Vehicle): Promise<ErrorModel> {
+        const requestURl = new URL(this.baseURL + `/api/blobs/${data.id}/${data.DocumentStore.documents}`);
+        requestURl.searchParams.append("code", this.key);
+        let result: ErrorModel;
+        return result;
     }
 
     // Permit REST api calls

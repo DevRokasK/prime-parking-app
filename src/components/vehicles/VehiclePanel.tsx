@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, IColumn, DetailsList, Icon } from '@fluentui/react';
+import { MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, Selection, IColumn, DetailsList, Icon } from '@fluentui/react';
+import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
 import { getFileTypeIconProps } from '@fluentui/react-file-type-icons';
 import { Label } from '@fluentui/react/lib/Label';
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
@@ -7,8 +8,9 @@ import { TextField } from '@fluentui/react/lib/TextField';
 import { DatePicker } from '@fluentui/react';
 import { Vehicle } from '../../model/Vehicle';
 import { DocumentBlob } from '../../model/DocumentBlob';
-import { observer } from 'mobx-react';
+import { observer, Observer } from 'mobx-react';
 import { Utils } from '../../model/Utils';
+import Dropzone, { DropzoneRef, FileRejection } from "react-dropzone";
 
 export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
     const classNames = mergeStyleSets({
@@ -47,16 +49,40 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
             marginBottom: '20px',
         },
     });
+    let selection: Selection;
 
     useEffect(() => {
         if (props?.vehicle?.DocumentStore?.isNotLoaded) {
             props.vehicle.GetDocuments().then();
         }
     });
+    const onSelectionChanged = () => {
+        const selectedItems = selection.getSelection();
+        vehicle.DocumentStore.SetSelectedFiles(selectedItems as DocumentBlob[]);
+    }
 
     const vehicle = props.vehicle;
     let items: DocumentBlob[] = [];
     let columns: IColumn[] = [];
+
+    const Upload = () => {
+
+    }
+
+    const Delete = () => {
+
+    }
+
+    const DownloadAll = () => {
+
+    }
+
+    const onDrop = (accepted: File[], rejected: FileRejection[]) => {
+        if (accepted.length > 0) {
+            vehicle.handleDrop(accepted);
+        }
+    }
+
     if (vehicle) {
         items = vehicle?.DocumentStore?.documents.slice();
         columns = [
@@ -87,6 +113,24 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
             },
         ];
     }
+
+    const commandBarProps: ICommandBarItemProps[] = [
+        {
+            key: 'upload',
+            text: 'Upload',
+            iconProps: { iconName: 'Upload' },
+            split: true,
+            ariaLabel: 'Upload',
+            onClick: Upload,
+        },
+        {
+            key: 'delete',
+            text: 'Delete',
+            iconProps: { iconName: 'Delete' },
+            ariaLabel: 'Delete',
+            onClick: Delete,
+        },
+    ];
 
     return (
         <>{vehicle &&
@@ -155,14 +199,33 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className='flex-item'></div>
+                <div className='flex-name' />
                 {vehicle?.readOnly &&
-                    <DetailsList
-                        items={items}
-                        columns={columns}
-                        selectionMode={SelectionMode.multiple}
-                        layoutMode={DetailsListLayoutMode.justified}
-                        isHeaderVisible={true}
-                    />
+                    <div className="vehicle-documents">
+                        <Dropzone
+                            onDrop={onDrop}
+                        >
+                            {({ getRootProps, getInputProps, isDragActive, open }) => <Observer>{() =>
+                                <div {...getRootProps()}>
+                                    <input {...getInputProps()} />
+                                    {isDragActive &&
+                                        <div>
+                                            <div>
+                                                Drop here...</div>
+                                        </div>}
+                                    <CommandBar items={commandBarProps} />
+                                    <DetailsList
+                                        items={items}
+                                        columns={columns}
+                                        selectionMode={SelectionMode.multiple}
+                                        layoutMode={DetailsListLayoutMode.justified}
+                                        isHeaderVisible={true} />
+                                </div>
+                            }
+                            </Observer>
+                            }
+                        </Dropzone>
+                    </div>
                 }
             </div>
         }

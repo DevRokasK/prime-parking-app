@@ -169,6 +169,10 @@ body {
   width: 229px;
 }
 
+.vehicle-documents {
+  width: 100%;
+}
+
 @media screen and (max-width: 600px) {
   .grid-container {
     grid-template-areas: 'header'

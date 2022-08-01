@@ -361,4 +361,21 @@ export class Vehicle extends BaseStore implements IVehicleItem {
     public SwitchToDisplay() {
         this.cancelEdit();
     }
+
+    @action
+    public async handleDrop(accepted: File[]) {
+        let response: ErrorModel = null;
+        try {
+            for (let i = 0; i < accepted.length; i++) {
+                response = await this.store.RootStore.Service.PostVehicleBlob(this.id, accepted[i].name, accepted[i].stream);
+                if (response !== null) {
+                    this.showError(response);
+                } else {
+                    this.DocumentStore.documents.push(new DocumentBlob(accepted[i].name));
+                }
+            }
+        } catch {
+            this.showError(this.error);
+        }
+    }
 }
