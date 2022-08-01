@@ -254,7 +254,7 @@ export class RestService implements IPrimeParkingService {
 
     //Gate REST api calls
     public async PostGate(vehicleId: string, direction: string): Promise<ErrorModel> {
-        const requestURl = new URL(this.baseURL + `/api/permits/${vehicleId}`);
+        const requestURl = new URL(this.baseURL + `/api/gate/${vehicleId}`);
         requestURl.searchParams.append("code", this.key);
         requestURl.searchParams.append("direction", direction);
         let result: ErrorModel;
