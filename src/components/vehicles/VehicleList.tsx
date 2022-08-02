@@ -4,7 +4,7 @@ import { DetailsListLayoutMode, SelectionMode, IColumn, DetailsList, Panel, Sele
 import { VehicleStore } from '../../stores/VehicleStore';
 import { VehicleCommandBar } from './VehicleCommandBar';
 import { Vehicle } from '../../model/Vehicle';
-import { VehiclePanel } from './VehiclePanel';
+import { VehiclePanel } from './VehiclePanelClass';
 import { VehiclePanelFooter } from './VehiclePanelFooter';
 import { VehiclePanelHeader } from './VehiclePanelHeader';
 import { Gate } from '../../stores/Gate';

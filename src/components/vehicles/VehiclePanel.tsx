@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, Selection, IColumn, DetailsList, Icon } from '@fluentui/react';
+import { MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, IColumn, DetailsList, Icon } from '@fluentui/react';
 import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
 import { getFileTypeIconProps } from '@fluentui/react-file-type-icons';
 import { Label } from '@fluentui/react/lib/Label';
@@ -10,8 +10,9 @@ import { Vehicle } from '../../model/Vehicle';
 import { DocumentBlob } from '../../model/DocumentBlob';
 import { observer, Observer } from 'mobx-react';
 import { Utils } from '../../model/Utils';
-import Dropzone, { DropzoneRef, FileRejection } from "react-dropzone";
-
+import Dropzone, { FileRejection } from "react-dropzone";
+/*DropzoneRef,*/ //from react-dropzone
+/*Selection,*/ // from @fluentui/react
 export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
     const classNames = mergeStyleSets({
         fileIconHeaderIcon: {
@@ -49,17 +50,12 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
             marginBottom: '20px',
         },
     });
-    let selection: Selection;
 
     useEffect(() => {
         if (props?.vehicle?.DocumentStore?.isNotLoaded) {
             props.vehicle.GetDocuments().then();
         }
     });
-    const onSelectionChanged = () => {
-        const selectedItems = selection.getSelection();
-        vehicle.DocumentStore.SetSelectedFiles(selectedItems as DocumentBlob[]);
-    }
 
     const vehicle = props.vehicle;
     let items: DocumentBlob[] = [];
@@ -73,8 +69,8 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
 
     }
 
-    const DownloadAll = () => {
-
+    const refBuild = (fileName: string) => {
+        return vehicle.Ref(fileName);
     }
 
     const onDrop = (accepted: File[], rejected: FileRejection[]) => {
@@ -109,7 +105,13 @@ export const VehiclePanel = observer((props: { vehicle: Vehicle }) => {
                 isResizable: true,
                 isCollapsible: true,
                 data: 'string',
-                isPadded: true
+                isPadded: true,
+                // onRender: (item: DocumentBlob) => {
+                //     return <Link onClick={() => { Download(item.fileName) }}>{item.fileName}</Link>
+                // }
+                onRender: (item: DocumentBlob) => {
+                    return <a href={refBuild(item.fileName)} download>{item.fileName}</a>
+                }
             },
         ];
     }

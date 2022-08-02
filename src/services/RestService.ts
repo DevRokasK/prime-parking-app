@@ -143,10 +143,18 @@ export class RestService implements IPrimeParkingService {
         return result;
     }
 
-    public async GetVehicleBlobFile(data: Vehicle): Promise<ErrorModel> {
-        const requestURl = new URL(this.baseURL + `/api/blobs/${data.id}/${data.DocumentStore.documents}`);
+    public async GetVehicleBlobFile(data: Vehicle, fileName: string): Promise<ErrorModel> {
+        const requestURl = new URL(this.baseURL + `/api/blobs/${data.id}/${fileName}`);
         requestURl.searchParams.append("code", this.key);
-        let result: ErrorModel;
+        let result: ErrorModel = null;
+        const request: Request = new Request(requestURl.toString());
+        const response = await fetch(request, { method: 'GET' });
+        if (response.status === 200) {
+        } else {
+            const iError: IErrorModelItem = await response.json();
+            const error: ErrorModel = new ErrorModel(iError);
+            result = error;
+        }
         return result;
     }
 
@@ -294,6 +302,11 @@ export class RestService implements IPrimeParkingService {
                 result = error;
             }
         }
+        return result;
+    }
+
+    public BuildURL(data: Vehicle, fileName: string): string {
+        let result: string = this.baseURL + `/api/blobs/${data.id}/${fileName}?code=` + this.key;
         return result;
     }
 }

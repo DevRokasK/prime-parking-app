@@ -12,7 +12,7 @@ export interface IPrimeParkingService {
     GetPlate(text: string, pageSize: number, token?: string): Promise<IGetVehicleResult>;
 
     GetVehicleBlobs(id: string): Promise<string[] | ErrorModel>;
-    GetVehicleBlobFile(data: Vehicle): Promise<ErrorModel>
+    GetVehicleBlobFile(data: Vehicle, fileName: string): Promise<ErrorModel>
     PostVehicleBlob(id: string, fileName: string, content: any): Promise<ErrorModel>
     DeleteVehicleBlob(data: Vehicle): Promise<ErrorModel>
 
@@ -22,4 +22,6 @@ export interface IPrimeParkingService {
     DeletePermit(id: string): Promise<ErrorModel>;
 
     PostGate(vehicleId: string, direction: string): Promise<ErrorModel>;
+
+    BuildURL(data: Vehicle, fileName: string): string;
 }

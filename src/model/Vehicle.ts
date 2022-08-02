@@ -225,7 +225,9 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                     });
                 });
             }
-        } catch (error) { }
+        } catch (error) {
+            ;
+        }
         runInAction(() => {
             this.DocumentStore.isNotLoaded = false;
         });
@@ -371,11 +373,32 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                 if (response !== null) {
                     this.showError(response);
                 } else {
-                    this.DocumentStore.documents.push(new DocumentBlob(accepted[i].name));
+                    runInAction(() => {
+                        this.DocumentStore.documents.push(new DocumentBlob(accepted[i].name));
+                    })
                 }
             }
         } catch {
             this.showError(this.error);
         }
+    }
+
+    @action
+    public async Download(fileName: string) {
+        let response;
+        try {
+            response = await this.store.RootStore.Service.GetVehicleBlobFile(this, fileName);
+            if (response !== null) {
+                this.showError(response);
+            }
+        } catch {
+            this.showError(this.error);
+        }
+    }
+
+    @action
+    public Ref(fileName: string): string {
+        const result: string = this.store.RootStore.Service.BuildURL(this, fileName);
+        return result;
     }
 }
