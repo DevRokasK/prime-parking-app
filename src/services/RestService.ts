@@ -178,10 +178,23 @@ export class RestService implements IPrimeParkingService {
         return result;
     }
 
-    public async DeleteVehicleBlob(data: Vehicle): Promise<ErrorModel> {
-        const requestURl = new URL(this.baseURL + `/api/blobs/${data.id}/${data.DocumentStore.documents}`);
+    public async DeleteVehicleBlob(data: Vehicle, fileName: string): Promise<ErrorModel> {
+        const requestURl = new URL(this.baseURL + `/api/blobs/${data.id}/${fileName}`);
         requestURl.searchParams.append("code", this.key);
         let result: ErrorModel;
+        const response = await fetch(requestURl.toString(), { method: 'DELETE' });
+        if (response.status === 204) {
+            result = null;
+        } else {
+            try {
+                const iError: IErrorModelItem = await response.json();
+                const error: ErrorModel = new ErrorModel(iError);
+                result = error;
+            } catch {
+                const error: ErrorModel = new ErrorModel({ error: response.status, message: response.statusText });
+                result = error;
+            }
+        }
         return result;
     }
 

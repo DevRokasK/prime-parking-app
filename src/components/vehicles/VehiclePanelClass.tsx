@@ -10,7 +10,9 @@ import { Vehicle } from '../../model/Vehicle';
 import { DocumentBlob } from '../../model/DocumentBlob';
 import { observer, Observer } from 'mobx-react';
 import { Utils } from '../../model/Utils';
+import { FileCommandBar } from './FileCommandBar';
 import Dropzone, { DropzoneRef, FileRejection } from "react-dropzone";
+import { runInAction } from 'mobx';
 
 export interface ICarPanelProps {
     vehicle: Vehicle;
@@ -19,11 +21,10 @@ export interface ICarPanelProps {
 @observer
 export class VehiclePanel extends React.Component<ICarPanelProps> {
     private dropzoneRef: DropzoneRef = null;
-
-    private items: DocumentBlob[] = [];
     private columns: IColumn[] = [];
     private commandBarProps: ICommandBarItemProps[] = [];
     private selection: Selection;
+    private isSelected: boolean = false;
 
     private classNames = mergeStyleSets({
         fileIconHeaderIcon: {
@@ -64,10 +65,6 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
 
     public constructor(props: ICarPanelProps) {
         super(props);
-
-        if (this.props.vehicle.DocumentStore.isNotLoaded) {
-            this.props.vehicle.GetDocuments().then();
-        }
 
         this.columns = [
             {
@@ -116,6 +113,7 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
                 text: 'Delete',
                 iconProps: { iconName: 'Delete' },
                 ariaLabel: 'Delete',
+                disabled: !this.isSelected,
                 onClick: this.Delete,
             },
         ];
@@ -126,15 +124,18 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
     }
 
     public componentDidMount() {
-        this.items = this.props.vehicle.DocumentStore.documents.slice();
+        if (this.props.vehicle.DocumentStore.isNotLoaded) {
+            this.props.vehicle.GetDocuments().then();
+        }
     }
 
-    public componentDidUpdate() {
-
+    public componentDidUpdate(prevProps: ICarPanelProps) {
+        // if (prevProps.vehicle.DocumentStore.selectedFiles !== this.props.vehicle.DocumentStore.selectedFiles) {
+        //     this.onSelectionChanged();
+        // }
     }
 
     public render() {
-        const items = this.items;
         const columns = this.columns;
         const vehicle = this.props.vehicle;
 
@@ -208,7 +209,10 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
                     <div className='flex-name' />
                     {vehicle?.readOnly &&
                         <div className="vehicle-documents">
-                            <Dropzone ref={(node) => { this.dropzoneRef = node; }}
+                            <div className='flex-name'>
+                                <h2>Vehicle Documents</h2>
+                            </div>
+                            {/* <Dropzone ref={(node) => { this.dropzoneRef = node; }}
                                 onDrop={this.onDrop}
                             >
                                 {({ getRootProps, getInputProps, isDragActive, open }) => <Observer>{() =>
@@ -218,21 +222,22 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
                                             <div>
                                                 <div>
                                                     Drop here...</div>
-                                            </div>}
-                                        <CommandBar items={this.commandBarProps} />
-                                        <DetailsList
-                                            items={items}
-                                            columns={columns}
-                                            selectionMode={SelectionMode.multiple}
-                                            layoutMode={DetailsListLayoutMode.justified}
-                                            isHeaderVisible={true} />
-                                    </div>
-                                }
-                                </Observer>
+                                            </div>} */}
+                            <FileCommandBar vehicle={vehicle} />
+                            <DetailsList
+                                items={this.props.vehicle.DocumentStore.documents.slice()}
+                                columns={columns}
+                                selection={this.selection}
+                                selectionMode={SelectionMode.multiple}
+                                layoutMode={DetailsListLayoutMode.justified}
+                                isHeaderVisible={true} />
+                        </div>
+                    }
+                    {/* </Observer>
                                 }
                             </Dropzone>
                         </div>
-                    }
+                    } */}
                 </div>
             }
             </>
@@ -250,7 +255,7 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
     }
 
     private Delete = () => {
-
+        this.props.vehicle.DeleteFiles();
     }
 
     private refBuild = (fileName: string) => {
@@ -259,6 +264,13 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
 
     private onSelectionChanged = () => {
         const selectedItems = this.selection.getSelection();
-        this.props.vehicle.DocumentStore.SetSelectedFiles(selectedItems as DocumentBlob[]);
+        runInAction(() => {
+            this.props.vehicle.DocumentStore.SetSelectedFiles(selectedItems as DocumentBlob[]);
+            if (this.props.vehicle.DocumentStore.selectedFiles.length !== 0) {
+                this.isSelected = true;
+            } else {
+                this.isSelected = false;
+            }
+        })
     }
 }

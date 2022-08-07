@@ -226,7 +226,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                 });
             }
         } catch (error) {
-            ;
+            this.DocumentStore.showError(new ErrorModel({ error: 400, message: "No documents" }));
         }
         runInAction(() => {
             this.DocumentStore.isNotLoaded = false;
@@ -399,6 +399,48 @@ export class Vehicle extends BaseStore implements IVehicleItem {
     @action
     public Ref(fileName: string): string {
         const result: string = this.store.RootStore.Service.BuildURL(this, fileName);
+        return result;
+    }
+
+    @action async DeleteFiles() {
+        try {
+            if (this.DocumentStore.selectedFiles !== null) {
+                const files = this.DocumentStore.selectedFiles.slice();
+                for (let i = 0; i < files.length; i++) {
+                    let result = false;
+                    result = await this.DeleteFile(files[i].fileName);
+                    if (result) {
+                        const index = this.DocumentStore.documents.indexOf(files[i]);
+                        if (index > -1) {
+                            runInAction(() => {
+                                this.DocumentStore.documents.splice(index, 1);
+                            })
+                        }
+                    }
+                }
+            }
+        } catch {
+            this.showError(this.error);
+        }
+    }
+
+    @action async DeleteFile(fileName: string): Promise<boolean> {
+        let result = false;
+        this.clearError();
+        if (this && this.store.RootStore.Service) {
+            try {
+                const deleteResult = await this.store.RootStore.Service.DeleteVehicleBlob(this, fileName);
+                if (deleteResult && (deleteResult as ErrorModel).error) {
+                    this.showError(deleteResult as ErrorModel);
+                } else {
+                    result = true;
+                }
+            } catch (error) {
+                this.showError(error);
+            }
+        } else {
+            this.showError(new ErrorModel({ error: 400, message: "System error" }));
+        }
         return result;
     }
 }

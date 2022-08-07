@@ -119,7 +119,9 @@ export class VehicleStore extends BaseStore {
                     if (result) {
                         const index = this.Vehicles.indexOf(selectedVehilces[i]);
                         if (index > -1) {
-                            this.Vehicles.splice(index, 1);
+                            runInAction(() => {
+                                this.Vehicles.splice(index, 1);
+                            })
                         }
                     }
                 }
