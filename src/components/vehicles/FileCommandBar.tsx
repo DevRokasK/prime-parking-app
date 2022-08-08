@@ -9,13 +9,17 @@ export interface IFileCommandBarProps {
     vehicle: Vehicle;
 }
 
-export const FileCommandBar = observer((vehicle: IFileCommandBarProps) => {
+export const FileCommandBar = observer((store: IFileCommandBarProps) => {
     const Upload = () => {
 
     }
 
+    const onDrop = (accepted: File[]) => {
+
+    }
+
     const Delete = () => {
-        vehicle.vehicle.DeleteFiles();
+        store.vehicle.DeleteFiles();
     }
 
     const items: ICommandBarItemProps[] = [
@@ -32,14 +36,14 @@ export const FileCommandBar = observer((vehicle: IFileCommandBarProps) => {
             text: 'Delete',
             iconProps: { iconName: 'Delete' },
             ariaLabel: 'Delete',
-            disabled: vehicle.vehicle.DocumentStore.selectedFiles.length === 0,
+            disabled: store.vehicle.DocumentStore.selectedFiles.length === 0,
             onClick: Delete,
         },
     ];
 
     const farItems: ICommandBarItemProps[] = [];
-    if (vehicle.vehicle.DocumentStore.selectedFiles.length > 0) {
-        let count: string = vehicle.vehicle.DocumentStore.selectedFiles.length.toString();
+    if (store.vehicle.DocumentStore.selectedFiles.length > 0) {
+        let count: string = store.vehicle.DocumentStore.selectedFiles.length.toString();
         farItems.push({
             key: 'count',
             text: 'Selected: ' + count,
@@ -47,7 +51,7 @@ export const FileCommandBar = observer((vehicle: IFileCommandBarProps) => {
         })
     }
 
-    if (vehicle.vehicle.running) {
+    if (store.vehicle.running) {
         farItems.push(
             {
                 key: 'running',
@@ -67,12 +71,12 @@ export const FileCommandBar = observer((vehicle: IFileCommandBarProps) => {
                 />
             </div>
             {
-                vehicle.vehicle.DocumentStore.hasError &&
+                store.vehicle.DocumentStore.hasError &&
                 <MessageBar
                     messageBarType={MessageBarType.error}
-                    onDismiss={vehicle.vehicle.DocumentStore.clearError}
+                    onDismiss={store.vehicle.DocumentStore.clearError}
                 >
-                    {vehicle.vehicle.DocumentStore.errorMessage}
+                    {store.vehicle.DocumentStore.errorMessage}
                 </MessageBar>}
         </div>
     );

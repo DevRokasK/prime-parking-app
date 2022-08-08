@@ -173,6 +173,42 @@ body {
   width: 100%;
 }
 
+.nav-centered {
+  margin: 32px auto auto auto;
+  text-align: center;
+  padding: 10px;
+}
+
+.dropzone {
+  margin-top: 6px;
+  position: relative;
+  box-sizing: border-box;
+  height: 53px;
+  width: 100%;
+  text-align: center;
+  border: 3px dashed #eeeeee;
+  border-radius: 6px;
+  background-color: #fafafa;
+  color: #979797;
+}
+
+.dropzone-drop {
+  position: absolute;
+  top: -3px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  height: 53px;
+  width: 100%;
+  text-align: center;
+  border: 3px dashed #eeeeee;
+  border-radius: 6px;
+  background-color: #EDEBE9;
+  border-color: #979797;
+  color: #979797;
+}
+
 @media screen and (max-width: 600px) {
   .grid-container {
     grid-template-areas: 'header'

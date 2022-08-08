@@ -212,18 +212,27 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
                             <div className='flex-name'>
                                 <h2>Vehicle Documents</h2>
                             </div>
-                            {/* <Dropzone ref={(node) => { this.dropzoneRef = node; }}
+
+                            <FileCommandBar vehicle={vehicle} /><Dropzone ref={(node) => { this.dropzoneRef = node; }}
                                 onDrop={this.onDrop}
                             >
                                 {({ getRootProps, getInputProps, isDragActive, open }) => <Observer>{() =>
                                     <div {...getRootProps()}>
                                         <input {...getInputProps()} />
-                                        {isDragActive &&
-                                            <div>
+                                        <div className='dropzone'>
+                                            {isDragActive &&
                                                 <div>
-                                                    Drop here...</div>
-                                            </div>} */}
-                            <FileCommandBar vehicle={vehicle} />
+                                                    <div className='dropzone-drop'>
+                                                        <p>Drop documents here...</p>
+                                                    </div>
+                                                </div>}
+                                            <p>Drop documents here...</p>
+                                        </div>
+                                    </div>
+                                }
+                                </Observer>
+                                }
+                            </Dropzone>
                             <DetailsList
                                 items={this.props.vehicle.DocumentStore.documents.slice()}
                                 columns={columns}
@@ -231,13 +240,9 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
                                 selectionMode={SelectionMode.multiple}
                                 layoutMode={DetailsListLayoutMode.justified}
                                 isHeaderVisible={true} />
+
                         </div>
                     }
-                    {/* </Observer>
-                                }
-                            </Dropzone>
-                        </div>
-                    } */}
                 </div>
             }
             </>

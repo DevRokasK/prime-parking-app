@@ -375,6 +375,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                 } else {
                     runInAction(() => {
                         this.DocumentStore.documents.push(new DocumentBlob(accepted[i].name));
+                        this.DocumentStore.clearError();
                     })
                 }
             }
