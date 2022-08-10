@@ -371,7 +371,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
             for (let i = 0; i < accepted.length; i++) {
                 response = await this.store.RootStore.Service.PostVehicleBlob(this.id, accepted[i].name, accepted[i].stream);
                 if (response !== null) {
-                    this.showError(response);
+                    this.DocumentStore.showError(response);
                 } else {
                     runInAction(() => {
                         this.DocumentStore.documents.push(new DocumentBlob(accepted[i].name));
@@ -380,7 +380,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
                 }
             }
         } catch {
-            this.showError(this.error);
+            this.DocumentStore.showError(this.error);
         }
     }
 

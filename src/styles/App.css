@@ -180,33 +180,34 @@ body {
 }
 
 .dropzone {
-  margin-top: 6px;
   position: relative;
-  box-sizing: border-box;
-  height: 53px;
-  width: 100%;
-  text-align: center;
-  border: 3px dashed #eeeeee;
-  border-radius: 6px;
-  background-color: #fafafa;
-  color: #979797;
 }
 
-.dropzone-drop {
+.dropzone-overlay {
+  opacity: 0.5;
   position: absolute;
-  top: -3px;
+  top: 0;
   right: 0;
   left: 0;
   bottom: 0;
   box-sizing: border-box;
-  height: 53px;
+  height: 100%;
   width: 100%;
-  text-align: center;
   border: 3px dashed #eeeeee;
   border-radius: 6px;
   background-color: #EDEBE9;
   border-color: #979797;
-  color: #979797;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropzone-text {
+  text-align: center;
+  font-size: large;
+  margin: auto;
+  vertical-align: middle;
+  color: #454545;
 }
 
 @media screen and (max-width: 600px) {
