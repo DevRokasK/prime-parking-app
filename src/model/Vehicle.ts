@@ -367,6 +367,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
     @action
     public async handleDrop(accepted: File[]) {
         let response: ErrorModel = null;
+        this.DocumentStore.startRunning();
         try {
             for (let i = 0; i < accepted.length; i++) {
                 response = await this.store.RootStore.Service.PostVehicleBlob(this.id, accepted[i].name, accepted[i].stream);
@@ -382,6 +383,7 @@ export class Vehicle extends BaseStore implements IVehicleItem {
         } catch {
             this.DocumentStore.showError(this.error);
         }
+        this.DocumentStore.endRunning();
     }
 
     @action
