@@ -216,7 +216,8 @@ body {
       'main'
       'nav';
     grid-template-columns: 100%;
-    grid-template-rows: 40px 100% 120px;
+    grid-template-rows: 40px 800px 120px;
+    overflow: auto;
   }
 
   .main {
@@ -234,5 +235,19 @@ body {
 
   .main-wrapper {
     overflow: auto;
+  }
+
+  .flex-item-gap {
+    width: 0;
+    height: 0;
+  }
+  
+  .flex-item {
+    width: 100%;
+    margin: 12px;
+  }
+
+  .root-110 {
+    width: 100%;
   }
 }
