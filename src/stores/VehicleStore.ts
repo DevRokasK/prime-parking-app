@@ -3,7 +3,7 @@ import { observable, action, makeObservable, computed, runInAction } from 'mobx'
 import { RootStore } from "./RootStore";
 import { BaseStore } from "./BaseStore";
 import { ErrorModel } from "../model/Error";
-import { IComboBoxOption } from '@fluentui/react';
+import { IComboBoxOption, ITag } from '@fluentui/react';
 import { IGetVehicleResult } from "../model/IGetVehicleResult";
 
 export class VehicleStore extends BaseStore {
@@ -154,7 +154,7 @@ export class VehicleStore extends BaseStore {
         return result;
     }
 
-    // Get Vehicles data from api for drop down options
+    // Get Vehicles data from api for combo box drop down options
     public async ResolveVehicles(): Promise<IComboBoxOption[]> {
         let Vehicles: IComboBoxOption[] = [];
         const vehicles = await this.RootStore.Service.GetVehicles(50);
@@ -164,6 +164,22 @@ export class VehicleStore extends BaseStore {
                 const option = { key: vehicle.id, text: vehicle.carNumber, data: vehicle }
                 return option;
             });
+        });
+        return Vehicles;
+    }
+
+    // Get Permits data from api for tag picker options
+    public async ResolveVehicleTags(text: string): Promise<ITag[]> {
+        let Vehicles: ITag[] = [];
+        const service = await this.RootStore.Service.GetPlate(text, 100);
+        runInAction(() => {
+            if (service !== null) {
+                Vehicles = service.carList.map(value => {
+                    const vehicle = new Vehicle(value, null);
+                    const option = { key: vehicle.id, name: vehicle.carNumber, data: vehicle }
+                    return option;
+                });
+            };
         });
         return Vehicles;
     }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { MessageBar, MessageBarType, ComboBox } from '@fluentui/react';
+import { MessageBar, MessageBarType } from '@fluentui/react';
+import { TagPicker, ITag, IBasePickerSuggestionsProps } from '@fluentui/react/lib/Pickers';
 import { Label } from '@fluentui/react/lib/Label';
 import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { observer } from 'mobx-react';
@@ -18,12 +19,14 @@ export const GatePanel = observer(({ store, gate }: IPanelProps) => {
         { key: 'out', text: 'out' }
     ];
 
-    let optionsVehicles: IDropdownOption[] = [];
+    const pickerSuggestionsProps: IBasePickerSuggestionsProps = {
+        suggestionsHeaderText: 'Suggested vehicles',
+        noResultsFoundText: 'No vehicles found',
+    };
 
-    const resolveVehicles = async () => {
-        optionsVehicles = await store.ResolveVehicles();
-        return optionsVehicles;
-    }
+    const filterSelectedTags = (filterText: string, tagList: ITag[]): Promise<ITag[]> => {
+        return store.ResolveVehicleTags(filterText);
+    };
 
     return (
         <>{store.Vehicles &&
@@ -47,7 +50,17 @@ export const GatePanel = observer(({ store, gate }: IPanelProps) => {
                 </div>
                 <div className="flex-item">
                     <Label>Vehicle Id:</Label>
-                    <ComboBox onResolveOptions={resolveVehicles} options={optionsVehicles} onChange={(e, value: IDropdownOption) => gate.setVehicleId(value.text as string)} />
+                    <TagPicker
+                        onResolveSuggestions={filterSelectedTags}
+                        itemLimit={1}
+                        pickerSuggestionsProps={pickerSuggestionsProps}
+                        onChange={(value?: ITag[]) => {
+                            if (value.length > 0) {
+                                gate.setVehicleId(value[0].name as string);
+                            } else {
+                                gate.setVehicleId("");
+                            }
+                        }} />
                 </div>
                 <div className='flex-item-gap'></div>
                 <div className="flex-item">
