@@ -1,8 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './styles/NewApp.css';
 import { RootStore } from './stores/RootStore';
+import { Header } from './components/page-content/Header';
 import { Navigation } from './components/page-content/Navigation'
 import { Home } from './components/page-content/Home'
 import { VehicleList } from './components/vehicles/VehicleList';
@@ -22,12 +23,7 @@ export class App extends React.Component {
                 return <div className="App">
                         <div className="grid-container">
                                 <header className="header">
-                                        <div className="header-name">
-                                                <Link to="/">Prime Parking</Link>
-                                        </div>
-                                        <div className="header-logo">
-                                                <img src="https://icon-library.com/images/icon-car/icon-car-1.jpg" alt="Car go brrr" className="invert" />
-                                        </div>
+                                        <Header/>
                                 </header>
                                 <aside className="navigation">
                                         <Navigation />
@@ -45,7 +41,6 @@ export class App extends React.Component {
                                 </main>
                         </div>
                 </div>
-
         }
 }
 
