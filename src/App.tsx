@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Route, Routes, Link } from 'react-router-dom';
-import './styles/App.css';
+import './styles/NewApp.css';
 import { RootStore } from './stores/RootStore';
 import { Navigation } from './components/page-content/Navigation'
 import { Home } from './components/page-content/Home'
