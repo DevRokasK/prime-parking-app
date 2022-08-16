@@ -5,8 +5,11 @@ import { IconButton } from '@fluentui/react/lib/Button';
 import { Link } from 'react-router-dom';
 import { Navigation } from './Navigation';
 
-export const Header = observer(() => {
-    let isHamburgerOpen: boolean = false;
+export interface IHeaderProps {
+    isHamburgerOpen: boolean;
+}
+
+export const Header = observer(({ isHamburgerOpen }: IHeaderProps) => {
     const iconHamburger: IIconProps = { iconName: 'CollapseMenu' };
 
     const openHamburgerMenu = () => {
@@ -20,7 +23,7 @@ export const Header = observer(() => {
     return (
         <div>
             <div className='hamburger-menu'>
-                <IconButton iconProps={iconHamburger} onClick={openHamburgerMenu} />
+                <IconButton styles={{ root: { selectors: { ':hover .ms-Button-icon': { backgroundColor: "#EDEBE9" } } } }} iconProps={iconHamburger} onClick={openHamburgerMenu} />
             </div>
             <div className="header-name">
                 <Link to="/">Prime Parking</Link>
