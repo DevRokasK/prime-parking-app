@@ -4,7 +4,7 @@ import { Nav, INavLinkGroup } from '@fluentui/react/lib/Nav';
 export const Home = () => {
     const navLinkGroup: INavLinkGroup[] = [
         {
-            name: 'Content',
+            name: '',
             links: [
                 { name: 'Vehicles', url: '#/Vehicles/all', key: 'allVehicles' },
                 { name: 'Permits', url: '#/Permits/all', key: 'allPermits' },

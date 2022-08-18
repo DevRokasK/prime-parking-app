@@ -12,7 +12,6 @@ import { PermitList } from './components/permits/PermitList';
 @observer
 export class App extends React.Component {
         private store: RootStore;
-        public isHamburgerOpen: boolean = false;
 
         public constructor(props: any) {
                 super(props);
@@ -24,10 +23,10 @@ export class App extends React.Component {
                 return <div className="App">
                         <div className="grid-container">
                                 <header className="header">
-                                        <Header isHamburgerOpen={this.isHamburgerOpen} />
+                                        <Header isHamburgerOpen={store.isHamburgerOpen} toggleHamburgerOpen={store.ToggleHamburgerOpen} toggleHamburgerClose={store.ToggleHamburgerClose} />
                                 </header>
                                 <aside className="navigation">
-                                        <Navigation />
+                                        <Navigation toggleHamburger={store.ToggleHamburgerClose} />
                                 </aside>
                                 <main className="main">
                                         <Routes>

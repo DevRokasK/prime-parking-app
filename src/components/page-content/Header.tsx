@@ -7,23 +7,25 @@ import { Navigation } from './Navigation';
 
 export interface IHeaderProps {
     isHamburgerOpen: boolean;
+    toggleHamburgerOpen: () => void;
+    toggleHamburgerClose: () => void;
 }
 
-export const Header = observer(({ isHamburgerOpen }: IHeaderProps) => {
+export const Header = observer(({ isHamburgerOpen, toggleHamburgerOpen, toggleHamburgerClose }: IHeaderProps) => {
     const iconHamburger: IIconProps = { iconName: 'CollapseMenu' };
 
-    const openHamburgerMenu = () => {
-        isHamburgerOpen = true;
+    const toggleHamburgerMenuOpen = () => {
+        toggleHamburgerOpen();
     }
 
-    const closeHamburgerMenu = () => {
-        isHamburgerOpen = false;
+    const toggleHamburgerMenuClose = () => {
+        toggleHamburgerClose();
     }
 
     return (
         <div>
             <div className='hamburger-menu'>
-                <IconButton styles={{ root: { selectors: { ':hover .ms-Button-icon': { backgroundColor: "#EDEBE9" } } } }} iconProps={iconHamburger} onClick={openHamburgerMenu} />
+                <IconButton iconProps={iconHamburger} onClick={toggleHamburgerMenuOpen} />
             </div>
             <div className="header-name">
                 <Link to="/">Prime Parking</Link>
@@ -32,12 +34,13 @@ export const Header = observer(({ isHamburgerOpen }: IHeaderProps) => {
                 <img src="https://icon-library.com/images/icon-car/icon-car-1.jpg" alt="Car go brrr" className="invert" />
             </div>
             <Panel
+                isLightDismiss
                 type={PanelType.smallFixedNear}
                 isOpen={isHamburgerOpen}
-                onDismiss={closeHamburgerMenu}
+                onDismiss={toggleHamburgerMenuClose}
                 headerText={"Navigation"}
                 closeButtonAriaLabel="Close">
-                <Navigation />
+                <Navigation toggleHamburger={toggleHamburgerClose} />
             </Panel>
         </div>
     )
