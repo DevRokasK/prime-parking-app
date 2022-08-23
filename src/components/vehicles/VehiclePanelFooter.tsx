@@ -1,5 +1,5 @@
 import React from 'react';
-import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
+import { DefaultButton, PrimaryButton } from '@fluentui/react';
 import { observer } from 'mobx-react';
 import { Vehicle } from '../../model/Vehicle';
 

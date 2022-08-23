@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
+import { CommandBar, ICommandBarItemProps } from '@fluentui/react';
 import { observer } from 'mobx-react';
 import { Gate } from '../../stores/Gate';
 

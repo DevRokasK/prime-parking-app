@@ -1,9 +1,5 @@
 import React from 'react';
-import { MessageBar, MessageBarType } from '@fluentui/react';
-import { TagPicker, ITag, IBasePickerSuggestionsProps } from '@fluentui/react/lib/Pickers';
-import { Label } from '@fluentui/react/lib/Label';
-import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
-import { DatePicker } from '@fluentui/react';
+import { MessageBar, MessageBarType, TagPicker, ITag, IBasePickerSuggestionsProps, Label, Dropdown, IDropdownOption, DatePicker } from '@fluentui/react';
 import { Permit, PermitState } from '../../model/Permit';
 import { observer } from 'mobx-react';
 import { Utils } from '../../model/Utils';

@@ -1,7 +1,5 @@
 import React from 'react';
-import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
-import { MessageBar, MessageBarType } from '@fluentui/react';
-import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
+import { MessageBar, MessageBarType, CommandBar, ICommandBarItemProps, Spinner, SpinnerSize } from '@fluentui/react';
 import { observer } from 'mobx-react';
 import { Vehicle } from '../../model/Vehicle';
 

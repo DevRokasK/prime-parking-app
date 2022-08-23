@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { IIconProps, Panel, PanelType } from '@fluentui/react';
-import { IconButton } from '@fluentui/react/lib/Button';
+import { IIconProps, Panel, PanelType, IconButton } from '@fluentui/react';
 import { Link } from 'react-router-dom';
 import { Navigation } from './Navigation';
 

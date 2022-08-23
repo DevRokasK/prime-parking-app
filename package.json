@@ -8,8 +8,8 @@
     "@fluentui/react-file-type-icons": "^8.6.12",
     "@fluentui/react-hooks": "^8.6.1",
     "@fluentui/react-icons": "^2.0.175",
-    "@testing-library/dom": "7.21.4",
     "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/dom": "7.21.4",
     "@testing-library/react": "^12.1.1",
     "@testing-library/user-event": "^12.5.0",
     "@types/jest": "^27.5.2",
@@ -49,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    
   }
 }

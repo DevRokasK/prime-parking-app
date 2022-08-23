@@ -24,6 +24,7 @@
     "strictNullChecks": false
   },
   "include": [
-    "src"
-, "test/App.test.tsx", "test/setupTests.ts"  ]
+    "src",
+    "src/setupTests.ts"
+  ],
 }

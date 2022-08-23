@@ -1,11 +1,9 @@
 import React from 'react';
-import { MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, Selection, IColumn, DetailsList, Icon } from '@fluentui/react';
-import { ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
+import {
+    MessageBar, MessageBarType, DetailsListLayoutMode, SelectionMode, Selection, IColumn,
+    DetailsList, Icon, ICommandBarItemProps, Label, mergeStyleSets, TextField, DatePicker
+} from '@fluentui/react';
 import { getFileTypeIconProps } from '@fluentui/react-file-type-icons';
-import { Label } from '@fluentui/react/lib/Label';
-import { mergeStyleSets } from '@fluentui/react/lib/Styling';
-import { TextField } from '@fluentui/react/lib/TextField';
-import { DatePicker } from '@fluentui/react';
 import { Vehicle } from '../../model/Vehicle';
 import { DocumentBlob } from '../../model/DocumentBlob';
 import { observer, Observer } from 'mobx-react';

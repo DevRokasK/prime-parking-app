@@ -1,8 +1,5 @@
 import React from 'react';
-import { MessageBar, MessageBarType } from '@fluentui/react';
-import { TagPicker, ITag, IBasePickerSuggestionsProps } from '@fluentui/react/lib/Pickers';
-import { Label } from '@fluentui/react/lib/Label';
-import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
+import { MessageBar, MessageBarType, TagPicker, ITag, IBasePickerSuggestionsProps, Label, Dropdown, IDropdownOption } from '@fluentui/react';
 import { observer } from 'mobx-react';
 import { VehicleStore } from '../../stores/VehicleStore';
 import { Gate } from '../../stores/Gate';

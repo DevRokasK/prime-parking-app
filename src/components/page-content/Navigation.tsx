@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, INavStyles, INavLinkGroup } from '@fluentui/react/lib/Nav';
+import { Nav, INavStyles, INavLinkGroup } from '@fluentui/react';
 import { observer } from 'mobx-react';
 
 export interface hamburgerProps {

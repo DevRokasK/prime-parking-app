@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, INavLinkGroup } from '@fluentui/react/lib/Nav';
+import { Nav, INavLinkGroup } from '@fluentui/react';
 
 export const Home = () => {
     const navLinkGroup: INavLinkGroup[] = [
