@@ -24,7 +24,7 @@ export const Header = observer(({ isHamburgerOpen, toggleHamburgerOpen, toggleHa
     return (
         <div>
             <div className='hamburger-menu'>
-                <IconButton iconProps={iconHamburger} onClick={toggleHamburgerMenuOpen} />
+                <IconButton title={"hamburgerMenu"} iconProps={iconHamburger} onClick={toggleHamburgerMenuOpen} />
             </div>
             <div className="header-name">
                 <Link to="/">Prime Parking</Link>

@@ -124,7 +124,7 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
                     </div>
                     <div className="flex-item">
                         <Label >Vehicle Id:</Label>
-                        <TextField defaultValue={vehicle.carNumber} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setCarNumber(value)} />
+                        <TextField placeholder='plate number' defaultValue={vehicle.carNumber} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setCarNumber(value)} />
                     </div>
                     <div className='flex-item-gap'></div>
                     <div className='flex-item'></div>
@@ -132,47 +132,47 @@ export class VehiclePanel extends React.Component<ICarPanelProps> {
                         <Label >Registration date:</Label>
                         {vehicle.readOnly ?
                             <TextField defaultValue={vehicle.regDateText} disabled /> :
-                            <DatePicker value={vehicle.registrationYear} formatDate={Utils.formatDate} disabled={vehicle.readOnly} onSelectDate={(value) => vehicle.setRegistrationYear(value)} />
+                            <DatePicker placeholder='date' value={vehicle.registrationYear} formatDate={Utils.formatDate} disabled={vehicle.readOnly} onSelectDate={(value) => vehicle.setRegistrationYear(value)} />
                         }
                     </div>
                     <div className='flex-item-gap'></div>
                     <div className="flex-item">
                         <Label >Registration place:</Label>
-                        <TextField defaultValue={vehicle.registrationPlace} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setRegistrationPlace(value)} />
+                        <TextField placeholder='location' defaultValue={vehicle.registrationPlace} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setRegistrationPlace(value)} />
                     </div>
                     <div className='flex-name'>
                         <h2>Vehicle Characteristics</h2>
                     </div>
                     <div className="flex-item">
                         <Label >Make:</Label>
-                        <TextField defaultValue={vehicle.make} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setMake(value)} />
+                        <TextField placeholder='make' defaultValue={vehicle.make} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setMake(value)} />
                     </div>
                     <div className='flex-item-gap'></div>
                     <div className="flex-item">
                         <Label >Model:</Label>
-                        <TextField defaultValue={vehicle.model} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setModel(value)} />
+                        <TextField placeholder='model' defaultValue={vehicle.model} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setModel(value)} />
                     </div>
                     <div className="flex-item">
                         <Label >Engine power:</Label>
-                        <TextField defaultValue={vehicle.regEnginePower} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setEnginePower(value)} />
+                        <TextField placeholder='engine power' defaultValue={vehicle.regEnginePower} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setEnginePower(value)} />
                     </div>
                     <div className='flex-item-gap'></div>
                     <div className="flex-item">
                         <Label >Engine torque:</Label>
-                        <TextField defaultValue={vehicle.regEngineTorque} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setEngineTorque(value)} />
+                        <TextField placeholder='engine torque' defaultValue={vehicle.regEngineTorque} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setEngineTorque(value)} />
                     </div>
                     <div className="flex-item">
                         <Label >Fuel type:</Label>
-                        <TextField defaultValue={vehicle.fuelType} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setFuelType(value)} />
+                        <TextField placeholder='fuel type' defaultValue={vehicle.fuelType} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setFuelType(value)} />
                     </div>
                     <div className='flex-item-gap'></div>
                     <div className="flex-item">
                         <Label >Color:</Label>
-                        <TextField defaultValue={vehicle.color} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setColor(value)} />
+                        <TextField placeholder='color' defaultValue={vehicle.color} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setColor(value)} />
                     </div>
                     <div className="flex-item">
                         <Label >Doors:</Label>
-                        <TextField defaultValue={vehicle.regDoors} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setDoors(value)} />
+                        <TextField placeholder='door count' defaultValue={vehicle.regDoors} disabled={vehicle.readOnly} onChange={(e, value) => vehicle.setDoors(value)} />
                     </div>
                     <div className='flex-item-gap'></div>
                     <div className='flex-item'></div>
