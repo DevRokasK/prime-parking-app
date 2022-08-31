@@ -20,6 +20,14 @@ describe("App", () => {
 
     const linkElement = screen.getByText(/Prime Parking/i);
     expect(linkElement).toBeInTheDocument();
+
+    const headerElement = screen.getByTestId("header");
+    const navigationElement = screen.getByTestId("navigation");
+    const mainElement = screen.getByTestId("header");
+
+    expect(headerElement).toBeInTheDocument();
+    expect(navigationElement).toBeInTheDocument();
+    expect(mainElement).toBeInTheDocument();
   });
 })
 

@@ -22,13 +22,13 @@ export class App extends React.Component {
                 const store = this.store;
                 return <div className="App">
                         <div className="grid-container">
-                                <header className="header">
+                                <header className="header" data-testid='header'>
                                         <Header isHamburgerOpen={store.isHamburgerOpen} toggleHamburgerOpen={store.ToggleHamburgerOpen} toggleHamburgerClose={store.ToggleHamburgerClose} />
                                 </header>
-                                <aside className="navigation">
+                                <aside className="navigation" data-testid='navigation'>
                                         <Navigation toggleHamburger={store.ToggleHamburgerClose} />
                                 </aside>
-                                <main className="main">
+                                <main className="main" data-testid='main'>
                                         <Routes>
                                                 <Route path='/' element={<Home />} />
                                                 <Route path='/Vehicles/all' element={<VehicleList store={store.VehiclesStore} gate={store.Gates} />} />
